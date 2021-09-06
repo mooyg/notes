@@ -4,18 +4,15 @@ import { FavoriteIcon, SearchIcon, SettingsIcon } from '../icons/index'
 export const Options = (): JSX.Element => {
   return (
     <VStack mt="5" alignItems="flex-start">
-      <HStack>
-        <IconButton aria-label="quick-find" icon={<SearchIcon />} />
+      <IconButton variant="ghost" isRound={true} aria-label="quick-find" leftIcon={<SearchIcon />}>
         <Text fontWeight="bold">Quick Find</Text>
-      </HStack>
-      <HStack>
-        <IconButton aria-label="favorites" icon={<FavoriteIcon />} />
+      </IconButton>
+      <IconButton variant="ghost" aria-label="favorites" leftIcon={<FavoriteIcon />}>
         <Text>Favorites</Text>
-      </HStack>
-      <HStack>
-        <IconButton aria-label="settings" icon={<SettingsIcon />} />
+      </IconButton>
+      <IconButton variant="ghost" aria-label="settings" leftIcon={<SettingsIcon />}>
         <Text>Settings</Text>
-      </HStack>
+      </IconButton>
     </VStack>
   )
 }
