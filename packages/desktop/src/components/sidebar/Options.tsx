@@ -1,18 +1,18 @@
 import React from 'react'
-import { VStack, HStack, Text, IconButton } from '@chakra-ui/react'
-import { FavoriteIcon, SearchIcon, SettingsIcon } from '../icons/index'
+import { VStack, HStack, Text, Button } from '@chakra-ui/react'
+import { FavoriteIcon, SearchIcon, SettingsIcon } from '../icons'
 export const Options = (): JSX.Element => {
   return (
     <VStack mt="5" alignItems="flex-start">
-      <IconButton variant="ghost" isRound={true} aria-label="quick-find" leftIcon={<SearchIcon />}>
-        <Text fontWeight="bold">Quick Find</Text>
-      </IconButton>
-      <IconButton variant="ghost" aria-label="favorites" leftIcon={<FavoriteIcon />}>
+      <Button variant="ghost" aria-label="quick-find" leftIcon={<SearchIcon />}>
+        <Text>Quick Find</Text>
+      </Button>
+      <Button variant="ghost" aria-label="favorites" leftIcon={<FavoriteIcon />}>
         <Text>Favorites</Text>
-      </IconButton>
-      <IconButton variant="ghost" aria-label="settings" leftIcon={<SettingsIcon />}>
+      </Button>
+      <Button variant="ghost" aria-label="settings" leftIcon={<SettingsIcon />}>
         <Text>Settings</Text>
-      </IconButton>
+      </Button>
     </VStack>
   )
 }
