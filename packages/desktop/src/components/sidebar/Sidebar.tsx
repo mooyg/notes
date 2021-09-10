@@ -1,5 +1,4 @@
 import { Flex, Avatar } from '@chakra-ui/react'
-import React from 'react'
 import { Options } from './Options'
 import { Templates } from './Templates'
 export const Sidebar = (): JSX.Element => {
