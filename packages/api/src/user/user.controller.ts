@@ -20,10 +20,6 @@ export class UserController {
     })
   }
 
-  @Get('/cookie')
-  async getCookie(@Req() req: Request) {
-    return req.headers
-  }
   @Post('/template/create')
   @UseGuards(AuthGuard, ReqBody)
   async createTemplate(@Req() req: Request, @User() userId) {
@@ -36,6 +32,7 @@ export class UserController {
   async getTemplates(@User() userId) {
     return this.userService.getTemplates(userId)
   }
+
   @Post('/pages/create/:templateId')
   @UseGuards(AuthGuard, ReqBody)
   async createPage(@Req() req: Request, @Param('templateId') templateId) {

@@ -32,9 +32,6 @@ let UserController = class UserController {
             },
         });
     }
-    async getCookie(req) {
-        return req.headers;
-    }
     async createTemplate(req, userId) {
         console.log(req.body);
         return this.userService.createTemplate(userId, req.body);
@@ -60,13 +57,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUser", null);
-__decorate([
-    (0, common_1.Get)('/cookie'),
-    __param(0, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getCookie", null);
 __decorate([
     (0, common_1.Post)('/template/create'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard, reqbody_guard_1.ReqBody),

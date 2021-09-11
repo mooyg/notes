@@ -7,11 +7,11 @@ import { useLocalStorage } from './hooks/useLocalStorage'
 import './styles/global.css'
 
 export const App = (): JSX.Element => {
-  const [name, setName] = useLocalStorage<string>('qid', '')
+  const [, setUserId] = useLocalStorage<string>('qid', '')
   const { data } = useSWR('/user/cookie', fetcher)
   useEffect(() => {
-    setName(data)
-  }, [data, setName])
+    setUserId(data)
+  }, [data, setUserId])
   return (
     <Flex minHeight="100vh" flex="0.8">
       <Sidebar />

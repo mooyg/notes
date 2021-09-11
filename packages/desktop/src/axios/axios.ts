@@ -6,4 +6,10 @@ export default axios.create({
 })
 
 export const fetcher = (url: string) =>
-  axios.get(`http://localhost:8080${url}`, { withCredentials: true }).then((res) => res.data)
+  axios
+    .get(`http://localhost:8080${url}`, {
+      headers: {
+        Authorization: `id ${window.localStorage.getItem('qid')}`,
+      },
+    })
+    .then((res) => res.data)
