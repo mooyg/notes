@@ -4,6 +4,7 @@ import axios from '../../axios/axios'
 import { ITemplate } from '../../interfaces'
 import { Emoji } from '../emojis/Emoji'
 import { AddIcon } from '../icons'
+import { Modal } from '../modal/Modal'
 import { Pages } from './Pages'
 
 export const Templates = () => {
@@ -28,12 +29,7 @@ export const Templates = () => {
     <Flex p="16px" flexDir="column">
       <Flex minW="full" justifyContent="space-between" alignItems="center">
         <Text fontWeight="bold">Notes</Text>
-        <IconButton
-          variant="ghost"
-          aria-label="add-icon"
-          icon={<AddIcon />}
-          onClick={createTemplate}
-        />
+        <Modal heading="Template" />
       </Flex>
       <Flex justifyItems="center" flexDir="column">
         {templates.map((el: ITemplate) => {
