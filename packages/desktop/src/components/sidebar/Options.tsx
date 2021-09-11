@@ -1,5 +1,5 @@
 import React from 'react'
-import { VStack, HStack, Text, Button } from '@chakra-ui/react'
+import { VStack, Text, Button } from '@chakra-ui/react'
 import { FavoriteIcon, SearchIcon, SettingsIcon } from '../icons'
 export const Options = (): JSX.Element => {
   return (

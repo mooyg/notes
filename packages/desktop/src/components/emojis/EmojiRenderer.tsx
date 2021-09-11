@@ -1,13 +1,14 @@
+import { Box } from '@chakra-ui/layout'
 import React from 'react'
 import { Emoji } from './Emoji'
 type IEmojiRenderer = {
   children: React.ReactElement
 }
 export const EmojiRenderer = ({ children }: IEmojiRenderer): JSX.Element => {
+  console.log('CHILDRENS', children)
   const parseEmojis = (value: any) => {
     return children.props.children.split(' ').map((node: string) => {
-      if (node.match(/:(.+?):/gm)) {
-        console.log(node.match(/(?<=:)\w+(?=:)/gm))
+      if (node.match(/(^|\s)+:([^\s\n\r])+:|^:[^\s\n\r]+/gm)) {
         console.log('JUST NODE', node)
         return <Emoji shortName={node.substring(1, node.length - 1)} />
       } else {
@@ -19,9 +20,10 @@ export const EmojiRenderer = ({ children }: IEmojiRenderer): JSX.Element => {
   console.log(parseEmojis(text))
   return (
     <>
-      {parseEmojis(text).map((el: string, index: number) => (
-        <p key={index}>{el}</p>
-      ))}
+      {parseEmojis(text).map((el: any, index: number) => {
+        console.log(el)
+        return <React.Fragment key={index}>{el} </React.Fragment>
+      })}
     </>
   )
 }

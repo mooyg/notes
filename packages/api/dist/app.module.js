@@ -11,11 +11,24 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const emoji_module_1 = require("./emoji/emoji.module");
+const nestjs_dotenv_1 = require("nestjs-dotenv");
+const user_module_1 = require("./user/user.module");
+const auth_module_1 = require("./auth/auth.module");
+const passport_1 = require("@nestjs/passport");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [emoji_module_1.EmojiModule],
+        imports: [
+            emoji_module_1.EmojiModule,
+            nestjs_dotenv_1.ConfigModule.forRoot(),
+            user_module_1.UserModule,
+            auth_module_1.AuthModule,
+            passport_1.PassportModule.register({
+                defaultStrategy: 'github',
+                session: true,
+            }),
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
