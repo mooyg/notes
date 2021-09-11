@@ -1,5 +1,5 @@
-import { Controller, Get, Res, UseGuards } from '@nestjs/common'
-import { Response } from 'express'
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common'
+import { Request, Response } from 'express'
 import { LocalAuthGuard } from './local-auth-guard'
 
 @Controller('api/auth')
@@ -17,4 +17,7 @@ export class AuthController {
   githubAuthCallback(@Res() res: Response) {
     res.redirect('/')
   }
+
+  @Get('/logout')
+  logout(@Req() req: Request, @Res() res: Response) {}
 }

@@ -9,8 +9,8 @@ export declare class UserService {
     createPage({ details, templateId }: {
         details: any;
         templateId: any;
-    }): Promise<import(".prisma/client").Pages>;
+    }): Promise<"No template Id provided" | import(".prisma/client").Pages>;
     getPagesByTemplateId({ templateId }: {
         templateId: any;
-    }): Promise<import(".prisma/client").Pages[]>;
+    }): Promise<"No pages found for this template" | import(".prisma/client").Pages[]>;
 }

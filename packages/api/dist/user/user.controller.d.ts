@@ -6,9 +6,9 @@ export declare class UserController {
     private readonly userService;
     private prisma;
     constructor(userService: UserService, prisma: PrismaService);
-    getUser(req: Request): Promise<MyUser>;
-    createTemplate(req: Request): Promise<import(".prisma/client").Templates>;
-    getTemplates(req: Request): Promise<import(".prisma/client").Templates[]>;
-    createPage(req: Request, templateId: any): Promise<import(".prisma/client").Pages>;
-    getPagesByTemplateId(templateId: any): Promise<import(".prisma/client").Pages[]>;
+    getUser(user: MyUser, req: Request): Promise<MyUser>;
+    createTemplate(req: Request, user: MyUser): Promise<import(".prisma/client").Templates>;
+    getTemplates(user: MyUser): Promise<import(".prisma/client").Templates[]>;
+    createPage(req: Request, templateId: any): Promise<"No template Id provided" | import(".prisma/client").Pages>;
+    getPagesByTemplateId(templateId: any): Promise<"No pages found for this template" | import(".prisma/client").Pages[]>;
 }

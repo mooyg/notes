@@ -14,6 +14,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
+const user_decorator_1 = require("../decorators/user.decorator");
+const auth_guard_1 = require("../guard/auth.guard");
+const reqbody_guard_1 = require("../guard/reqbody.guard");
 const prisma_service_1 = require("../prisma.service");
 const user_service_1 = require("./user.service");
 let UserController = class UserController {
@@ -21,18 +24,16 @@ let UserController = class UserController {
         this.userService = userService;
         this.prisma = prisma;
     }
-    async getUser(req) {
-        console.log(req.user);
-        console.log(await this.prisma.user.findMany({}));
+    async getUser(user, req) {
+        console.log(user);
         return req.user;
     }
-    async createTemplate(req) {
+    async createTemplate(req, user) {
         console.log(req.body);
-        console.log(req.user);
-        return this.userService.createTemplate(req.user, req.body);
+        return this.userService.createTemplate(user, req.body);
     }
-    async getTemplates(req) {
-        return this.userService.getTemplates(req.user);
+    async getTemplates(user) {
+        return this.userService.getTemplates(user);
     }
     async createPage(req, templateId) {
         return this.userService.createPage({
@@ -46,27 +47,32 @@ let UserController = class UserController {
 };
 __decorate([
     (0, common_1.Get)(),
-    __param(0, (0, common_1.Req)()),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUser", null);
 __decorate([
     (0, common_1.Post)('/template/create'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, reqbody_guard_1.ReqBody),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, user_decorator_1.User)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createTemplate", null);
 __decorate([
     (0, common_1.Get)('/templates'),
-    __param(0, (0, common_1.Req)()),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, user_decorator_1.User)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getTemplates", null);
 __decorate([
     (0, common_1.Post)('/pages/create/:templateId'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, reqbody_guard_1.ReqBody),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Param)('templateId')),
     __metadata("design:type", Function),
@@ -75,6 +81,7 @@ __decorate([
 ], UserController.prototype, "createPage", null);
 __decorate([
     (0, common_1.Get)('/pages/:templateId'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)('templateId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

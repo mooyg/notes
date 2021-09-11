@@ -12,16 +12,23 @@ import {
   Input,
   ModalFooter as ChakraModalFooter,
   VStack,
+  useToast,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { AddIcon } from '../icons'
 interface IModal {
   heading: string
   body?: string[]
+  onSumbit: (args: SumbitInterface) => void
 }
-export const Modal = ({ heading, body }: IModal) => {
+interface SumbitInterface {
+  name: string
+}
+export const Modal = ({ heading, body, onSumbit }: IModal) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [name, setName] = useState('')
+  const toast = useToast()
 
   return (
     <>
@@ -35,23 +42,45 @@ export const Modal = ({ heading, body }: IModal) => {
             <VStack>
               <FormControl id="Name">
                 <FormLabel>Name of the {heading}</FormLabel>
-                <Input placeholder={`Name of the ${heading}`} />
+                <Input
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={`Name of the ${heading}`}
+                />
               </FormControl>
               <FormControl id="Description">
                 <FormLabel>Description</FormLabel>
                 <Input placeholder="Description " />
               </FormControl>
-              <FormControl id="header">
-                <FormLabel>Header</FormLabel>
-                <Input placeholder="Header URL" />
-              </FormControl>
+              {heading.toLowerCase() === 'template' ? (
+                <FormControl id="header">
+                  <FormLabel>Header</FormLabel>
+                  <Input placeholder="Header URL" />
+                </FormControl>
+              ) : null}
             </VStack>
           </ChakraModalBody>
           <ChakraModalFooter>
             <Button mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button colorScheme="green">Sumbit</Button>
+            <Button
+              colorScheme="green"
+              onClick={() => {
+                if (name?.trim()?.length === 0)
+                  return toast({
+                    title: 'Cannot Sumbit empty name',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                  })
+                if (name) {
+                  onSumbit({ name: name })
+                  onClose()
+                }
+              }}
+            >
+              Sumbit
+            </Button>
           </ChakraModalFooter>
         </ChakraModalContent>
       </ChakraModal>

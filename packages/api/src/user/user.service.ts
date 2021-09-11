@@ -27,6 +27,7 @@ export class UserService {
     return templates
   }
   async createPage({ details, templateId }) {
+    if (!templateId) return 'No template Id provided'
     return await this.prisma.pages.create({
       data: {
         name: details.pageName,
@@ -35,10 +36,12 @@ export class UserService {
     })
   }
   async getPagesByTemplateId({ templateId }) {
-    return await this.prisma.pages.findMany({
+    const pages = await this.prisma.pages.findMany({
       where: {
         templateId,
       },
     })
+    if (!pages) return 'No pages found for this template'
+    return pages
   }
 }

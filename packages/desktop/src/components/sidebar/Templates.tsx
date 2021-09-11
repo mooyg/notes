@@ -1,38 +1,35 @@
-import { Flex, Text, IconButton, Button } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import axios from '../../axios/axios'
+import { Flex, Text } from '@chakra-ui/react'
+import axios, { fetcher } from '../../axios/axios'
 import { ITemplate } from '../../interfaces'
 import { Emoji } from '../emojis/Emoji'
-import { AddIcon } from '../icons'
 import { Modal } from '../modal/Modal'
-import { Pages } from './Pages'
+import useSWR, { useSWRConfig } from 'swr'
 
 export const Templates = () => {
-  const [templates, setTemplates] = useState([])
-  useEffect(() => {
-    axios.get('/user/templates').then((res) => {
-      console.log(res)
-      setTemplates(res.data)
-    })
-  }, [])
-  const createTemplate = () => {
-    axios.post('user/template/create', {
-      templateName: 'Blog',
-    })
-  }
-  const createPage = (templateId: string) => {
-    axios.post(`/user/pages/create/${templateId}`, {
-      pageName: 'Blog Number 2',
-    })
-  }
+  const { mutate } = useSWRConfig()
+
+  const { data: templates } = useSWR('/user/templates', fetcher)
+
   return (
     <Flex p="16px" flexDir="column">
       <Flex minW="full" justifyContent="space-between" alignItems="center">
         <Text fontWeight="bold">Notes</Text>
-        <Modal heading="Template" />
+        <Modal
+          heading="Template"
+          onSumbit={({ name }) => {
+            console.log('WHEN SUMBITTING TEMPLATE', name)
+            axios
+              .post('user/template/create', {
+                templateName: name,
+              })
+              .then(() => {
+                mutate('/user/templates')
+              })
+          }}
+        />
       </Flex>
       <Flex justifyItems="center" flexDir="column">
-        {templates.map((el: ITemplate) => {
+        {templates?.map((el: ITemplate) => {
           return (
             <>
               <Flex minW="full" justifyContent="space-between" alignItems="center">
@@ -42,11 +39,13 @@ export const Templates = () => {
                     {el.name}
                   </Flex>
                 </Text>
-                <IconButton
-                  variant="ghost"
-                  aria-label="add-icon"
-                  icon={<AddIcon />}
-                  onClick={() => createPage(el.id)}
+                <Modal
+                  heading="Page"
+                  onSumbit={({ name }) => {
+                    axios.post(`/user/pages/create/${el.id}`, {
+                      pageName: name,
+                    })
+                  }}
                 />
               </Flex>
             </>
