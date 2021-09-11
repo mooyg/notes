@@ -4,7 +4,6 @@ import { User } from 'src/decorators/user.decorator'
 import { AuthGuard } from 'src/guard/auth.guard'
 import { ReqBody } from 'src/guard/reqbody.guard'
 import { PrismaService } from 'src/prisma.service'
-import { MyUser } from 'src/typings/express'
 import { UserService } from './user.service'
 
 @Controller('user')
@@ -12,22 +11,30 @@ export class UserController {
   constructor(private readonly userService: UserService, private prisma: PrismaService) {}
 
   @Get()
-  async getUser(@User() user: MyUser, @Req() req: Request): Promise<MyUser> {
-    console.log(user)
-    return req.user
+  async getUser(@User() userId, @Req() req: Request) {
+    console.log(userId)
+    return await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    })
   }
 
+  @Get('/cookie')
+  async getCookie(@Req() req: Request) {
+    return req.headers
+  }
   @Post('/template/create')
   @UseGuards(AuthGuard, ReqBody)
-  async createTemplate(@Req() req: Request, @User() user: MyUser) {
+  async createTemplate(@Req() req: Request, @User() userId) {
     console.log(req.body)
-    return this.userService.createTemplate(user, req.body)
+    return this.userService.createTemplate(userId, req.body)
   }
 
   @Get('/templates')
   @UseGuards(AuthGuard)
-  async getTemplates(@User() user: MyUser) {
-    return this.userService.getTemplates(user)
+  async getTemplates(@User() userId) {
+    return this.userService.getTemplates(userId)
   }
   @Post('/pages/create/:templateId')
   @UseGuards(AuthGuard, ReqBody)

@@ -1,7 +1,6 @@
 import { Injectable, Req } from '@nestjs/common'
 import { async } from 'rxjs'
 import { PrismaService } from 'src/prisma.service'
-import { MyUser } from 'src/typings/express'
 
 @Injectable()
 export class UserService {
@@ -9,18 +8,18 @@ export class UserService {
   getUser(): string {
     return 'user'
   }
-  async createTemplate(user: MyUser, details) {
+  async createTemplate(userId, details) {
     return await this.prisma.templates.create({
       data: {
         name: details.templateName,
-        userId: user.id,
+        userId,
       },
     })
   }
-  async getTemplates(user: MyUser) {
+  async getTemplates(userId) {
     const templates = await this.prisma.templates.findMany({
       where: {
-        userId: user.id,
+        userId,
       },
     })
     if (!templates) return []

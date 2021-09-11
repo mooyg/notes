@@ -19,18 +19,18 @@ let UserService = class UserService {
     getUser() {
         return 'user';
     }
-    async createTemplate(user, details) {
+    async createTemplate(userId, details) {
         return await this.prisma.templates.create({
             data: {
                 name: details.templateName,
-                userId: user.id,
+                userId,
             },
         });
     }
-    async getTemplates(user) {
+    async getTemplates(userId) {
         const templates = await this.prisma.templates.findMany({
             where: {
-                userId: user.id,
+                userId,
             },
         });
         if (!templates)

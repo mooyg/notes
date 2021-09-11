@@ -24,16 +24,23 @@ let UserController = class UserController {
         this.userService = userService;
         this.prisma = prisma;
     }
-    async getUser(user, req) {
-        console.log(user);
-        return req.user;
+    async getUser(userId, req) {
+        console.log(userId);
+        return await this.prisma.user.findUnique({
+            where: {
+                id: userId,
+            },
+        });
     }
-    async createTemplate(req, user) {
+    async getCookie(req) {
+        return req.headers;
+    }
+    async createTemplate(req, userId) {
         console.log(req.body);
-        return this.userService.createTemplate(user, req.body);
+        return this.userService.createTemplate(userId, req.body);
     }
-    async getTemplates(user) {
-        return this.userService.getTemplates(user);
+    async getTemplates(userId) {
+        return this.userService.getTemplates(userId);
     }
     async createPage(req, templateId) {
         return this.userService.createPage({
@@ -53,6 +60,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUser", null);
+__decorate([
+    (0, common_1.Get)('/cookie'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getCookie", null);
 __decorate([
     (0, common_1.Post)('/template/create'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard, reqbody_guard_1.ReqBody),

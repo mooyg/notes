@@ -6,8 +6,4 @@ export default axios.create({
 })
 
 export const fetcher = (url: string) =>
-  axios
-    .get(`http://localhost:8080${url}`, {
-      withCredentials: true,
-    })
-    .then((res) => res.data)
+  axios.get(`http://localhost:8080${url}`, { withCredentials: true }).then((res) => res.data)

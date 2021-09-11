@@ -15,6 +15,11 @@ const nestjs_dotenv_1 = require("nestjs-dotenv");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const passport_1 = require("@nestjs/passport");
+const session = require("express-session");
+const nestjs_session_1 = require("nestjs-session");
+const connectRedis = require("connect-redis");
+const redis_1 = require("./redis/redis");
+const RedisStore = connectRedis(session);
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -27,6 +32,22 @@ AppModule = __decorate([
             passport_1.PassportModule.register({
                 defaultStrategy: 'github',
                 session: true,
+            }),
+            nestjs_session_1.SessionModule.forRoot({
+                session: {
+                    store: new RedisStore({
+                        client: redis_1.redis,
+                    }),
+                    name: 'qid',
+                    secret: 'shsaudasiua',
+                    resave: false,
+                    saveUninitialized: false,
+                    cookie: {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === 'production',
+                        maxAge: 1000 * 60 * 60 * 24 * 7 * 365,
+                    },
+                },
             }),
         ],
         controllers: [app_controller_1.AppController],

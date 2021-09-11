@@ -8,7 +8,7 @@ import useSWR, { useSWRConfig } from 'swr'
 export const Templates = () => {
   const { mutate } = useSWRConfig()
 
-  const { data: templates } = useSWR('/user/templates', fetcher)
+  const { data: templates } = useSWR<ITemplate[]>('/user/templates', fetcher)
 
   return (
     <Flex p="16px" flexDir="column">
@@ -17,7 +17,6 @@ export const Templates = () => {
         <Modal
           heading="Template"
           onSumbit={({ name }) => {
-            console.log('WHEN SUMBITTING TEMPLATE', name)
             axios
               .post('user/template/create', {
                 templateName: name,
@@ -42,9 +41,13 @@ export const Templates = () => {
                 <Modal
                   heading="Page"
                   onSumbit={({ name }) => {
-                    axios.post(`/user/pages/create/${el.id}`, {
-                      pageName: name,
-                    })
+                    axios
+                      .post(`/user/pages/create/${el.id}`, {
+                        pageName: name,
+                      })
+                      .then(() => {
+                        mutate(`/user/pages/create/${el.id}`)
+                      })
                   }}
                 />
               </Flex>

@@ -11,7 +11,7 @@ const common_1 = require("@nestjs/common");
 let AuthGuard = class AuthGuard {
     canActivate(context) {
         const request = context.switchToHttp().getRequest();
-        if (request.user) {
+        if (request.session.user) {
             return true;
         }
         return false;

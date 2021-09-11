@@ -14,48 +14,51 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
-const local_auth_guard_1 = require("./local-auth-guard");
+const nestjs_dotenv_1 = require("nestjs-dotenv");
+const auth_service_1 = require("./auth.service");
 let AuthController = class AuthController {
-    authRoutes() {
-        return 'Auth routes';
+    constructor(configService, authService) {
+        this.configService = configService;
+        this.authService = authService;
     }
-    githubAuth() { }
-    githubAuthCallback(res) {
-        res.redirect('/');
+    async loginIntoGithub(res) {
+        res.redirect(`https://github.com/login/oauth/authorize?client_id=${this.configService.get('GITHUB_CLIENT_ID')}&redirect_uri=http://localhost:8080/api/auth/callback&scope=user&state=dsbjdbads`);
     }
-    logout(req, res) { }
+    async githubCallback(req, res, session) {
+        await this.authService.getAccessToken(req.query.code, res, session);
+    }
+    async userExists(session) {
+        console.log(session);
+        return 'User already Exists';
+    }
 };
 __decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], AuthController.prototype, "authRoutes", null);
-__decorate([
     (0, common_1.Get)('/github'),
-    (0, common_1.UseGuards)(new local_auth_guard_1.LocalAuthGuard('github')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "githubAuth", null);
-__decorate([
-    (0, common_1.Get)('/callback'),
-    (0, common_1.UseGuards)(new local_auth_guard_1.LocalAuthGuard('github')),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "githubAuthCallback", null);
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "loginIntoGithub", null);
 __decorate([
-    (0, common_1.Get)('/logout'),
+    (0, common_1.Get)('/callback'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
+    __param(2, (0, common_1.Session)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "logout", null);
+    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "githubCallback", null);
+__decorate([
+    (0, common_1.Get)('/exists'),
+    __param(0, (0, common_1.Session)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "userExists", null);
 AuthController = __decorate([
-    (0, common_1.Controller)('api/auth')
+    (0, common_1.Controller)('api/auth'),
+    __metadata("design:paramtypes", [nestjs_dotenv_1.ConfigService,
+        auth_service_1.AuthService])
 ], AuthController);
 exports.AuthController = AuthController;
 //# sourceMappingURL=auth.controller.js.map

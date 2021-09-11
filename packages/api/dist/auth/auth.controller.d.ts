@@ -1,7 +1,11 @@
 import { Request, Response } from 'express';
+import { ConfigService } from 'nestjs-dotenv';
+import { AuthService } from './auth.service';
 export declare class AuthController {
-    authRoutes(): string;
-    githubAuth(): void;
-    githubAuthCallback(res: Response): void;
-    logout(req: Request, res: Response): void;
+    private readonly configService;
+    private readonly authService;
+    constructor(configService: ConfigService, authService: AuthService);
+    loginIntoGithub(res: Response): Promise<void>;
+    githubCallback(req: Request, res: Response, session: any): Promise<void>;
+    userExists(session: any): Promise<string>;
 }

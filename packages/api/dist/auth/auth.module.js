@@ -12,12 +12,11 @@ const cookie_serializer_1 = require("../cookie-serializer");
 const prisma_service_1 = require("../prisma.service");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
-const github_strategy_1 = require("./strategies/github-strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
-        providers: [auth_service_1.AuthService, github_strategy_1.GithubStrategy, prisma_service_1.PrismaService, cookie_serializer_1.CookieSerializer],
+        providers: [auth_service_1.AuthService, prisma_service_1.PrismaService, cookie_serializer_1.CookieSerializer],
         controllers: [auth_controller_1.AuthController],
     })
 ], AuthModule);
