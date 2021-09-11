@@ -34,6 +34,15 @@ let UserController = class UserController {
     async getTemplates(req) {
         return this.userService.getTemplates(req.user);
     }
+    async createPage(req, templateId) {
+        return this.userService.createPage({
+            details: req.body,
+            templateId,
+        });
+    }
+    async getPagesByTemplateId(templateId) {
+        return this.userService.getPagesByTemplateId({ templateId });
+    }
 };
 __decorate([
     (0, common_1.Get)(),
@@ -56,6 +65,21 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getTemplates", null);
+__decorate([
+    (0, common_1.Post)('/pages/create/:templateId'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('templateId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "createPage", null);
+__decorate([
+    (0, common_1.Get)('/pages/:templateId'),
+    __param(0, (0, common_1.Param)('templateId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getPagesByTemplateId", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService, prisma_service_1.PrismaService])

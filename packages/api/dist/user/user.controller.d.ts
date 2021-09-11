@@ -9,4 +9,6 @@ export declare class UserController {
     getUser(req: Request): Promise<MyUser>;
     createTemplate(req: Request): Promise<import(".prisma/client").Templates>;
     getTemplates(req: Request): Promise<import(".prisma/client").Templates[]>;
+    createPage(req: Request, templateId: any): Promise<import(".prisma/client").Pages>;
+    getPagesByTemplateId(templateId: any): Promise<import(".prisma/client").Pages[]>;
 }

@@ -37,6 +37,21 @@ let UserService = class UserService {
             return [];
         return templates;
     }
+    async createPage({ details, templateId }) {
+        return await this.prisma.pages.create({
+            data: {
+                name: details.pageName,
+                templateId,
+            },
+        });
+    }
+    async getPagesByTemplateId({ templateId }) {
+        return await this.prisma.pages.findMany({
+            where: {
+                templateId,
+            },
+        });
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),

@@ -4,6 +4,7 @@ import axios from '../../axios/axios'
 import { ITemplate } from '../../interfaces'
 import { Emoji } from '../emojis/Emoji'
 import { AddIcon } from '../icons'
+import { Pages } from './Pages'
 
 export const Templates = () => {
   const [templates, setTemplates] = useState([])
@@ -16,6 +17,11 @@ export const Templates = () => {
   const createTemplate = () => {
     axios.post('user/template/create', {
       templateName: 'Blog',
+    })
+  }
+  const createPage = (templateId: string) => {
+    axios.post(`/user/pages/create/${templateId}`, {
+      pageName: 'Blog Number 2',
     })
   }
   return (
@@ -40,7 +46,12 @@ export const Templates = () => {
                     {el.name}
                   </Flex>
                 </Text>
-                <IconButton variant="ghost" aria-label="add-icon" icon={<AddIcon />} />
+                <IconButton
+                  variant="ghost"
+                  aria-label="add-icon"
+                  icon={<AddIcon />}
+                  onClick={() => createPage(el.id)}
+                />
               </Flex>
             </>
           )

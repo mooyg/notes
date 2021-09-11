@@ -26,4 +26,19 @@ export class UserService {
     if (!templates) return []
     return templates
   }
+  async createPage({ details, templateId }) {
+    return await this.prisma.pages.create({
+      data: {
+        name: details.pageName,
+        templateId,
+      },
+    })
+  }
+  async getPagesByTemplateId({ templateId }) {
+    return await this.prisma.pages.findMany({
+      where: {
+        templateId,
+      },
+    })
+  }
 }

@@ -28,6 +28,7 @@ model Templates {
 model Pages{
   id String @default(uuid()) @id
   name String
-  content String
-  templates Templates[]
+  content String?
+  templates Templates @relation(fields: [templateId], references:[id])
+  templateId String
 }

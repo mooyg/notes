@@ -6,4 +6,11 @@ export declare class UserService {
     getUser(): string;
     createTemplate(user: MyUser, details: any): Promise<import(".prisma/client").Templates>;
     getTemplates(user: MyUser): Promise<import(".prisma/client").Templates[]>;
+    createPage({ details, templateId }: {
+        details: any;
+        templateId: any;
+    }): Promise<import(".prisma/client").Pages>;
+    getPagesByTemplateId({ templateId }: {
+        templateId: any;
+    }): Promise<import(".prisma/client").Pages[]>;
 }

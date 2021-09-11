@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req } from '@nestjs/common'
+import { Controller, Get, Param, Post, Req } from '@nestjs/common'
 import { Request } from 'express'
 import { PrismaService } from 'src/prisma.service'
 import { MyUser } from 'src/typings/express'
@@ -25,5 +25,17 @@ export class UserController {
   @Get('/templates')
   async getTemplates(@Req() req: Request) {
     return this.userService.getTemplates(req.user)
+  }
+  @Post('/pages/create/:templateId')
+  async createPage(@Req() req: Request, @Param('templateId') templateId) {
+    return this.userService.createPage({
+      details: req.body,
+      templateId,
+    })
+  }
+
+  @Get('/pages/:templateId')
+  async getPagesByTemplateId(@Param('templateId') templateId) {
+    return this.userService.getPagesByTemplateId({ templateId })
   }
 }
