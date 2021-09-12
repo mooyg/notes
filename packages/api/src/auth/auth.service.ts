@@ -1,50 +1,31 @@
 import { Injectable, Req, Res } from '@nestjs/common'
 import axios from 'axios'
 import { Response } from 'express'
-import { ConfigService } from 'nestjs-dotenv'
 import { PrismaService } from 'src/prisma.service'
-
+import { IGithubUser } from 'src/types'
+import { User } from '.prisma/client'
+import { JwtService } from '@nestjs/jwt'
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly configService: ConfigService,
-    private readonly prismaService: PrismaService
+    private readonly prismaService: PrismaService,
+    private readonly jwtService: JwtService
   ) {}
-  async getAccessToken(code, res, session) {
-    try {
-      const { data } = await axios({
-        method: 'POST',
-        url: `https://github.com/login/oauth/access_token?client_id=${this.configService.get(
-          'GITHUB_CLIENT_ID'
-        )}&client_secret=${this.configService.get('GITHUB_CLIENT_SECRET')}&code=${code}`,
-        headers: {
-          accept: 'application/json',
-        },
-      })
-      const { data: userData } = await axios.get('https://api.github.com/user', {
-        headers: {
-          Authorization: `token ${data.access_token}`,
-        },
-      })
-      const user = await this.prismaService.user.findFirst({
-        where: {
-          username: userData.login,
-        },
-      })
-      if (!user) {
-        const newUser = await this.prismaService.user.create({
-          data: {
-            accessToken: data.access_token,
-            userProfilePicture: userData.avatar_url,
-            username: userData.login,
-          },
-        })
-        res.redirect(`http://localhost:3000/?userId=${newUser.id}`)
-      } else {
-        res.redirect('http://localhost:8080/api/auth/exists')
-      }
-    } catch (err) {
-      console.log(err)
+
+  public async githubLogin(user: IGithubUser) {
+    const createdUser = await this.prismaService.user.create({
+      data: {
+        username: user.username,
+        userProfilePicture: user.profileUrl,
+      },
+    })
+
+    return this.createJwt(createdUser)
+  }
+
+  private createJwt({ id }: Partial<User>) {
+    return {
+      accessToken: this.jwtService.sign({ id }),
     }
   }
 }

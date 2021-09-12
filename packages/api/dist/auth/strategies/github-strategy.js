@@ -13,48 +13,24 @@ exports.GithubStrategy = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_github2_1 = require("passport-github2");
-const prisma_service_1 = require("../../prisma.service");
+require("dotenv/config");
+const types_1 = require("../../types");
 let GithubStrategy = class GithubStrategy extends (0, passport_1.PassportStrategy)(passport_github2_1.Strategy, 'github') {
-    constructor(_prismaService) {
+    constructor() {
         super({
             clientID: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
             callbackURL: '/api/auth/callback',
             scope: ['user:email'],
-        }, async (_accessToken, _refreshToken, profile, done) => {
-            console.log(profile);
-            const findUser = await this._prismaService.user.findFirst({
-                where: {
-                    username: profile.username,
-                },
-            });
-            if (findUser) {
-                console.log('Already exists');
-                return done(null, findUser);
-            }
-            console.log(profile);
-            try {
-                const User = await this._prismaService.user.create({
-                    data: {
-                        username: profile.username,
-                        userProfilePicture: profile._json.avatar_url,
-                    },
-                });
-                return done(null, User);
-            }
-            catch (e) {
-                return done(e, undefined);
-            }
         });
-        this._prismaService = _prismaService;
     }
-    async validate(_request, _accessToken, _refreshToken, profile) {
-        return profile;
+    async validate(_, __, user) {
+        return user;
     }
 };
 GithubStrategy = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [])
 ], GithubStrategy);
 exports.GithubStrategy = GithubStrategy;
 //# sourceMappingURL=github-strategy.js.map

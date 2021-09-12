@@ -16,56 +16,40 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const nestjs_dotenv_1 = require("nestjs-dotenv");
 const auth_service_1 = require("./auth.service");
-const user_decorator_1 = require("../decorators/user.decorator");
+const passport_1 = require("@nestjs/passport");
+const types_1 = require("../types");
 let AuthController = class AuthController {
     constructor(configService, authService) {
         this.configService = configService;
         this.authService = authService;
     }
-    async loginIntoGithub(res) {
-        res.redirect(`https://github.com/login/oauth/authorize?client_id=${this.configService.get('GITHUB_CLIENT_ID')}&redirect_uri=http://localhost:8080/api/auth/callback&scope=user&state=dsbjdbads`);
-    }
-    async githubCallback(req, res, session) {
-        await this.authService.getAccessToken(req.query.code, res, session);
-    }
-    async userExists(session) {
-        console.log(session);
-        return 'User already Exists';
-    }
-    async userSuccess(user) {
-        return 'Give a popup to open the app again';
+    async githubAuth() { }
+    async githubAuthCallback(request, res) {
+        const { user } = request;
+        if (!user) {
+            throw new common_1.NotFoundException('No user found');
+        }
+        const { accessToken } = await this.authService.githubLogin(user);
+        const params = new URLSearchParams({ accessToken });
+        res.redirect(`http://localhost:3000?${params.toString()}`);
     }
 };
 __decorate([
-    (0, common_1.Get)('/github'),
-    __param(0, (0, common_1.Res)()),
+    (0, common_1.Get)(),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('github')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "loginIntoGithub", null);
+], AuthController.prototype, "githubAuth", null);
 __decorate([
     (0, common_1.Get)('/callback'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('github')),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
-    __param(2, (0, common_1.Session)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "githubCallback", null);
-__decorate([
-    (0, common_1.Get)('/exists'),
-    __param(0, (0, common_1.Session)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "userExists", null);
-__decorate([
-    (0, common_1.Get)('/success'),
-    __param(0, (0, user_decorator_1.User)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "userSuccess", null);
+], AuthController.prototype, "githubAuthCallback", null);
 AuthController = __decorate([
     (0, common_1.Controller)('api/auth'),
     __metadata("design:paramtypes", [nestjs_dotenv_1.ConfigService,

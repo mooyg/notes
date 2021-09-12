@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_decorator_1 = require("../decorators/user.decorator");
-const auth_guard_1 = require("../guard/auth.guard");
 const reqbody_guard_1 = require("../guard/reqbody.guard");
 const prisma_service_1 = require("../prisma.service");
 const user_service_1 = require("./user.service");
@@ -49,7 +48,6 @@ let UserController = class UserController {
 };
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     __param(0, (0, user_decorator_1.User)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -58,7 +56,6 @@ __decorate([
 ], UserController.prototype, "getUser", null);
 __decorate([
     (0, common_1.Post)('/template/create'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, reqbody_guard_1.ReqBody),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, user_decorator_1.User)()),
     __metadata("design:type", Function),
@@ -67,7 +64,6 @@ __decorate([
 ], UserController.prototype, "createTemplate", null);
 __decorate([
     (0, common_1.Get)('/templates'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     __param(0, (0, user_decorator_1.User)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -75,7 +71,6 @@ __decorate([
 ], UserController.prototype, "getTemplates", null);
 __decorate([
     (0, common_1.Post)('/pages/create/:templateId'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, reqbody_guard_1.ReqBody),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Param)('templateId')),
     __metadata("design:type", Function),
@@ -84,7 +79,6 @@ __decorate([
 ], UserController.prototype, "createPage", null);
 __decorate([
     (0, common_1.Get)('/pages/:templateId'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)('templateId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

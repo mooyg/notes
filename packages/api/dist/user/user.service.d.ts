@@ -11,5 +11,5 @@ export declare class UserService {
     }): Promise<"No template Id provided" | import(".prisma/client").Pages>;
     getPagesByTemplateId({ templateId }: {
         templateId: any;
-    }): Promise<"No pages found for this template" | import(".prisma/client").Pages[]>;
+    }): Promise<import(".prisma/client").Pages[] | "No pages found for this template">;
 }

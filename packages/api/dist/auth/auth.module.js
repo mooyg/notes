@@ -8,16 +8,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
 const cookie_serializer_1 = require("../cookie-serializer");
 const prisma_service_1 = require("../prisma.service");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
+const github_strategy_1 = require("./strategies/github-strategy");
+const jwt_strategy_1 = require("./strategies/jwt-strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
-        providers: [auth_service_1.AuthService, prisma_service_1.PrismaService, cookie_serializer_1.CookieSerializer],
+        providers: [auth_service_1.AuthService, prisma_service_1.PrismaService, cookie_serializer_1.CookieSerializer, github_strategy_1.GithubStrategy, jwt_strategy_1.JwtStrategy],
         controllers: [auth_controller_1.AuthController],
+        imports: [jwt_1.JwtModule.register({ secret: 'hard!to-guess_secret' })],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

@@ -9,35 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthService = void 0;
+exports.JwtStrategy = void 0;
+const passport_jwt_1 = require("passport-jwt");
+const passport_1 = require("@nestjs/passport");
 const common_1 = require("@nestjs/common");
-const prisma_service_1 = require("../prisma.service");
-const types_1 = require("../types");
-const jwt_1 = require("@nestjs/jwt");
-let AuthService = class AuthService {
-    constructor(prismaService, jwtService) {
-        this.prismaService = prismaService;
-        this.jwtService = jwtService;
-    }
-    async githubLogin(user) {
-        const createdUser = await this.prismaService.user.create({
-            data: {
-                username: user.username,
-                userProfilePicture: user.profileUrl,
-            },
+let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
+    constructor() {
+        super({
+            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
+            secretOrKey: process.env.JWT_SECRET,
         });
-        return this.createJwt(createdUser);
     }
-    createJwt({ id }) {
+    async validate({ name, email, id }) {
+        console.log(name, email, id);
         return {
-            accessToken: this.jwtService.sign({ id }),
+            id,
         };
     }
 };
-AuthService = __decorate([
+JwtStrategy = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        jwt_1.JwtService])
-], AuthService);
-exports.AuthService = AuthService;
-//# sourceMappingURL=auth.service.js.map
+    __metadata("design:paramtypes", [])
+], JwtStrategy);
+exports.JwtStrategy = JwtStrategy;
+//# sourceMappingURL=jwt-strategy.js.map
