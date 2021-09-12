@@ -9,7 +9,7 @@ export const fetcher = (url: string) =>
   axios
     .get(`http://localhost:8080${url}`, {
       headers: {
-        Authorization: `id ${window.localStorage.getItem('qid')}`,
+        Auhtorization: JSON.parse(window.localStorage.qid),
       },
     })
     .then((res) => res.data)

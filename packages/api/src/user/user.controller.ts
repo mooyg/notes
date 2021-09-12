@@ -11,9 +11,9 @@ export class UserController {
   constructor(private readonly userService: UserService, private prisma: PrismaService) {}
 
   @Get()
+  @UseGuards(AuthGuard)
   async getUser(@User() userId, @Req() req: Request) {
-    console.log(userId)
-    return await this.prisma.user.findUnique({
+    return await this.prisma.user.findFirst({
       where: {
         id: userId,
       },
@@ -23,7 +23,6 @@ export class UserController {
   @Post('/template/create')
   @UseGuards(AuthGuard, ReqBody)
   async createTemplate(@Req() req: Request, @User() userId) {
-    console.log(req.body)
     return this.userService.createTemplate(userId, req.body)
   }
 

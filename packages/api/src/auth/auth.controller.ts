@@ -1,9 +1,10 @@
-import { Controller, Get, Req, Res, Session, UseGuards } from '@nestjs/common'
+import { Controller, Get, Query, Req, Res, Session, UseGuards } from '@nestjs/common'
 import { Request, Response } from 'express'
 import { LocalAuthGuard } from './local-auth-guard'
 import axios from 'axios'
 import { ConfigService } from 'nestjs-dotenv'
 import { AuthService } from './auth.service'
+import { User } from 'src/decorators/user.decorator'
 @Controller('api/auth')
 export class AuthController {
   constructor(
@@ -26,5 +27,9 @@ export class AuthController {
   async userExists(@Session() session) {
     console.log(session)
     return 'User already Exists'
+  }
+  @Get('/success')
+  async userSuccess(@User() user) {
+    return 'Give a popup to open the app again'
   }
 }

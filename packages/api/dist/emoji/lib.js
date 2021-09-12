@@ -11,7 +11,6 @@ const getEmojiData = (shortName) => {
 exports.getEmojiData = getEmojiData;
 const getImagePath = (shortName) => {
     const { image } = (0, exports.getEmojiData)(shortName);
-    console.log(image);
     return image;
 };
 exports.getImagePath = getImagePath;

@@ -25,15 +25,13 @@ let UserController = class UserController {
         this.prisma = prisma;
     }
     async getUser(userId, req) {
-        console.log(userId);
-        return await this.prisma.user.findUnique({
+        return await this.prisma.user.findFirst({
             where: {
                 id: userId,
             },
         });
     }
     async createTemplate(req, userId) {
-        console.log(req.body);
         return this.userService.createTemplate(userId, req.body);
     }
     async getTemplates(userId) {
@@ -51,6 +49,7 @@ let UserController = class UserController {
 };
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     __param(0, (0, user_decorator_1.User)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),

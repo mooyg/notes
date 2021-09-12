@@ -11,6 +11,5 @@ export const getEmojiData = (shortName: string) => {
 
 export const getImagePath = (shortName: string) => {
   const { image } = getEmojiData(shortName)
-  console.log(image)
   return image
 }

@@ -28,7 +28,6 @@ let AuthService = class AuthService {
                     accept: 'application/json',
                 },
             });
-            console.log(data.access_token);
             const { data: userData } = await axios_1.default.get('https://api.github.com/user', {
                 headers: {
                     Authorization: `token ${data.access_token}`,
@@ -47,11 +46,9 @@ let AuthService = class AuthService {
                         username: userData.login,
                     },
                 });
-                session.user = newUser.id;
-                res.redirect('/');
+                res.redirect(`http://localhost:3000/?userId=${newUser.id}`);
             }
             else {
-                console.log(`User with name ${user.username} already exists`);
                 res.redirect('http://localhost:8080/api/auth/exists');
             }
         }

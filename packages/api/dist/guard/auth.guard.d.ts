@@ -1,5 +1,7 @@
 import { CanActivate, ExecutionContext } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { PrismaService } from 'src/prisma.service';
 export declare class AuthGuard implements CanActivate {
-    canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>;
+    private readonly prismaService;
+    constructor(prismaService: PrismaService);
+    canActivate(context: ExecutionContext): Promise<boolean>;
 }

@@ -16,6 +16,7 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const nestjs_dotenv_1 = require("nestjs-dotenv");
 const auth_service_1 = require("./auth.service");
+const user_decorator_1 = require("../decorators/user.decorator");
 let AuthController = class AuthController {
     constructor(configService, authService) {
         this.configService = configService;
@@ -30,6 +31,9 @@ let AuthController = class AuthController {
     async userExists(session) {
         console.log(session);
         return 'User already Exists';
+    }
+    async userSuccess(user) {
+        return 'Give a popup to open the app again';
     }
 };
 __decorate([
@@ -55,6 +59,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "userExists", null);
+__decorate([
+    (0, common_1.Get)('/success'),
+    __param(0, (0, user_decorator_1.User)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "userSuccess", null);
 AuthController = __decorate([
     (0, common_1.Controller)('api/auth'),
     __metadata("design:paramtypes", [nestjs_dotenv_1.ConfigService,

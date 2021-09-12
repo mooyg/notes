@@ -8,4 +8,5 @@ export declare class AuthController {
     loginIntoGithub(res: Response): Promise<void>;
     githubCallback(req: Request, res: Response, session: any): Promise<void>;
     userExists(session: any): Promise<string>;
+    userSuccess(user: any): Promise<string>;
 }

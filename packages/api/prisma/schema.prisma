@@ -16,7 +16,6 @@ model User {
   userProfilePicture String
   accessToken String
   Templates Templates[]
-  
 }
 
 model Templates {
