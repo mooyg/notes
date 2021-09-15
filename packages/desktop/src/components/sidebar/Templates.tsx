@@ -1,15 +1,14 @@
 import { Flex, Text } from '@chakra-ui/react'
-import axios, { fetcher } from '../../axios/axios'
+import { useQuery } from 'react-query'
+import axios from '../../axios/axios'
+import { useAccessToken } from '../../hooks/useAccessToken'
 import { ITemplate } from '../../interfaces'
 import { Emoji } from '../emojis/Emoji'
 import { Modal } from '../modal/Modal'
-import useSWR, { useSWRConfig } from 'swr'
 
 export const Templates = () => {
-  const { mutate } = useSWRConfig()
-
-  const { data: templates } = useSWR<ITemplate[]>('/user/templates', fetcher)
-
+  const accessToken = useAccessToken()
+  const { data: templates } = useQuery<any>(['/user/templates', accessToken])
   return (
     <Flex p="16px" flexDir="column">
       <Flex minW="full" justifyContent="space-between" alignItems="center">
@@ -21,9 +20,7 @@ export const Templates = () => {
               .post('user/template/create', {
                 templateName: name,
               })
-              .then(() => {
-                mutate('/user/templates')
-              })
+              .then(() => {})
           }}
         />
       </Flex>
@@ -41,13 +38,16 @@ export const Templates = () => {
                 <Modal
                   heading="Page"
                   onSumbit={({ name }) => {
-                    axios
-                      .post(`/user/pages/create/${el.id}`, {
+                    axios({
+                      method: 'POST',
+                      url: `/user/pages/create/${el.id}`,
+                      data: {
                         pageName: name,
-                      })
-                      .then(() => {
-                        mutate(`/user/pages/create/${el.id}`)
-                      })
+                      },
+                      headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                      },
+                    }).then(() => {})
                   }}
                 />
               </Flex>

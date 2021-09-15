@@ -20,13 +20,21 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async githubLogin(user) {
-        const createdUser = await this.prismaService.user.create({
-            data: {
+        const userExists = await this.prismaService.user.findFirst({
+            where: {
                 username: user.username,
-                userProfilePicture: user.profileUrl,
             },
         });
-        return this.createJwt(createdUser);
+        if (userExists) {
+            return this.createJwt(userExists);
+        }
+        else {
+            console.log(user);
+            const createdUser = await this.prismaService.user.create({
+                data: { userProfilePicture: user._json.avatar_url, username: user.username },
+            });
+            return this.createJwt(createdUser);
+        }
     }
     createJwt({ id }) {
         return {

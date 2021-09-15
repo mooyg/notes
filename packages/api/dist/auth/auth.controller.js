@@ -14,14 +14,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
-const nestjs_dotenv_1 = require("nestjs-dotenv");
 const auth_service_1 = require("./auth.service");
 const passport_1 = require("@nestjs/passport");
 const types_1 = require("../types");
+const jwt_1 = require("@nestjs/jwt");
+const jwt_guard_1 = require("./guards/jwt-guard");
+const user_service_1 = require("../user/user.service");
+const user_decorator_1 = require("../decorators/user.decorator");
 let AuthController = class AuthController {
-    constructor(configService, authService) {
-        this.configService = configService;
+    constructor(authService, jwtService, userService) {
         this.authService = authService;
+        this.jwtService = jwtService;
+        this.userService = userService;
+    }
+    async getUser(userId) {
+        console.log(await this.userService.getUser(userId));
+        return await this.userService.getUser(userId);
     }
     async githubAuth() { }
     async githubAuthCallback(request, res) {
@@ -34,6 +42,14 @@ let AuthController = class AuthController {
         res.redirect(`http://localhost:3000?${params.toString()}`);
     }
 };
+__decorate([
+    (0, common_1.Get)('/me'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    __param(0, (0, user_decorator_1.User)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getUser", null);
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('github')),
@@ -52,8 +68,9 @@ __decorate([
 ], AuthController.prototype, "githubAuthCallback", null);
 AuthController = __decorate([
     (0, common_1.Controller)('api/auth'),
-    __metadata("design:paramtypes", [nestjs_dotenv_1.ConfigService,
-        auth_service_1.AuthService])
+    __metadata("design:paramtypes", [auth_service_1.AuthService,
+        jwt_1.JwtService,
+        user_service_1.UserService])
 ], AuthController);
 exports.AuthController = AuthController;
 //# sourceMappingURL=auth.controller.js.map

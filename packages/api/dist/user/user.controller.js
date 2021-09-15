@@ -14,21 +14,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
+const jwt_guard_1 = require("../auth/guards/jwt-guard");
 const user_decorator_1 = require("../decorators/user.decorator");
-const reqbody_guard_1 = require("../guard/reqbody.guard");
 const prisma_service_1 = require("../prisma.service");
 const user_service_1 = require("./user.service");
 let UserController = class UserController {
     constructor(userService, prisma) {
         this.userService = userService;
         this.prisma = prisma;
-    }
-    async getUser(userId, req) {
-        return await this.prisma.user.findFirst({
-            where: {
-                id: userId,
-            },
-        });
     }
     async createTemplate(req, userId) {
         return this.userService.createTemplate(userId, req.body);
@@ -47,15 +40,8 @@ let UserController = class UserController {
     }
 };
 __decorate([
-    (0, common_1.Get)(),
-    __param(0, (0, user_decorator_1.User)()),
-    __param(1, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getUser", null);
-__decorate([
     (0, common_1.Post)('/template/create'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, user_decorator_1.User)()),
     __metadata("design:type", Function),
@@ -64,6 +50,7 @@ __decorate([
 ], UserController.prototype, "createTemplate", null);
 __decorate([
     (0, common_1.Get)('/templates'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
     __param(0, (0, user_decorator_1.User)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -71,6 +58,7 @@ __decorate([
 ], UserController.prototype, "getTemplates", null);
 __decorate([
     (0, common_1.Post)('/pages/create/:templateId'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Param)('templateId')),
     __metadata("design:type", Function),
@@ -79,6 +67,7 @@ __decorate([
 ], UserController.prototype, "createPage", null);
 __decorate([
     (0, common_1.Get)('/pages/:templateId'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
     __param(0, (0, common_1.Param)('templateId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

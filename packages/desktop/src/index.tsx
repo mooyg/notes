@@ -3,17 +3,39 @@ import ReactDOM from 'react-dom'
 import { App } from './App'
 import './styles/global.css'
 import { ChakraProvider } from '@chakra-ui/react'
-
 import theme from './theme'
 import { UserProvider } from './components/providers/User.provider'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+import axios from './axios/axios'
+
+const defaultQueryFn = async ({ queryKey }: any) => {
+  const { data } = await axios.get(`${queryKey[0]}`, {
+    headers: {
+      Authorization: `Bearer ${queryKey[1]}`,
+    },
+  })
+  return data
+}
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: true,
+      queryFn: defaultQueryFn,
+    },
+  },
+})
+
 ReactDOM.render(
-  <React.StrictMode>
-    <UserProvider>
+  <UserProvider>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <ChakraProvider theme={theme}>
         <App />
       </ChakraProvider>
-    </UserProvider>
-  </React.StrictMode>,
+    </QueryClientProvider>
+  </UserProvider>,
   document.getElementById('root')
 )
 

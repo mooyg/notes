@@ -1,6 +1,6 @@
 export interface IGithubUser {
     username: string;
-    profileUrl: string;
+    avatar_url: string;
     emails: Email[];
 }
 export interface Email {

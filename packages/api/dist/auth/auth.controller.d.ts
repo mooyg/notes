@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
-import { ConfigService } from 'nestjs-dotenv';
 import { AuthService } from './auth.service';
-import { IGithubUser } from 'src/types';
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from 'src/user/user.service';
 export declare class AuthController {
-    private readonly configService;
     private readonly authService;
-    constructor(configService: ConfigService, authService: AuthService);
+    private readonly jwtService;
+    private readonly userService;
+    constructor(authService: AuthService, jwtService: JwtService, userService: UserService);
+    getUser(userId: any): Promise<import(".prisma/client").User>;
     githubAuth(): Promise<void>;
     githubAuthCallback(request: Request & {
-        user: IGithubUser;
+        user: any;
     }, res: Response): Promise<void>;
 }

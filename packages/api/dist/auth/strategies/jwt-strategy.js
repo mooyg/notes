@@ -21,8 +21,7 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
             secretOrKey: process.env.JWT_SECRET,
         });
     }
-    async validate({ name, email, id }) {
-        console.log(name, email, id);
+    async validate({ id }) {
         return {
             id,
         };

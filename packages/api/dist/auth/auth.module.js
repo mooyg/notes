@@ -9,8 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const cookie_serializer_1 = require("../cookie-serializer");
+const passport_1 = require("@nestjs/passport");
 const prisma_service_1 = require("../prisma.service");
+const user_service_1 = require("../user/user.service");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
 const github_strategy_1 = require("./strategies/github-strategy");
@@ -19,9 +20,14 @@ let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
-        providers: [auth_service_1.AuthService, prisma_service_1.PrismaService, cookie_serializer_1.CookieSerializer, github_strategy_1.GithubStrategy, jwt_strategy_1.JwtStrategy],
+        providers: [auth_service_1.AuthService, prisma_service_1.PrismaService, github_strategy_1.GithubStrategy, jwt_strategy_1.JwtStrategy, user_service_1.UserService],
         controllers: [auth_controller_1.AuthController],
-        imports: [jwt_1.JwtModule.register({ secret: 'hard!to-guess_secret' })],
+        imports: [
+            passport_1.PassportModule.register({ defaultStrategy: 'jwt' }),
+            jwt_1.JwtModule.register({
+                secret: process.env.JWT_SECRET,
+            }),
+        ],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

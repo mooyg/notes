@@ -12,15 +12,21 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  public async githubLogin(user: IGithubUser) {
-    const createdUser = await this.prismaService.user.create({
-      data: {
+  public async githubLogin(user) {
+    const userExists = await this.prismaService.user.findFirst({
+      where: {
         username: user.username,
-        userProfilePicture: user.profileUrl,
       },
     })
-
-    return this.createJwt(createdUser)
+    if (userExists) {
+      return this.createJwt(userExists)
+    } else {
+      console.log(user)
+      const createdUser = await this.prismaService.user.create({
+        data: { userProfilePicture: user._json.avatar_url, username: user.username },
+      })
+      return this.createJwt(createdUser)
+    }
   }
 
   private createJwt({ id }: Partial<User>) {

@@ -25,6 +25,7 @@ let GithubStrategy = class GithubStrategy extends (0, passport_1.PassportStrateg
         });
     }
     async validate(_, __, user) {
+        console.log(user);
         return user;
     }
 };
