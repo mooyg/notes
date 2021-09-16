@@ -6,7 +6,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import theme from './theme'
 import { UserProvider } from './components/providers/User.provider'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools, ReactQueryDevtoolsPanel } from 'react-query/devtools'
 import axios from './axios/axios'
 
 const defaultQueryFn = async ({ queryKey }: any) => {
@@ -21,7 +21,7 @@ const defaultQueryFn = async ({ queryKey }: any) => {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
       queryFn: defaultQueryFn,
     },
   },
@@ -30,7 +30,7 @@ const queryClient = new QueryClient({
 ReactDOM.render(
   <UserProvider>
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={false} position="top-right" />
       <ChakraProvider theme={theme}>
         <App />
       </ChakraProvider>

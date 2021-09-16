@@ -22,12 +22,14 @@ model Templates {
   name String
   user User @relation(fields: [userId], references: [id])
   userId String
+  badge String?
   Pages Pages[]
 }
 
 model Pages{
   id String @default(uuid()) @id
   name String
+  badge String?
   content String?
   templates Templates @relation(fields: [templateId], references:[id])
   templateId String

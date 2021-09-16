@@ -8,5 +8,5 @@ export declare class UserController {
     createTemplate(req: Request, userId: any): Promise<import(".prisma/client").Templates>;
     getTemplates(userId: any): Promise<import(".prisma/client").Templates[]>;
     createPage(req: Request, templateId: any): Promise<"No template Id provided" | import(".prisma/client").Pages>;
-    getPagesByTemplateId(templateId: any): Promise<"No pages found for this template" | import(".prisma/client").Pages[]>;
+    getPagesByTemplateId(templateId: any): Promise<import(".prisma/client").Pages[] | "No pages found for this template">;
 }

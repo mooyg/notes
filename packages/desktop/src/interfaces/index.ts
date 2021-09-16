@@ -9,3 +9,11 @@ export interface ITemplate {
   userId: string
   name: string
 }
+
+export interface IPage {
+  badge?: string
+  content?: string
+  id: string
+  name: string
+  templateId: string
+}

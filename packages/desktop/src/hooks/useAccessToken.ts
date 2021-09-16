@@ -8,5 +8,6 @@ export const useAccessToken = (): string | null => {
     queryParam && setAccessToken(queryParam)
   }, [queryParam, setAccessToken])
 
+  if (queryParam) return queryParam
   return accessToken ? accessToken : null
 }

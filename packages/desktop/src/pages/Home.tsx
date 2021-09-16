@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
-import { Flex } from '@chakra-ui/react'
+import { Flex, Grid } from '@chakra-ui/react'
 import { Sidebar } from '../components/sidebar/Sidebar'
 import { useAccessToken } from '../hooks/useAccessToken'
 import { useInitialAuth } from '../hooks/useInitialAuth'
@@ -11,14 +11,14 @@ export const Home = () => {
   const accessToken = useAccessToken()
 
   useEffect(() => {
-    if (!accessToken) return history.push('/login')
-  }, [])
+    accessToken ? history.replace('/') : history.push('/login')
+  }, [accessToken])
 
   useInitialAuth(accessToken!)
 
   return (
-    <Flex minHeight="100vh" flex="0.8">
+    <Grid minH="100vh" templateColumns="repeat(5, 1fr)">
       <Sidebar />
-    </Flex>
+    </Grid>
   )
 }
