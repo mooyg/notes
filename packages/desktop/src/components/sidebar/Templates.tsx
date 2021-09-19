@@ -1,6 +1,6 @@
-import { Flex, Text, IconButton } from '@chakra-ui/react'
+import { Flex, Text, IconButton, Button, VStack } from '@chakra-ui/react'
 import { AxiosResponse } from 'axios'
-import { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query'
 import axios from '../../axios/axios'
 import { useAccessToken } from '../../hooks/useAccessToken'
@@ -13,17 +13,24 @@ import { Modal } from '../modal/Modal'
 export const Templates = () => {
   const accessToken = useAccessToken()
   const queryClient = useQueryClient()
-  const templateIdRef = useRef<string | null>(null)
+  const [templateId, setTemplateId] = useState<string | null>(null)
   const [showPages, setShowPages] = useState(false)
+  const [templatePages, setTemplatePages] = useState<IPage[] | null>()
   const { data: templates } = useQuery<ITemplate[]>(['/user/templates', accessToken])
+  const { data } = useQuery<IPage[]>([`/user/pages/${templateId}`, accessToken], {
+    enabled: !!templateId,
+  })
 
-  const { data: templatePages } = useQuery<IPage[]>(
-    [`/user/pages/${templateIdRef.current}`, accessToken],
-    {
-      enabled: templateIdRef.current ? true : false,
+  useEffect(() => {
+    if (data) {
+      console.log('HEY')
+      setTemplatePages((prev) => {
+        if (!prev) return data
+        return [...prev, ...data]
+      })
     }
-  )
-
+  }, [data])
+  console.log(templatePages)
   const templateMutation: UseMutationResult = useMutation(
     (newTemplate) =>
       axios.post('/user/template/create', newTemplate, {
@@ -69,7 +76,7 @@ export const Templates = () => {
       <Flex justifyItems="center" flexDir="column">
         {templates?.map((el: ITemplate) => {
           return (
-            <>
+            <React.Fragment key={el.id}>
               <Flex minW="full" justifyContent="space-between" alignItems="center">
                 <Text fontWeight="bold" fontSize="sm">
                   <Flex justifyItems="center" alignItems="center">
@@ -78,8 +85,8 @@ export const Templates = () => {
                       aria-label="DropDown"
                       icon={showPages ? <DownArrowIcon /> : <ArrowIcon />}
                       onClick={() => {
-                        templateIdRef.current = el.id
-                        setShowPages((prev) => !prev)
+                        console.log(el.id)
+                        setTemplateId(el.id)
                       }}
                     />
                     <Emoji shortName="closed_book" />
@@ -94,13 +101,23 @@ export const Templates = () => {
                       }}
                     />
                   </Flex>
-                  {showPages &&
-                    templatePages?.map((item) => (
-                      <>{el.id === item.templateId && <Text>{item.name}</Text>}</>
-                    ))}
+
+                  {templatePages
+                    ?.filter((item) => item.templateId === el.id)
+                    .map((item) => {
+                      return (
+                        <React.Fragment key={item.id}>
+                          {
+                            <Button variant="ghost" mb="2">
+                              <Text fontSize="xs">{item.name}</Text>
+                            </Button>
+                          }
+                        </React.Fragment>
+                      )
+                    })}
                 </Text>
               </Flex>
-            </>
+            </React.Fragment>
           )
         })}
       </Flex>

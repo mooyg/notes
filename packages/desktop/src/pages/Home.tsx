@@ -5,6 +5,7 @@ import { Sidebar } from '../components/sidebar/Sidebar'
 import { useAccessToken } from '../hooks/useAccessToken'
 import { useInitialAuth } from '../hooks/useInitialAuth'
 import { useHistory } from 'react-router'
+import { Content } from '../components/text-editor/Content'
 
 export const Home = () => {
   const history = useHistory()
@@ -19,6 +20,7 @@ export const Home = () => {
   return (
     <Grid minH="100vh" templateColumns="repeat(5, 1fr)">
       <Sidebar />
+      <Content />
     </Grid>
   )
 }
