@@ -9,14 +9,16 @@ export const Content = () => {
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState<Descendant[]>([
     {
-      type: 'heading',
-      children: [{ text: 'A line of text in a paragraph.' }],
+      type: 'paragraph',
+      children: [{ text: 'A line of text in a paragraph' }],
     },
   ])
   const renderElement = useCallback((props) => {
     switch (props.element.type) {
       case 'code':
         return <CodeBlock {...props} />
+      case 'paragraph':
+        return <DefaultElement {...props} />
       default:
         return <DefaultElement {...props} />
     }
@@ -32,7 +34,7 @@ export const Content = () => {
   return (
     <Slate editor={editor} value={value} onChange={(newValue) => setValue(newValue)}>
       <Editable renderElement={renderElement} onSelect={showOptions} />
-      {showMarkdownOptions && <Options editor={editor} location={editor.selection} />}
+      {showMarkdownOptions && <Options editor={editor} value={value} />}
     </Slate>
   )
 }

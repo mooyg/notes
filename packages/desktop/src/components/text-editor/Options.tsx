@@ -1,14 +1,16 @@
 import { Button } from '@chakra-ui/button'
 import { Box, HStack } from '@chakra-ui/layout'
-import React from 'react'
-import { BaseEditor, BaseSelection, Editor, Location, Transforms } from 'slate'
+import React, { useState } from 'react'
+import { BaseEditor, Descendant, Editor, Element, Transforms } from 'slate'
 import { ReactEditor } from 'slate-react'
 
 interface IOptions {
   editor: BaseEditor & ReactEditor
-  location: BaseSelection
+  value?: Descendant[]
 }
-export const Options = ({ editor, location }: IOptions) => {
+export const Options = ({ editor, value }: IOptions) => {
+  const [isActive, setIsActive] = useState<boolean>(false)
+
   return (
     <Box>
       <HStack>
@@ -16,14 +18,15 @@ export const Options = ({ editor, location }: IOptions) => {
         <Button
           size="xs"
           onClick={() => {
-            console.log(location)
-            Transforms.setNodes(
-              editor,
-              { type: 'code' },
-              {
-                at: location?.anchor,
-              }
-            )
+            const match = Element.matches(editor.getFragment()[0] as Element, {
+              type: 'code',
+            })
+            setIsActive(match)
+            match
+              ? Transforms.unwrapNodes(editor, {
+                  match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'code',
+                })
+              : Transforms.wrapNodes(editor, { type: 'code', children: [] }, { split: true })
           }}
         >
           {'<>'}
