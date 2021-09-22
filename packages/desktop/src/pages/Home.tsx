@@ -18,9 +18,9 @@ export const Home = () => {
   useInitialAuth(accessToken!)
 
   return (
-    <Grid minH="100vh" templateColumns="repeat(5, 1fr)">
+    <Flex minH="100vh">
       <Sidebar />
       <Content />
-    </Grid>
+    </Flex>
   )
 }

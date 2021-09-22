@@ -4,21 +4,22 @@ import { Slate, Editable, withReact } from 'slate-react'
 import { DefaultElement } from '../extended-ui/DefaultElement'
 import { CodeBlock } from '../extended-ui/CodeBlock'
 import { Options } from './Options'
+import { Heading } from '../extended-ui/Heading'
+import { Flex } from '@chakra-ui/layout'
 export const Content = () => {
   const [showMarkdownOptions, setShowMarkdownOptions] = useState(false)
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState<Descendant[]>([
     {
-      type: 'paragraph',
-      children: [{ text: 'A line of text in a paragraph' }],
+      children: [{ text: 'A line of text' }],
     },
   ])
   const renderElement = useCallback((props) => {
     switch (props.element.type) {
       case 'code':
         return <CodeBlock {...props} />
-      case 'paragraph':
-        return <DefaultElement {...props} />
+      case 'heading':
+        return <Heading {...props} />
       default:
         return <DefaultElement {...props} />
     }
@@ -32,9 +33,11 @@ export const Content = () => {
     }
   }
   return (
-    <Slate editor={editor} value={value} onChange={(newValue) => setValue(newValue)}>
-      <Editable renderElement={renderElement} onSelect={showOptions} />
+    <Flex flex="1">
+      <Slate editor={editor} value={value} onChange={(newValue) => setValue(newValue)}>
+        <Editable renderElement={renderElement} onSelect={showOptions} />
+      </Slate>
       {showMarkdownOptions && <Options editor={editor} value={value} />}
-    </Slate>
+    </Flex>
   )
 }

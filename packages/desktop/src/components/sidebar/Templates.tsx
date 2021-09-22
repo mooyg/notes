@@ -1,6 +1,6 @@
 import { Flex, Text, IconButton, Button, VStack } from '@chakra-ui/react'
 import { AxiosResponse } from 'axios'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query'
 import axios from '../../axios/axios'
 import { useAccessToken } from '../../hooks/useAccessToken'
@@ -9,28 +9,40 @@ import { Emoji } from '../emojis/Emoji'
 import { ArrowIcon } from '../icons/ArrowIcon'
 import { DownArrowIcon } from '../icons/DownArrowIcon'
 import { Modal } from '../modal/Modal'
+import produce from 'immer'
 
 export const Templates = () => {
   const accessToken = useAccessToken()
   const queryClient = useQueryClient()
   const [templateId, setTemplateId] = useState<string | null>(null)
-  const [showPages, setShowPages] = useState(false)
+  const [templates, setTemplates] = useState<ExtendedITemplate[]>([])
   const [templatePages, setTemplatePages] = useState<IPage[] | null>()
-  const { data: templates } = useQuery<ITemplate[]>(['/user/templates', accessToken])
+  const { data: templateData } = useQuery<ITemplate[]>(['/user/templates', accessToken])
   const { data } = useQuery<IPage[]>([`/user/pages/${templateId}`, accessToken], {
     enabled: !!templateId,
   })
 
   useEffect(() => {
+    if (templateData) {
+      setTemplates(
+        templateData.map((item) => ({
+          ...item,
+          isActive: false,
+        }))
+      )
+    }
+  }, [templateData])
+
+  useEffect(() => {
     if (data) {
-      console.log('HEY')
       setTemplatePages((prev) => {
+        if (prev?.find((item) => item.templateId === templateId)) return data
         if (!prev) return data
         return [...prev, ...data]
       })
     }
-  }, [data])
-  console.log(templatePages)
+  }, [data, templateId])
+
   const templateMutation: UseMutationResult = useMutation(
     (newTemplate) =>
       axios.post('/user/template/create', newTemplate, {
@@ -41,7 +53,13 @@ export const Templates = () => {
     {
       onSuccess: (data) => {
         queryClient.setQueryData(['/user/templates', accessToken], (prev) => {
-          return [...(prev as ITemplate[]), (data as AxiosResponse).data]
+          return [
+            ...(prev as ExtendedITemplate[]),
+            (data as AxiosResponse).data.map((item: ITemplate) => ({
+              ...item,
+              isActive: false,
+            })),
+          ]
         })
       },
     }
@@ -74,7 +92,7 @@ export const Templates = () => {
         />
       </Flex>
       <Flex justifyItems="center" flexDir="column">
-        {templates?.map((el: ITemplate) => {
+        {templates?.map((el: ExtendedITemplate) => {
           return (
             <React.Fragment key={el.id}>
               <Flex minW="full" justifyContent="space-between" alignItems="center">
@@ -83,9 +101,16 @@ export const Templates = () => {
                     <IconButton
                       variant="ghost"
                       aria-label="DropDown"
-                      icon={showPages ? <DownArrowIcon /> : <ArrowIcon />}
+                      icon={<ArrowIcon />}
                       onClick={() => {
-                        console.log(el.id)
+                        setTemplates(
+                          produce((draft) => {
+                            const template = draft.find(
+                              (item) => item.id === el.id
+                            ) as ExtendedITemplate
+                            template.isActive = !template.isActive
+                          })
+                        )
                         setTemplateId(el.id)
                       }}
                     />
@@ -101,18 +126,17 @@ export const Templates = () => {
                       }}
                     />
                   </Flex>
-
                   {templatePages
-                    ?.filter((item) => item.templateId === el.id)
+                    ?.filter((item) => el.isActive && item.templateId === el.id)
                     .map((item) => {
                       return (
-                        <React.Fragment key={item.id}>
+                        <Flex dir="column" key={item.id}>
                           {
                             <Button variant="ghost" mb="2">
                               <Text fontSize="xs">{item.name}</Text>
                             </Button>
                           }
-                        </React.Fragment>
+                        </Flex>
                       )
                     })}
                 </Text>
@@ -128,4 +152,8 @@ export const Templates = () => {
 interface IPayload {
   pageName: string
   templateId: string
+}
+
+interface ExtendedITemplate extends ITemplate {
+  isActive: boolean
 }

@@ -2,9 +2,5 @@ import React from 'react'
 import { Code } from '@chakra-ui/react'
 import { RenderElementProps } from 'slate-react'
 export const CodeBlock = (props: RenderElementProps) => {
-  return (
-    <Code {...props.attributes}>
-      <code>{props.children}</code>
-    </Code>
-  )
+  return <Code {...props.attributes}>{props.children}</Code>
 }
