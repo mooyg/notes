@@ -11,6 +11,8 @@ import { Modal } from '../modal/Modal'
 import produce from 'immer'
 import { usePage } from '../../hooks/usePage'
 import { AnimatePresence, motion } from 'framer-motion'
+import { PagesDropdown } from './PagesDropdown'
+import { DownArrowIcon } from '../icons/DownArrowIcon'
 
 export const Templates = () => {
   const MotionFlex = motion<FlexProps>(Flex)
@@ -98,12 +100,12 @@ export const Templates = () => {
       <Flex flexDir="column">
         {templates?.map((el) => {
           return (
-            <>
+            <React.Fragment key={el.id}>
               <Flex justifyItems="center" alignItems="center">
                 <IconButton
                   variant="ghost"
                   aria-label="DropDown"
-                  icon={<ArrowIcon />}
+                  icon={el.isActive ? <DownArrowIcon /> : <ArrowIcon />}
                   onClick={() => {
                     setTemplates(
                       produce((draft) => {
@@ -128,18 +130,8 @@ export const Templates = () => {
                   }}
                 />
               </Flex>
-              {templatePages
-                ?.filter((item) => el.isActive && item.templateId === el.id)
-                .map((item) => {
-                  return (
-                    <Flex dir="column" key={item.id}>
-                      <Button variant="ghost" mb="2" onClick={() => setPageId(item.id)}>
-                        <Text fontSize="xs">{item.name}</Text>
-                      </Button>
-                    </Flex>
-                  )
-                })}
-            </>
+              <PagesDropdown el={el} templatePages={templatePages} />
+            </React.Fragment>
           )
         })}
       </Flex>
@@ -152,6 +144,6 @@ interface IPayload {
   templateId: string
 }
 
-interface ExtendedITemplate extends ITemplate {
+export interface ExtendedITemplate extends ITemplate {
   isActive: boolean
 }
