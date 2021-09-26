@@ -48,4 +48,12 @@ export class UserService {
     if (!pages) return 'No pages found for this template'
     return pages
   }
+  async getPage(userId, pageId) {
+    const page = await this.prisma.pages.findFirst({
+      where: {
+        id: pageId,
+      },
+    })
+    return page
+  }
 }

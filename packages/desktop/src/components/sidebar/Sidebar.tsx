@@ -6,7 +6,7 @@ import { Templates } from './Templates'
 export const Sidebar = (): JSX.Element => {
   const { user } = useUser()
   return (
-    <Flex p="2" bgColor="secondary.bg">
+    <Flex h="100vh" p="2" bgColor="secondary.bg">
       <Flex minW="full" flexDir="column">
         <Avatar src={user?.userProfilePicture} />
         <Options />

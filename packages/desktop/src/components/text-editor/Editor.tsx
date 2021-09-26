@@ -6,7 +6,12 @@ import { CodeBlock } from '../extended-ui/CodeBlock'
 import { Options } from './Options'
 import { Heading } from '../extended-ui/Heading'
 import { Flex } from '@chakra-ui/layout'
-export const Content = () => {
+import { IPage } from '../../interfaces'
+
+interface IContentEditor {
+  content: IPage
+}
+export const ContentEditor = () => {
   const [showMarkdownOptions, setShowMarkdownOptions] = useState(false)
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState<Descendant[]>([

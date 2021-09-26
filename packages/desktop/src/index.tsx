@@ -8,6 +8,7 @@ import { UserProvider } from './components/providers/User.provider'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools, ReactQueryDevtoolsPanel } from 'react-query/devtools'
 import axios from './axios/axios'
+import { PageProvider } from './components/providers/Page.provider'
 
 const defaultQueryFn = async ({ queryKey }: any) => {
   const { data } = await axios.get(`${queryKey[0]}`, {
@@ -29,12 +30,14 @@ const queryClient = new QueryClient({
 
 ReactDOM.render(
   <UserProvider>
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} position="top-right" />
-      <ChakraProvider theme={theme}>
-        <App />
-      </ChakraProvider>
-    </QueryClientProvider>
+    <PageProvider>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        <ChakraProvider theme={theme}>
+          <App />
+        </ChakraProvider>
+      </QueryClientProvider>
+    </PageProvider>
   </UserProvider>,
   document.getElementById('root')
 )

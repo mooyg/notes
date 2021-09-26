@@ -36,4 +36,10 @@ export class UserController {
   async getPagesByTemplateId(@Param('templateId') templateId) {
     return this.userService.getPagesByTemplateId({ templateId })
   }
+
+  @Get('/page/:pageId')
+  @UseGuards(JwtGuard)
+  async getPage(@User() userId, @Param('pageId') pageId) {
+    return this.userService.getPage(userId, pageId)
+  }
 }

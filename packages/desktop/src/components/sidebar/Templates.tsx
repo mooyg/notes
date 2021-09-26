@@ -1,22 +1,25 @@
-import { Flex, Text, IconButton, Button, VStack } from '@chakra-ui/react'
+import { Flex, Text, IconButton, Button, FlexProps } from '@chakra-ui/react'
 import { AxiosResponse } from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query'
 import axios from '../../axios/axios'
 import { useAccessToken } from '../../hooks/useAccessToken'
 import { IPage, ITemplate } from '../../interfaces'
 import { Emoji } from '../emojis/Emoji'
 import { ArrowIcon } from '../icons/ArrowIcon'
-import { DownArrowIcon } from '../icons/DownArrowIcon'
 import { Modal } from '../modal/Modal'
 import produce from 'immer'
+import { usePage } from '../../hooks/usePage'
+import { AnimatePresence, motion } from 'framer-motion'
 
 export const Templates = () => {
+  const MotionFlex = motion<FlexProps>(Flex)
   const accessToken = useAccessToken()
   const queryClient = useQueryClient()
+  const { setPageId } = usePage()
   const [templateId, setTemplateId] = useState<string | null>(null)
   const [templates, setTemplates] = useState<ExtendedITemplate[]>([])
-  const [templatePages, setTemplatePages] = useState<IPage[] | null>()
+  const [templatePages, setTemplatePages] = useState<IPage[]>()
   const { data: templateData } = useQuery<ITemplate[]>(['/user/templates', accessToken])
   const { data } = useQuery<IPage[]>([`/user/pages/${templateId}`, accessToken], {
     enabled: !!templateId,
@@ -32,14 +35,15 @@ export const Templates = () => {
       )
     }
   }, [templateData])
-
-  useEffect(() => {
+  useMemo(() => {
     if (data) {
-      setTemplatePages((prev) => {
-        if (prev?.find((item) => item.templateId === templateId)) return data
-        if (!prev) return data
-        return [...prev, ...data]
-      })
+      setTemplatePages(
+        produce((draft) => {
+          if (!draft) return data
+          if (draft.find((item) => item.templateId === templateId)) return draft
+          return [...draft, ...data]
+        })
+      )
     }
   }, [data, templateId])
 
@@ -91,57 +95,51 @@ export const Templates = () => {
           }}
         />
       </Flex>
-      <Flex justifyItems="center" flexDir="column">
-        {templates?.map((el: ExtendedITemplate) => {
+      <Flex flexDir="column">
+        {templates?.map((el) => {
           return (
-            <React.Fragment key={el.id}>
-              <Flex minW="full" justifyContent="space-between" alignItems="center">
-                <Text fontWeight="bold" fontSize="sm">
-                  <Flex justifyItems="center" alignItems="center">
-                    <IconButton
-                      variant="ghost"
-                      aria-label="DropDown"
-                      icon={<ArrowIcon />}
-                      onClick={() => {
-                        setTemplates(
-                          produce((draft) => {
-                            const template = draft.find(
-                              (item) => item.id === el.id
-                            ) as ExtendedITemplate
-                            template.isActive = !template.isActive
-                          })
-                        )
-                        setTemplateId(el.id)
-                      }}
-                    />
-                    <Emoji shortName="closed_book" />
-                    {el.name}
-                    <Modal
-                      heading="Page"
-                      onSumbit={({ name }) => {
-                        pagesMutation.mutate({
-                          pageName: name,
-                          templateId: el.id,
-                        })
-                      }}
-                    />
-                  </Flex>
-                  {templatePages
-                    ?.filter((item) => el.isActive && item.templateId === el.id)
-                    .map((item) => {
-                      return (
-                        <Flex dir="column" key={item.id}>
-                          {
-                            <Button variant="ghost" mb="2">
-                              <Text fontSize="xs">{item.name}</Text>
-                            </Button>
-                          }
-                        </Flex>
-                      )
-                    })}
-                </Text>
+            <>
+              <Flex justifyItems="center" alignItems="center">
+                <IconButton
+                  variant="ghost"
+                  aria-label="DropDown"
+                  icon={<ArrowIcon />}
+                  onClick={() => {
+                    setTemplates(
+                      produce((draft) => {
+                        const template = draft.find(
+                          (item) => item.id === el.id
+                        ) as ExtendedITemplate
+                        template.isActive = !template.isActive
+                      })
+                    )
+                    setTemplateId(el.id)
+                  }}
+                />
+                <Emoji shortName="closed_book" />
+                <Text fontWeight="semibold">{el.name}</Text>
+                <Modal
+                  heading="Page"
+                  onSumbit={({ name }) => {
+                    pagesMutation.mutate({
+                      pageName: name,
+                      templateId: el.id,
+                    })
+                  }}
+                />
               </Flex>
-            </React.Fragment>
+              {templatePages
+                ?.filter((item) => el.isActive && item.templateId === el.id)
+                .map((item) => {
+                  return (
+                    <Flex dir="column" key={item.id}>
+                      <Button variant="ghost" mb="2" onClick={() => setPageId(item.id)}>
+                        <Text fontSize="xs">{item.name}</Text>
+                      </Button>
+                    </Flex>
+                  )
+                })}
+            </>
           )
         })}
       </Flex>

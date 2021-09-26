@@ -61,6 +61,14 @@ let UserService = class UserService {
             return 'No pages found for this template';
         return pages;
     }
+    async getPage(userId, pageId) {
+        const page = await this.prisma.pages.findFirst({
+            where: {
+                id: pageId,
+            },
+        });
+        return page;
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),

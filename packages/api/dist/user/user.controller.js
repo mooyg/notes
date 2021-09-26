@@ -38,6 +38,9 @@ let UserController = class UserController {
     async getPagesByTemplateId(templateId) {
         return this.userService.getPagesByTemplateId({ templateId });
     }
+    async getPage(userId, pageId) {
+        return this.userService.getPage(userId, pageId);
+    }
 };
 __decorate([
     (0, common_1.Post)('/template/create'),
@@ -73,6 +76,15 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getPagesByTemplateId", null);
+__decorate([
+    (0, common_1.Get)('/page/:pageId'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    __param(0, (0, user_decorator_1.User)()),
+    __param(1, (0, common_1.Param)('pageId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getPage", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService, prisma_service_1.PrismaService])
