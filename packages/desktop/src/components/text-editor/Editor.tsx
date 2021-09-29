@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createEditor, Descendant, Editor, Location } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { DefaultElement } from '../extended-ui/DefaultElement'
@@ -12,6 +12,7 @@ interface IContentEditor {
   content: IPage
 }
 export const ContentEditor = () => {
+  const editorRef = useRef<any | null>(null)
   const [showMarkdownOptions, setShowMarkdownOptions] = useState(false)
   const editor = useMemo(() => withReact(createEditor()), [])
   const [value, setValue] = useState<Descendant[]>([
@@ -30,6 +31,7 @@ export const ContentEditor = () => {
     }
   }, [])
   const showOptions = () => {
+    console.log(editor.selection)
     const selectedText = Editor.string(editor, editor.selection as Location)
     if (selectedText.length > 0) {
       setShowMarkdownOptions(true)
@@ -38,11 +40,13 @@ export const ContentEditor = () => {
     }
   }
   return (
-    <Flex flex="1">
-      <Slate editor={editor} value={value} onChange={(newValue) => setValue(newValue)}>
-        <Editable renderElement={renderElement} onSelect={showOptions} />
-      </Slate>
-      {showMarkdownOptions && <Options editor={editor} value={value} />}
-    </Flex>
+    <>
+      <Flex flex="1">
+        <Slate editor={editor} value={value} onChange={(newValue) => setValue(newValue)}>
+          {showMarkdownOptions && <Options editor={editor} value={value} />}
+          <Editable renderElement={renderElement} onSelect={showOptions} />
+        </Slate>
+      </Flex>
+    </>
   )
 }
