@@ -14,6 +14,7 @@ export const Emoji = ({ shortName, boxSize }: IEmoji) => {
 
   return (
     <Image
+      loading="lazy"
       p="2px"
       draggable="false"
       boxSize={boxSize ? boxSize : '28px'}

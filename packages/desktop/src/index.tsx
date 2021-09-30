@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools, ReactQueryDevtoolsPanel } from 'react-query/devtools'
 import axios from './axios/axios'
 import { PageProvider } from './components/providers/Page.provider'
-
+import { EmojiPickerProvider } from './components/providers/EmojiPicker.provider'
 const defaultQueryFn = async ({ queryKey }: any) => {
   const { data } = await axios.get(`${queryKey[0]}`, {
     headers: {
@@ -31,12 +31,14 @@ const queryClient = new QueryClient({
 ReactDOM.render(
   <UserProvider>
     <PageProvider>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-        <ChakraProvider theme={theme}>
-          <App />
-        </ChakraProvider>
-      </QueryClientProvider>
+      <EmojiPickerProvider>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+          <ChakraProvider theme={theme}>
+            <App />
+          </ChakraProvider>
+        </QueryClientProvider>
+      </EmojiPickerProvider>
     </PageProvider>
   </UserProvider>,
   document.getElementById('root')

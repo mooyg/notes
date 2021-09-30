@@ -1,9 +1,11 @@
 import untypedEmojiData, { IEmojiData } from 'emoji-datasource'
-import { keyBy } from 'lodash'
+import { groupBy, keyBy } from 'lodash'
 import * as React from 'react'
 import { Emoji } from './Emoji'
-const EmojiData = (untypedEmojiData as Array<IEmojiData>).filter((emoji) => emoji.has_img_apple)
-
+export const EmojiData = (untypedEmojiData as Array<IEmojiData>).filter(
+  (emoji) => emoji.has_img_apple
+)
+export const groupedEmojiData = groupBy(EmojiData, 'category')
 const EmojiDataByShortname = keyBy(EmojiData, 'short_name')
 
 export const getEmojiData = (shortName: string) => {
