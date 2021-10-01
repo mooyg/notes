@@ -5,11 +5,22 @@ import { groupedEmojiData } from './lib'
 import { Button, IconButton } from '@chakra-ui/button'
 import Draggable from 'react-draggable'
 import { CloseIcon } from '../icons/CloseIcon'
-import { useEmojiPicker } from '../../hooks/useEmojiPicker'
+import { useSlateStatic } from 'slate-react'
+import { Transforms } from 'slate'
+import { CustomElement } from '../../typings/slate'
+import { useStore } from '../../store/store'
 
+const createEmojiNode = (shortName: string): CustomElement => {
+  return {
+    type: 'emoji',
+    shortName,
+    children: [{ text: '' }],
+  }
+}
 export const EmojiPicker = () => {
   const [currentCategory, setCurrentCategory] = useState('Smileys & Emotion')
-  const { setShowEmojiPicker } = useEmojiPicker()
+  const { setShowEmojiPicker } = useStore()
+  const editor = useSlateStatic()
   return (
     <Draggable>
       <Flex
@@ -35,16 +46,22 @@ export const EmojiPicker = () => {
         <Flex overflowY="scroll" flexWrap="wrap">
           {groupedEmojiData[currentCategory].map((item) => {
             return (
-              <Button variant="ghost">
+              <Button
+                key={item.short_name}
+                onClick={() => {
+                  Transforms.insertNodes(editor, createEmojiNode(item.short_name), { select: true })
+                }}
+                variant="ghost"
+              >
                 <Emoji shortName={item.short_name} />
               </Button>
             )
           })}
         </Flex>
         <Flex flexWrap="wrap">
-          {Object.keys(groupedEmojiData).map((category) => (
+          {Object.keys(groupedEmojiData).map((category, index) => (
             <Box p="2">
-              <Button onClick={() => setCurrentCategory(category)} size="xs">
+              <Button key={index} onClick={() => setCurrentCategory(category)} size="xs">
                 {category}
               </Button>
             </Box>

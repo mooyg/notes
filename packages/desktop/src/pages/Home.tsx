@@ -9,13 +9,10 @@ import { usePage } from '../hooks/usePage'
 import { useQuery } from 'react-query'
 import { IPage } from '../interfaces'
 import { Content } from '../components/content/Content'
-import { EmojiPicker } from '../components/emojis/EmojiPicker'
-import { useEmojiPicker } from '../hooks/useEmojiPicker'
 export const Home = () => {
   const history = useHistory()
   const accessToken = useAccessToken()
   const { pageId } = usePage()
-  const { showEmojiPicker } = useEmojiPicker()
   const { data: pageContent } = useQuery<IPage>([`/user/page/${pageId}`, accessToken], {
     enabled: !!pageId,
   })

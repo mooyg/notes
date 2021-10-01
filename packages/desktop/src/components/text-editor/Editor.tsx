@@ -1,22 +1,31 @@
-import { createHistoryPlugin, createReactPlugin, HeadingToolbar, Plate } from '@udecode/plate'
-import { createBasicElementPlugins } from '@udecode/plate-basic-elements'
-import { ToolbarButtonsBasicElements } from './Options'
+import {
+  Plate,
+  createPlateComponents,
+  createPlateOptions,
+  useStoreEditorState,
+} from '@udecode/plate'
+import { pluginsBasic } from './lib'
+import { BallonToolbarMarks } from './Options'
 
 export const ContentEditor = () => {
+  const editor = useStoreEditorState()
   const editableProps = {
     placeholder: 'Type…',
     style: {
       padding: '15px',
     },
   }
-  const plugins = [createReactPlugin(), createHistoryPlugin(), ...createBasicElementPlugins()]
+  const components = createPlateComponents()
+  const options = createPlateOptions()
   return (
     <>
-      <HeadingToolbar>
-        <ToolbarButtonsBasicElements />
-        <HeadingToolbar />
-      </HeadingToolbar>
-      <Plate plugins={plugins} editableProps={editableProps} />
+      <BallonToolbarMarks />
+      <Plate
+        components={components}
+        options={options}
+        editableProps={editableProps}
+        plugins={pluginsBasic}
+      ></Plate>
     </>
   )
 }
