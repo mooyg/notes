@@ -10,7 +10,6 @@ import {
   MARK_ITALIC,
 } from '@udecode/plate'
 import { BoldIcon } from '../icons/BoldIcon'
-import { CodeBlockIcon } from '../icons/CodeBlockIcon'
 import { ItalicIcon } from '../icons/ItalicIcon'
 import { UnderlineIcon } from '../icons/UnderlineIcon'
 export const BallonToolbarMarks = () => {
@@ -19,14 +18,6 @@ export const BallonToolbarMarks = () => {
   const arrow = true
   const theme = 'dark'
   const direction = 'top'
-  const tooltip: any = {
-    arrow: true,
-    delay: 0,
-    duration: [200, 0],
-    hideOnClick: false,
-    offset: [0, 17],
-    placement: 'top',
-  }
 
   return (
     <BalloonToolbar direction={direction} theme={theme} arrow={arrow}>

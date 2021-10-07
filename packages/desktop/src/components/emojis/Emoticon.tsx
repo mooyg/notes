@@ -1,29 +1,29 @@
 import { Image, Text } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
-import { getImagePath } from './lib'
+import {
+  AnyObject,
+  SPRenderElementProps,
+  SPRenderLeafProps,
+  useStoreEditorRef,
+} from '@udecode/plate'
+import React, { PropsWithChildren } from 'react'
+import { useFocused, useSelected } from 'slate-react'
 
-type IEmoji = {
-  shortName: string
-  boxSize?: string
-}
-export const Emoticon = (props: any) => {
-  const [imageId, setImageId] = useState<string | null>('')
-  useEffect(() => {
-    setImageId(getImagePath(props.shortName.toLowerCase()))
-  }, [props.shortName])
-
+export const Emoticon = (
+  props: PropsWithChildren<SPRenderElementProps<AnyObject> | SPRenderLeafProps<AnyObject>>
+) => {
+  const selected = useSelected()
+  const focused = useFocused()
   return (
-    <div {...props.attributes}>
-      <div contentEditable={false}>
-        <Image
-          loading="lazy"
-          p="2px"
-          height="8"
-          draggable="false"
-          src={`http://localhost:8080/emoji/${imageId}`}
-          {...props.attributes}
-        />
-      </div>
+    <div {...props.attributes} style={{ display: 'inline-block' }}>
+      <Image
+        alt="emoji"
+        loading="lazy"
+        height="6"
+        style={{
+          boxShadow: `${selected && focused ? '0 0 0 2px #204961' : 'none'}`,
+        }}
+        src={`${props.element.src}`}
+      />
       {props.children}
     </div>
   )

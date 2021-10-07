@@ -5,5 +5,5 @@ interface StoreState {
 }
 export const useStore = create<StoreState>((set) => ({
   showEmojiPicker: false,
-  setShowEmojiPicker: (val: boolean) => set((state) => ({ showEmojiPicker: val })),
+  setShowEmojiPicker: (val: boolean) => set(() => ({ showEmojiPicker: val })),
 }))

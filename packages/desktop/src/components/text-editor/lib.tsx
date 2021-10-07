@@ -10,8 +10,27 @@ import {
   createUnderlinePlugin,
   createStrikethroughPlugin,
   createCodePlugin,
-  ELEMENT_PARAGRAPH,
+  PlatePlugin,
+  ELEMENT_IMAGE,
+  getRenderElement,
+  createSelectOnBackspacePlugin,
+  getPlatePluginTypes,
+  SPEditor,
+  insertNodes,
+  TElement,
+  getPlatePluginType,
 } from '@udecode/plate'
+import { createKbdPlugin } from '@udecode/plate-kbd'
+import { getImagePath } from '../emojis/lib'
+
+export const createImagePlugin = (): PlatePlugin => {
+  return {
+    pluginKeys: ELEMENT_IMAGE,
+    renderElement: getRenderElement(ELEMENT_IMAGE),
+    voidTypes: getPlatePluginTypes(ELEMENT_IMAGE),
+    inlineTypes: getPlatePluginTypes(ELEMENT_IMAGE),
+  }
+}
 
 export const pluginsBasic = [
   createReactPlugin(),
@@ -25,20 +44,16 @@ export const pluginsBasic = [
   createUnderlinePlugin(),
   createStrikethroughPlugin(),
   createCodePlugin(),
+  createKbdPlugin(),
+  createImagePlugin(),
 ]
 
-export const createElement = (
-  text = '',
-  { type = ELEMENT_PARAGRAPH, mark }: { type?: string; mark?: string } = {}
-) => {
-  const leaf = { text }
-  if (mark) {
-    //@ts-ignore
-    leaf[mark] = true
+export const insertImage = (editor: SPEditor | undefined, shortName: string) => {
+  const imageId = getImagePath(shortName.toLowerCase())
+  const image = {
+    type: getPlatePluginType(editor, ELEMENT_IMAGE),
+    src: `http://localhost:8080/emoji/${imageId}`,
+    children: [{ text: '' }],
   }
-
-  return {
-    type,
-    children: [leaf],
-  }
+  editor && insertNodes<TElement>(editor, image)
 }

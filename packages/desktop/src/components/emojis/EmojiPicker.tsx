@@ -1,28 +1,20 @@
-import { Box, Flex, Heading } from '@chakra-ui/layout'
-import React, { useEffect, useRef, useState } from 'react'
+import { Box, Flex } from '@chakra-ui/layout'
+import React, { useState } from 'react'
 import { Emoji } from './Emoji'
 import { groupedEmojiData } from './lib'
 import { Button, IconButton } from '@chakra-ui/button'
 import Draggable from 'react-draggable'
 import { CloseIcon } from '../icons/CloseIcon'
-import { useSlateStatic } from 'slate-react'
-import { Transforms } from 'slate'
-import { CustomElement } from '../../typings/slate'
 import { useStore } from '../../store/store'
+import { useEventEditorId, useStoreEditorRef } from '@udecode/plate-core'
+import { insertImage } from '../text-editor/lib'
 
-const createEmojiNode = (shortName: string): CustomElement => {
-  return {
-    type: 'emoji',
-    shortName,
-    children: [{ text: '' }],
-  }
-}
 export const EmojiPicker = () => {
   const [currentCategory, setCurrentCategory] = useState('Smileys & Emotion')
   const { setShowEmojiPicker } = useStore()
-  const editor = useSlateStatic()
+  const editor = useStoreEditorRef(useEventEditorId('focus'))
   return (
-    <Draggable>
+    <Draggable bounds="parent">
       <Flex
         zIndex="1"
         p="1"
@@ -48,10 +40,10 @@ export const EmojiPicker = () => {
             return (
               <Button
                 key={item.short_name}
-                onClick={() => {
-                  Transforms.insertNodes(editor, createEmojiNode(item.short_name), { select: true })
-                }}
                 variant="ghost"
+                onClick={() => {
+                  insertImage(editor, item.short_name)
+                }}
               >
                 <Emoji shortName={item.short_name} />
               </Button>
