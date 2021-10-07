@@ -11,21 +11,28 @@ import {
   useStoreEditorRef,
   getPlatePluginTypes,
   getPlatePluginType,
+  ELEMENT_DEFAULT,
+  getPointNextToVoid,
+  getPointFromLocation,
 } from '@udecode/plate'
-import { BaseElement, Editor } from 'slate'
+import { Location, Editor, Point } from 'slate'
 import { useStore } from '../../store/store'
 import { Emoticon } from '../emojis/Emoticon'
+import { DefaultElement } from './DefaultElement'
 import { pluginsBasic } from './lib'
 import { BallonToolbarMarks } from './Options'
 
 export const ContentEditor = () => {
   const editor = useStoreEditorRef(useEventEditorId('focus'))
-  const { setShowEmojiPicker } = useStore()
+  const { setShowEmojiPicker, setNavigationKeyPressed } = useStore()
   const createOnKeyDownPlugin = (): PlatePlugin => {
     return {
       onKeyDown: (_editor) => (event) => {
         if (event.ctrlKey && event.code === 'Space') {
           setShowEmojiPicker(true)
+        }
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+          setNavigationKeyPressed(event.key)
         }
       },
     }
@@ -33,8 +40,9 @@ export const ContentEditor = () => {
 
   const components = createPlateComponents({
     [ELEMENT_IMAGE]: Emoticon,
+    [ELEMENT_DEFAULT]: DefaultElement,
   })
-  editor && console.log(editor.selection)
+
   const options = createPlateOptions()
   return (
     <>

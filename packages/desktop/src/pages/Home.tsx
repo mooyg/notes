@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Flex, Grid } from '@chakra-ui/react'
 import { Sidebar } from '../components/sidebar/Sidebar'
 import { useAccessToken } from '../hooks/useAccessToken'

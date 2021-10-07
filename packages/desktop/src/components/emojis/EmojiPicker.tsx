@@ -8,6 +8,7 @@ import { CloseIcon } from '../icons/CloseIcon'
 import { useStore } from '../../store/store'
 import { useEventEditorId, useStoreEditorRef } from '@udecode/plate-core'
 import { insertImage } from '../text-editor/lib'
+import { Editor } from 'slate'
 
 export const EmojiPicker = () => {
   const [currentCategory, setCurrentCategory] = useState('Smileys & Emotion')
@@ -43,6 +44,7 @@ export const EmojiPicker = () => {
                 variant="ghost"
                 onClick={() => {
                   insertImage(editor, item.short_name)
+                  editor && Editor.insertText(editor, ' ')
                 }}
               >
                 <Emoji shortName={item.short_name} />
