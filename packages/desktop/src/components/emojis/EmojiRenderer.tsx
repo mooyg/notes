@@ -5,7 +5,6 @@ type IEmojiRenderer = {
   children: React.ReactElement
 }
 export const EmojiRenderer = ({ children }: IEmojiRenderer): JSX.Element => {
-  console.log('CHILDRENS', children)
   const parseEmojis = (value: any) => {
     return children.props.children.split(' ').map((node: string) => {
       if (node.match(/(^|\s)+:([^\s\n\r])+:|^:[^\s\n\r]+/gm)) {

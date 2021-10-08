@@ -4,10 +4,12 @@ import {
   getPlatePluginType,
   getPointFromLocation,
   getPointNextToVoid,
+  getSelectionText,
   SPRenderElementProps,
   SPRenderLeafProps,
   useEventEditorId,
   useStoreEditorRef,
+  useStoreEditorSelection,
 } from '@udecode/plate'
 import React, { PropsWithChildren, useEffect } from 'react'
 import { Transforms } from 'slate'
@@ -21,24 +23,35 @@ export const Emoticon = (
   const selected = useSelected()
   const focused = useFocused()
   const editor = useStoreEditorRef(useEventEditorId('focus'))
+  const selectionText = editor && getSelectionText(editor)
+
   useEffect(() => {
     if (selected && focused) {
-      Transforms.select(
-        editor!,
-        getPointNextToVoid(editor!, {
-          at: getPointFromLocation(editor!)!,
-          ...(navigationKeyPressed === 'ArrowRight' && { after: true }),
-        })
-      )
+      if (!selectionText) {
+        Transforms.select(
+          editor!,
+          getPointNextToVoid(editor!, {
+            at: getPointFromLocation(editor!)!,
+            ...(navigationKeyPressed === 'ArrowRight' && { after: true }),
+          })
+        )
+      } else {
+        return
+      }
     }
-  }, [editor, focused, navigationKeyPressed, selected])
+  }, [editor, focused, navigationKeyPressed, selected, selectionText])
   return (
-    <span {...props.attributes} style={{ display: 'inline-block' }}>
+    <span
+      aria-label={`${props.element.shortName}`}
+      {...props.attributes}
+      style={{ display: 'inline-block' }}
+    >
       <Image
-        alt="emoji"
-        aria-label="emoji"
+        alt={`${props.element.shortName}`}
+        aria-label={`${props.element.shortName}`}
         loading="lazy"
         height="6"
+        draggable="false"
         style={
           {
             // boxShadow: `${selected && focused ? '0 0 0 2px #204961' : 'none'}`,

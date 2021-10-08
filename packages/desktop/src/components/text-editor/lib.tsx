@@ -54,6 +54,7 @@ export const insertImage = (editor: SPEditor | undefined, shortName: string) => 
     type: getPlatePluginType(editor, ELEMENT_IMAGE),
     src: `http://localhost:8080/emoji/${imageId}`,
     children: [{ text: '' }],
+    shortName,
   }
   editor && insertNodes<TElement>(editor, image)
 }
