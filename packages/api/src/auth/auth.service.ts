@@ -11,7 +11,13 @@ export class AuthService {
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService
   ) {}
-
+  async getUser(id) {
+    return await this.prismaService.user.findFirst({
+      where: {
+        id: id.id,
+      },
+    })
+  }
   public async githubLogin(user) {
     const userExists = await this.prismaService.user.findFirst({
       where: {

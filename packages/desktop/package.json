@@ -20,6 +20,7 @@
     "@udecode/plate-reset-node": "^4.3.0",
     "@udecode/plate-toolbar": "^4.3.0",
     "axios": "^0.21.4",
+    "downshift": "^6.1.7",
     "emoji-datasource": "^7.0.2",
     "framer-motion": "4",
     "immer": "^9.0.6",

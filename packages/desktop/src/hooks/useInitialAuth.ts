@@ -1,13 +1,19 @@
 import { useEffect } from 'react'
 import { useUser } from './useUser'
-import { useQuery } from 'react-query'
-import { IUser } from '../interfaces'
-export const useInitialAuth = (accessToken: string) => {
-  const { data } = useQuery<IUser | null>(['/api/auth/me', accessToken])
 
+import { IUser } from '../interfaces'
+import axios from '../axios/axios'
+export const useInitialAuth = (accessToken: string) => {
   const { setUser } = useUser()
 
   useEffect(() => {
-    setUser(data)
-  }, [data, setUser])
+    ;(async () => {
+      const { data } = await axios.get<IUser | null>('/api/auth/me', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      setUser(data)
+    })()
+  }, [accessToken, setUser])
 }

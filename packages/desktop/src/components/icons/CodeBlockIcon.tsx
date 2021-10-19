@@ -3,9 +3,9 @@ import React from 'react'
 
 export const CodeBlockIcon = () => {
   return (
-    <Icon color="#EDEDED" verticalAlign="middle" viewBox="0 0 24 24" width="7" height="3">
+    <Icon color="#EDEDED" verticalAlign="middle" width="24" height="24" viewBox="0 0 24 24">
       <path
-        d="M24 10.935v2.131l-8 3.947v-2.23l5.64-2.783-5.64-2.79v-2.223l8 3.948zm-16 3.848l-5.64-2.783 5.64-2.79v-2.223l-8 3.948v2.131l8 3.947v-2.23zm7.047-10.783h-2.078l-4.011 16h2.073l4.016-16z"
+        d="M24 10.935v2.131l-10 4.934v-2.23l7.64-3.77-7.64-3.779v-2.221l10 4.935zm-24 0v2.131l10 4.934v-2.23l-7.64-3.77 7.64-3.779v-2.221l-10 4.935z"
         fill="currentColor"
       />
     </Icon>

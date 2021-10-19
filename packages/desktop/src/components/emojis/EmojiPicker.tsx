@@ -9,6 +9,7 @@ import { useStore } from '../../store/store'
 import { useEventEditorId, useStoreEditorRef } from '@udecode/plate-core'
 import { insertImage } from '../text-editor/lib'
 import { Editor } from 'slate'
+import { Input } from '@chakra-ui/react'
 
 export const EmojiPicker = () => {
   const [currentCategory, setCurrentCategory] = useState('Smileys & Emotion')
@@ -28,6 +29,7 @@ export const EmojiPicker = () => {
         rounded="md"
       >
         <Flex flex="1" justifyContent="flex-end" alignContent="center">
+          <Input placeholder="Search Emoji..." variant="filled" />
           <IconButton
             onClick={() => setShowEmojiPicker(false)}
             variant="unstyled"

@@ -19,6 +19,13 @@ let AuthService = class AuthService {
         this.prismaService = prismaService;
         this.jwtService = jwtService;
     }
+    async getUser(id) {
+        return await this.prismaService.user.findFirst({
+            where: {
+                id: id.id,
+            },
+        });
+    }
     async githubLogin(user) {
         const userExists = await this.prismaService.user.findFirst({
             where: {

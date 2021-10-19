@@ -6,7 +6,7 @@ export const EmojiData = (untypedEmojiData as Array<IEmojiData>).filter(
   (emoji) => emoji.has_img_apple
 )
 export const groupedEmojiData = groupBy(EmojiData, 'category')
-const EmojiDataByShortname = keyBy(EmojiData, 'short_name')
+export const EmojiDataByShortname = keyBy(EmojiData, 'short_name')
 
 export const getEmojiData = (shortName: string) => {
   return EmojiDataByShortname[shortName]

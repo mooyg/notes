@@ -15,21 +15,15 @@ import { AuthGuard } from '@nestjs/passport'
 import { IGithubUser } from 'src/types'
 import { JwtService } from '@nestjs/jwt'
 import { JwtGuard } from './guards/jwt-guard'
-import { UserService } from 'src/user/user.service'
 import { User } from 'src/decorators/user.decorator'
 @Controller('api/auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly jwtService: JwtService,
-    private readonly userService: UserService
-  ) {}
+  constructor(private readonly authService: AuthService, private readonly jwtService: JwtService) {}
 
   @Get('/me')
   @UseGuards(JwtGuard)
   async getUser(@User() userId) {
-    console.log(await this.userService.getUser(userId))
-    return await this.userService.getUser(userId)
+    return await this.authService.getUser(userId)
   }
 
   @Get()
