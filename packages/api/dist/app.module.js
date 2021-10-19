@@ -12,15 +12,15 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const emoji_module_1 = require("./emoji/emoji.module");
 const nestjs_dotenv_1 = require("nestjs-dotenv");
-const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const passport_1 = require("@nestjs/passport");
 const graphql_1 = require("@nestjs/graphql");
 const posix_1 = require("path/posix");
-const pages_resolver_1 = require("./pages/pages.resolver");
-const pages_service_1 = require("./pages/pages.service");
-const pages_module_1 = require("./pages/pages.module");
+const pages_resolver_1 = require("./user/pages/pages.resolver");
+const pages_service_1 = require("./user/pages/pages.service");
+const pages_module_1 = require("./user/pages/pages.module");
 const prisma_service_1 = require("./prisma.service");
+const templates_module_1 = require("./user/templates/templates.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -28,7 +28,6 @@ AppModule = __decorate([
         imports: [
             emoji_module_1.EmojiModule,
             nestjs_dotenv_1.ConfigModule.forRoot(),
-            user_module_1.UserModule,
             auth_module_1.AuthModule,
             passport_1.PassportModule.register({
                 defaultStrategy: 'github',
@@ -36,6 +35,7 @@ AppModule = __decorate([
             }),
             graphql_1.GraphQLModule.forRoot({ autoSchemaFile: (0, posix_1.join)(process.cwd(), 'src/schema.gql') }),
             pages_module_1.PagesModule,
+            templates_module_1.TemplatesModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, pages_resolver_1.PagesResolver, pages_service_1.PagesService, prisma_service_1.PrismaService],

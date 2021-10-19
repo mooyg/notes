@@ -23,6 +23,7 @@ export const Home = () => {
     accessToken ? history.replace('/') : history.push('/login')
   }, [accessToken])
   useInitialAuth(accessToken!)
+
   return (
     <>
       <Flex alignItems="flex-start">

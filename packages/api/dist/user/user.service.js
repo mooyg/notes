@@ -16,39 +16,6 @@ let UserService = class UserService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async getUser(id) {
-        return await this.prisma.user.findFirst({
-            where: {
-                id: id.id,
-            },
-        });
-    }
-    async createTemplate(userId, details) {
-        return await this.prisma.templates.create({
-            data: {
-                name: details.templateName,
-                userId: userId.id,
-            },
-        });
-    }
-    async getTemplates(userId) {
-        const templates = await this.prisma.templates.findMany({
-            where: {
-                userId: userId.id,
-            },
-        });
-        if (!templates)
-            return [];
-        return templates;
-    }
-    async getPage(userId, pageId) {
-        const page = await this.prisma.pages.findFirst({
-            where: {
-                id: pageId,
-            },
-        });
-        return page;
-    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),

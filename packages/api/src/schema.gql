@@ -12,6 +12,7 @@ type Pages {
 
 type Query {
   getPagesByTemplateId(templateId: String!): [Pages!]!
+  getPage(pageId: String!): Pages!
 }
 
 type Mutation {

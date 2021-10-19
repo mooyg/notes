@@ -10,16 +10,17 @@ import {
   useEventEditorId,
   useStoreEditorRef,
 } from '@udecode/plate'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useStore } from '../../store/store'
 import { Emoticon } from '../emojis/Emoticon'
 import { DefaultElement } from './DefaultElement'
 import { pluginsBasic } from './lib'
 import { BallonToolbarMarks } from './Options'
+import { useSelected } from 'slate-react'
 
 export const ContentEditor = () => {
-  const { setShowEmojiPicker, setNavigationKeyPressed } = useStore()
-
+  const setShowEmojiPicker = useStore((state) => state.setShowEmojiPicker)
+  const setNavigationKeyPressed = useStore((state) => state.setNavigationKeyPressed)
   const createOnKeyDownPlugin = (): PlatePlugin => {
     return {
       onKeyDown: (_editor) => (event) => {
@@ -47,8 +48,10 @@ export const ContentEditor = () => {
         components={components}
         options={options}
         editableProps={{
-          placeholder: 'Type...',
-          style: {},
+          placeholder: 'Type... ',
+          style: {
+            fontSize: '15px',
+          },
         }}
         plugins={[...pluginsBasic, createOnKeyDownPlugin()]}
       />

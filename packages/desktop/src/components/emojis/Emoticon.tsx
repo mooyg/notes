@@ -15,16 +15,14 @@ import React, { PropsWithChildren, useEffect } from 'react'
 import { Transforms } from 'slate'
 import { useFocused, useSelected } from 'slate-react'
 import { useStore } from '../../store/store'
-
 export const Emoticon = (
   props: PropsWithChildren<SPRenderElementProps<AnyObject> | SPRenderLeafProps<AnyObject>>
 ) => {
-  const { navigationKeyPressed } = useStore()
   const selected = useSelected()
   const focused = useFocused()
   const editor = useStoreEditorRef(useEventEditorId('focus'))
   const selectionText = editor && getSelectionText(editor)
-
+  const navigationKeyPressed = useStore((state) => state.navigationKeyPressed)
   useEffect(() => {
     if (selected && focused) {
       if (!selectionText) {

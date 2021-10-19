@@ -19,17 +19,14 @@ const passport_1 = require("@nestjs/passport");
 const types_1 = require("../types");
 const jwt_1 = require("@nestjs/jwt");
 const jwt_guard_1 = require("./guards/jwt-guard");
-const user_service_1 = require("../user/user.service");
 const user_decorator_1 = require("../decorators/user.decorator");
 let AuthController = class AuthController {
-    constructor(authService, jwtService, userService) {
+    constructor(authService, jwtService) {
         this.authService = authService;
         this.jwtService = jwtService;
-        this.userService = userService;
     }
     async getUser(userId) {
-        console.log(await this.userService.getUser(userId));
-        return await this.userService.getUser(userId);
+        return await this.authService.getUser(userId);
     }
     async githubAuth() { }
     async githubAuthCallback(request, res) {
@@ -68,9 +65,7 @@ __decorate([
 ], AuthController.prototype, "githubAuthCallback", null);
 AuthController = __decorate([
     (0, common_1.Controller)('api/auth'),
-    __metadata("design:paramtypes", [auth_service_1.AuthService,
-        jwt_1.JwtService,
-        user_service_1.UserService])
+    __metadata("design:paramtypes", [auth_service_1.AuthService, jwt_1.JwtService])
 ], AuthController);
 exports.AuthController = AuthController;
 //# sourceMappingURL=auth.controller.js.map

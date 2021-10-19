@@ -18,7 +18,8 @@ const graphql_1 = require("@nestjs/graphql");
 const jwt_guard_1 = require("../auth/guards/jwt-guard");
 const create_page_dto_1 = require("./dto/create-page.dto");
 const pages_service_1 = require("./pages.service");
-const types_1 = require("./types");
+const models_1 = require("./models");
+const user_decorator_1 = require("../decorators/user.decorator");
 let PagesResolver = class PagesResolver {
     constructor(pageService) {
         this.pageService = pageService;
@@ -32,9 +33,12 @@ let PagesResolver = class PagesResolver {
     async getPagesByTemplateId(templateId) {
         return this.pageService.getPagesByTemplateId({ templateId });
     }
+    async getPage(pageId) {
+        return this.pageService.getPage(pageId);
+    }
 };
 __decorate([
-    (0, graphql_1.Mutation)(() => types_1.Pages),
+    (0, graphql_1.Mutation)(() => models_1.Pages),
     (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
     __param(0, (0, graphql_1.Args)()),
     __metadata("design:type", Function),
@@ -42,15 +46,23 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PagesResolver.prototype, "createPage", null);
 __decorate([
-    (0, graphql_1.Query)((returns) => [types_1.Pages]),
+    (0, graphql_1.Query)(() => [models_1.Pages]),
     (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
     __param(0, (0, graphql_1.Args)('templateId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PagesResolver.prototype, "getPagesByTemplateId", null);
+__decorate([
+    (0, graphql_1.Query)(() => models_1.Pages),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    __param(0, (0, graphql_1.Args)('pageId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PagesResolver.prototype, "getPage", null);
 PagesResolver = __decorate([
-    (0, graphql_1.Resolver)(),
+    (0, graphql_1.Resolver)(() => models_1.Pages),
     __metadata("design:paramtypes", [pages_service_1.PagesService])
 ], PagesResolver);
 exports.PagesResolver = PagesResolver;

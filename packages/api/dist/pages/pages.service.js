@@ -32,6 +32,14 @@ let PagesService = class PagesService {
         });
         return pages;
     }
+    async getPage(pageId) {
+        const page = await this.prisma.pages.findFirst({
+            where: {
+                id: pageId,
+            },
+        });
+        return page;
+    }
 };
 PagesService = __decorate([
     (0, common_1.Injectable)(),

@@ -8,8 +8,12 @@ import {
   useEventEditorId,
   MARK_UNDERLINE,
   MARK_ITALIC,
+  ELEMENT_CODE_BLOCK,
+  ToolbarElement,
 } from '@udecode/plate'
+import { Transforms } from 'slate'
 import { BoldIcon } from '../icons/BoldIcon'
+import { CodeBlockIcon } from '../icons/CodeBlockIcon'
 import { ItalicIcon } from '../icons/ItalicIcon'
 import { UnderlineIcon } from '../icons/UnderlineIcon'
 export const BallonToolbarMarks = () => {
@@ -25,6 +29,10 @@ export const BallonToolbarMarks = () => {
         <ToolbarMark type={getPlatePluginType(editor, MARK_BOLD)} icon={<BoldIcon />} />
         <ToolbarMark type={getPlatePluginType(editor, MARK_UNDERLINE)} icon={<UnderlineIcon />} />
         <ToolbarMark type={getPlatePluginType(editor, MARK_ITALIC)} icon={<ItalicIcon />} />
+        <ToolbarElement
+          type={getPlatePluginType(editor, ELEMENT_CODE_BLOCK)}
+          icon={<CodeBlockIcon />}
+        />
       </HStack>
     </BalloonToolbar>
   )
