@@ -29,15 +29,6 @@ let UserController = class UserController {
     async getTemplates(userId) {
         return this.userService.getTemplates(userId);
     }
-    async createPage(req, templateId) {
-        return this.userService.createPage({
-            details: req.body,
-            templateId,
-        });
-    }
-    async getPagesByTemplateId(templateId) {
-        return this.userService.getPagesByTemplateId({ templateId });
-    }
     async getPage(userId, pageId) {
         return this.userService.getPage(userId, pageId);
     }
@@ -59,23 +50,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getTemplates", null);
-__decorate([
-    (0, common_1.Post)('/pages/create/:templateId'),
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Param)('templateId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "createPage", null);
-__decorate([
-    (0, common_1.Get)('/pages/:templateId'),
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
-    __param(0, (0, common_1.Param)('templateId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getPagesByTemplateId", null);
 __decorate([
     (0, common_1.Get)('/page/:pageId'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),

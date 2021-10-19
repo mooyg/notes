@@ -9,50 +9,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserService = void 0;
+exports.PagesService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma.service");
-let UserService = class UserService {
+let PagesService = class PagesService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async getUser(id) {
-        return await this.prisma.user.findFirst({
-            where: {
-                id: id.id,
-            },
-        });
-    }
-    async createTemplate(userId, details) {
-        return await this.prisma.templates.create({
+    async createPage({ pageName, templateId }) {
+        return await this.prisma.pages.create({
             data: {
-                name: details.templateName,
-                userId: userId.id,
+                name: pageName,
+                templateId,
             },
         });
     }
-    async getTemplates(userId) {
-        const templates = await this.prisma.templates.findMany({
+    async getPagesByTemplateId({ templateId }) {
+        const pages = await this.prisma.pages.findMany({
             where: {
-                userId: userId.id,
+                templateId,
             },
         });
-        if (!templates)
-            return [];
-        return templates;
-    }
-    async getPage(userId, pageId) {
-        const page = await this.prisma.pages.findFirst({
-            where: {
-                id: pageId,
-            },
-        });
-        return page;
+        return pages;
     }
 };
-UserService = __decorate([
+PagesService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], UserService);
-exports.UserService = UserService;
-//# sourceMappingURL=user.service.js.map
+], PagesService);
+exports.PagesService = PagesService;
+//# sourceMappingURL=pages.service.js.map

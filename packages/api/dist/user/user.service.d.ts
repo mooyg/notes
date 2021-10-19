@@ -5,12 +5,5 @@ export declare class UserService {
     getUser(id: any): Promise<import(".prisma/client").User>;
     createTemplate(userId: any, details: any): Promise<import(".prisma/client").Templates>;
     getTemplates(userId: any): Promise<import(".prisma/client").Templates[]>;
-    createPage({ details, templateId }: {
-        details: any;
-        templateId: any;
-    }): Promise<"No template Id provided" | import(".prisma/client").Pages>;
-    getPagesByTemplateId({ templateId }: {
-        templateId: any;
-    }): Promise<import(".prisma/client").Pages[] | "No pages found for this template">;
     getPage(userId: any, pageId: any): Promise<import(".prisma/client").Pages>;
 }

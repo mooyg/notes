@@ -1,6 +1,5 @@
 import { Injectable, Req } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
-import { async } from 'rxjs'
 import { PrismaService } from 'src/prisma.service'
 
 @Injectable()
@@ -30,24 +29,7 @@ export class UserService {
     if (!templates) return []
     return templates
   }
-  async createPage({ details, templateId }) {
-    if (!templateId) return 'No template Id provided'
-    return await this.prisma.pages.create({
-      data: {
-        name: details.pageName,
-        templateId,
-      },
-    })
-  }
-  async getPagesByTemplateId({ templateId }) {
-    const pages = await this.prisma.pages.findMany({
-      where: {
-        templateId,
-      },
-    })
-    if (!pages) return 'No pages found for this template'
-    return pages
-  }
+
   async getPage(userId, pageId) {
     const page = await this.prisma.pages.findFirst({
       where: {

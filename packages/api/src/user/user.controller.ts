@@ -22,21 +22,6 @@ export class UserController {
     return this.userService.getTemplates(userId)
   }
 
-  @Post('/pages/create/:templateId')
-  @UseGuards(JwtGuard)
-  async createPage(@Req() req: Request, @Param('templateId') templateId) {
-    return this.userService.createPage({
-      details: req.body,
-      templateId,
-    })
-  }
-
-  @Get('/pages/:templateId')
-  @UseGuards(JwtGuard)
-  async getPagesByTemplateId(@Param('templateId') templateId) {
-    return this.userService.getPagesByTemplateId({ templateId })
-  }
-
   @Get('/page/:pageId')
   @UseGuards(JwtGuard)
   async getPage(@User() userId, @Param('pageId') pageId) {

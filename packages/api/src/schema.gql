@@ -1,0 +1,19 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Pages {
+  name: String!
+  id: String!
+  badge: String
+  content: String
+  templateId: String!
+}
+
+type Query {
+  getPagesByTemplateId(templateId: String!): [Pages!]!
+}
+
+type Mutation {
+  createPage(templateId: String!, pageName: String!): Pages!
+}
