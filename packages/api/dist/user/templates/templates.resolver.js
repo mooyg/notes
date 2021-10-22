@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const graphql_1 = require("@nestjs/graphql");
 const jwt_guard_1 = require("../../auth/guards/jwt-guard");
 const user_decorator_1 = require("../../decorators/user.decorator");
+const gql_auth_guard_1 = require("../../guards/gql-auth-guard");
 const create_template_dto_1 = require("./dto/create-template.dto");
 const models_1 = require("./models");
 const templates_service_1 = require("./templates.service");
@@ -33,17 +34,17 @@ let TemplatesResolver = class TemplatesResolver {
 };
 __decorate([
     (0, graphql_1.Mutation)(() => models_1.Templates),
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
     __param(0, (0, graphql_1.Args)()),
-    __param(1, (0, user_decorator_1.User)()),
+    __param(1, (0, user_decorator_1.GQLUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_template_dto_1.CreateTemplateDto, Object]),
     __metadata("design:returntype", Promise)
 ], TemplatesResolver.prototype, "createTemplate", null);
 __decorate([
-    (0, graphql_1.Query)(),
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
-    __param(0, (0, user_decorator_1.User)()),
+    (0, graphql_1.Query)(() => [models_1.Templates]),
+    (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
+    __param(0, (0, user_decorator_1.GQLUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)

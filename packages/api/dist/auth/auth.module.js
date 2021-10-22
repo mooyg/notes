@@ -11,7 +11,6 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
 const prisma_service_1 = require("../prisma.service");
-const user_service_1 = require("src/user/user.service");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
 const github_strategy_1 = require("./strategies/github-strategy");
@@ -20,7 +19,7 @@ let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
-        providers: [auth_service_1.AuthService, prisma_service_1.PrismaService, github_strategy_1.GithubStrategy, jwt_strategy_1.JwtStrategy, user_service_1.UserService],
+        providers: [auth_service_1.AuthService, prisma_service_1.PrismaService, github_strategy_1.GithubStrategy, jwt_strategy_1.JwtStrategy],
         controllers: [auth_controller_1.AuthController],
         imports: [
             passport_1.PassportModule.register({ defaultStrategy: 'jwt' }),

@@ -33,7 +33,10 @@ AppModule = __decorate([
                 defaultStrategy: 'github',
                 session: false,
             }),
-            graphql_1.GraphQLModule.forRoot({ autoSchemaFile: (0, posix_1.join)(process.cwd(), 'src/schema.gql') }),
+            graphql_1.GraphQLModule.forRoot({
+                autoSchemaFile: (0, posix_1.join)(process.cwd(), 'src/schema.gql'),
+                context: ({ req }) => ({ req }),
+            }),
             pages_module_1.PagesModule,
             templates_module_1.TemplatesModule,
         ],

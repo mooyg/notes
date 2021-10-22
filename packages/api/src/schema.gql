@@ -10,11 +10,20 @@ type Pages {
   templateId: String!
 }
 
+type Templates {
+  id: String!
+  name: String!
+  userId: String!
+  badge: String!
+}
+
 type Query {
   getPagesByTemplateId(templateId: String!): [Pages!]!
   getPage(pageId: String!): Pages!
+  getTemplates: [Templates!]!
 }
 
 type Mutation {
   createPage(templateId: String!, pageName: String!): Pages!
+  createTemplate(templateName: String!): Templates!
 }

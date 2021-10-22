@@ -20,6 +20,7 @@ const create_page_dto_1 = require("./dto/create-page.dto");
 const pages_service_1 = require("./pages.service");
 const models_1 = require("./models");
 const user_decorator_1 = require("../../decorators/user.decorator");
+const gql_auth_guard_1 = require("../../guards/gql-auth-guard");
 let PagesResolver = class PagesResolver {
     constructor(pageService) {
         this.pageService = pageService;
@@ -39,7 +40,7 @@ let PagesResolver = class PagesResolver {
 };
 __decorate([
     (0, graphql_1.Mutation)(() => models_1.Pages),
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
     __param(0, (0, graphql_1.Args)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_page_dto_1.CreatePageDto]),
@@ -47,7 +48,7 @@ __decorate([
 ], PagesResolver.prototype, "createPage", null);
 __decorate([
     (0, graphql_1.Query)(() => [models_1.Pages]),
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
     __param(0, (0, graphql_1.Args)('templateId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -55,7 +56,7 @@ __decorate([
 ], PagesResolver.prototype, "getPagesByTemplateId", null);
 __decorate([
     (0, graphql_1.Query)(() => models_1.Pages),
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
     __param(0, (0, graphql_1.Args)('pageId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

@@ -22,7 +22,10 @@ import { TemplatesModule } from './user/templates/templates.module'
       defaultStrategy: 'github',
       session: false,
     }),
-    GraphQLModule.forRoot({ autoSchemaFile: join(process.cwd(), 'src/schema.gql') }),
+    GraphQLModule.forRoot({
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      context: ({ req }) => ({ req }),
+    }),
     PagesModule,
     TemplatesModule,
   ],
