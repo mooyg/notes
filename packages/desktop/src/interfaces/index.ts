@@ -6,7 +6,6 @@ export interface IUser {
 
 export interface ITemplate {
   id: string
-  userId: string
   name: string
 }
 

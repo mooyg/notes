@@ -5,37 +5,23 @@ import './styles/global.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from './theme'
 import { UserProvider } from './components/providers/User.provider'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools, ReactQueryDevtoolsPanel } from 'react-query/devtools'
-import axios from './axios/axios'
+import { createClient, Provider, defaultExchanges } from 'urql'
+import { devtoolsExchange } from '@urql/devtools'
 import { PageProvider } from './components/providers/Page.provider'
-const defaultQueryFn = async ({ queryKey }: any) => {
-  const { data } = await axios.get(`${queryKey[0]}`, {
-    headers: {
-      Authorization: `Bearer ${queryKey[1]}`,
-    },
-  })
-  return data
-}
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      queryFn: defaultQueryFn,
-    },
-  },
+const client = createClient({
+  url: 'http://localhost:8080/graphql',
+  exchanges: [devtoolsExchange, ...defaultExchanges],
 })
 
 ReactDOM.render(
   <UserProvider>
     <PageProvider>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-        <ChakraProvider theme={theme}>
+      <ChakraProvider theme={theme}>
+        <Provider value={client}>
           <App />
-        </ChakraProvider>
-      </QueryClientProvider>
+        </Provider>
+      </ChakraProvider>
     </PageProvider>
   </UserProvider>,
   document.getElementById('root')
