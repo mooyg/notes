@@ -25,3 +25,12 @@ export const CREATE_TEMPLATE = gql`
     }
   }
 `
+export const CREATE_PAGE = gql`
+  mutation CreatePage($templateId: String!, $pageName: String!) {
+    createPage(templateId: $templateId, pageName: $pageName) {
+      name
+      id
+      templateId
+    }
+  }
+`

@@ -11,9 +11,9 @@ import { motion } from 'framer-motion'
 import { PagesDropdown } from './PagesDropdown'
 import { DownArrowIcon } from '../icons/DownArrowIcon'
 import { useClient, useMutation, useQuery } from 'urql'
-import { CREATE_TEMPLATE, GET_PAGES_BY_TEMPLATEID, GET_TEMPLATES } from '../../queries'
+import { CREATE_PAGE, CREATE_TEMPLATE, GET_PAGES_BY_TEMPLATEID, GET_TEMPLATES } from '../../queries'
 import { useLazyQuery } from '../../hooks/useLazyQuery'
-import { isEqual } from 'lodash'
+import { isEqual, remove } from 'lodash'
 export const Templates = () => {
   const MotionFlex = motion<FlexProps>(Flex)
   const accessToken = useAccessToken()
@@ -21,6 +21,7 @@ export const Templates = () => {
   const templateId = useRef<string | null>(null)
   const [templates, setTemplates] = useState<ExtendedITemplate[]>([])
   const [templatePages, setTemplatePages] = useState<IPage[]>()
+
   const [{ data: templateData }, refetchTemplates] = useQuery<Record<'getTemplates', ITemplate[]>>({
     query: GET_TEMPLATES,
     context: useMemo(
@@ -36,9 +37,11 @@ export const Templates = () => {
       []
     ),
   })
+
   const [data, getPages] = useLazyQuery({
     query: GET_PAGES_BY_TEMPLATEID,
   })
+
   useEffect(() => {
     if (templateData) {
       setTemplates(
@@ -49,12 +52,12 @@ export const Templates = () => {
       )
     }
   }, [templateData])
+
   useMemo(() => {
     if (data && data.data) {
       setTemplatePages(
         produce((draft) => {
           if (!draft) {
-            console.log('WHEN NOTHING IS PRESENT INSIDE THE TEMPLATE PAGES STATE')
             return data.data.getPagesByTemplateId as IPage[]
           }
           const filteredPrevValues = draft.filter((item) => item.templateId === templateId.current)
@@ -63,36 +66,20 @@ export const Templates = () => {
           )
           if (isEqual(filteredPrevValues, filteredFetchedValues)) {
             return draft
+          } else {
+            return [
+              ...remove(draft, (item) => item.id === templateId.current),
+              ...data.data.getPagesByTemplateId,
+            ]
           }
-          return [...draft, ...data.data.getPagesByTemplateId]
         })
       )
     }
   }, [data])
+  console.log(templatePages)
 
-  const [createTemplateResult, createTemplate] = useMutation(CREATE_TEMPLATE)
-  // const templateMutation: UseMutationResult = useMutation(
-  //   (newTemplate) =>
-  //     axios.post('/user/template/create', newTemplate, {
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     }),
-  //   {
-  //     onSuccess: (data) => {
-  //       queryClient.setQueryData(['/user/templates', accessToken], (prev) => {
-  //         return [
-  //           ...(prev as ExtendedITemplate[]),
-  //           (data as AxiosResponse).data.map((item: ITemplate) => ({
-  //             ...item,
-  //             isActive: false,
-  //           })),
-  //         ]
-  //       })
-  //     },
-  //   }
-  // )
-
+  const [, createTemplate] = useMutation(CREATE_TEMPLATE)
+  const [, createPage] = useMutation(CREATE_PAGE)
   // const pagesMutation: UseMutationResult = useMutation((payload) =>
   //   axios.post(
   //     `/user/pages/create/${(payload as IPayload).templateId}`,
@@ -113,7 +100,6 @@ export const Templates = () => {
         <Modal
           heading="Template"
           onSumbit={({ name }) => {
-            console.log(name)
             createTemplate(
               {
                 templateName: name,
@@ -128,7 +114,6 @@ export const Templates = () => {
                 },
               }
             )
-            // refetchTemplates({ requestPolicy: 'network-only' })
           }}
         />
       </Flex>
@@ -162,6 +147,22 @@ export const Templates = () => {
                 <Modal
                   heading="Page"
                   onSumbit={({ name }) => {
+                    createPage(
+                      {
+                        pageName: name,
+                        templateId: el.id,
+                      },
+                      {
+                        fetchOptions: () => {
+                          return {
+                            headers: {
+                              Authorization: `Bearer ${accessToken}`,
+                            },
+                          }
+                        },
+                      }
+                    )
+
                     // pagesMutation.mutate({
                     //   pageName: name,
                     //   templateId: el.id,
