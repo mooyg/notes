@@ -32,10 +32,11 @@ let PagesResolver = class PagesResolver {
         });
     }
     async getPagesByTemplateId(templateId) {
+        console.log(templateId);
         return this.pageService.getPagesByTemplateId({ templateId });
     }
     async getPage(pageId) {
-        return this.pageService.getPage(pageId);
+        return await this.pageService.getPage(pageId);
     }
 };
 __decorate([

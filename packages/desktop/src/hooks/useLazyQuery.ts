@@ -5,27 +5,30 @@ import { useAccessToken } from './useAccessToken'
 
 interface UseLazyQueryArgs {
   query: TypedDocumentNode<any, object>
-  variables?: Record<string, unknown>
 }
 
-type UseLazyQueryResponse = [OperationResult<any, object> | undefined, () => void]
-export const useLazyQuery = ({ query, variables }: UseLazyQueryArgs): UseLazyQueryResponse => {
+type UseLazyQueryResponse = [OperationResult<any, object> | undefined, (variables?: object) => void]
+export const useLazyQuery = ({ query }: UseLazyQueryArgs): UseLazyQueryResponse => {
   const client = useClient()
   const accessToken = useAccessToken()
   const [data, setData] = useState<OperationResult<any, object>>()
-  console.log(variables)
-  const execQuery = client.query(query, variables, {
-    fetchOptions: () => {
-      return {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    },
-  })
 
   return [
     data,
-    () => {
-      execQuery.toPromise().then((result) => setData(result))
+    (variables?: object) => {
+      if (variables) {
+        client
+          .query(query, variables, {
+            requestPolicy: 'network-only',
+            fetchOptions: () => {
+              return {
+                headers: { Authorization: `Bearer ${accessToken}` },
+              }
+            },
+          })
+          .toPromise()
+          .then((result) => setData(result))
+      }
     },
   ]
 }

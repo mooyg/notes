@@ -10,11 +10,18 @@ export const GET_TEMPLATES = gql`
 `
 
 export const GET_PAGES_BY_TEMPLATEID = gql`
-  query GetPagesByTemplateId($TemplateId: String!) {
-    getPagesByTemplateId(templateId: $TemplateId) {
+  query GetPagesByTemplateId($templateId: String!) {
+    getPagesByTemplateId(templateId: $templateId) {
       name
       id
       templateId
+    }
+  }
+`
+export const CREATE_TEMPLATE = gql`
+  mutation CreateTemplate($templateName: String!) {
+    createTemplate(templateName: $templateName) {
+      name
     }
   }
 `

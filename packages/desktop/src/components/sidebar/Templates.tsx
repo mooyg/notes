@@ -1,5 +1,5 @@
 import { Flex, Text, IconButton, Button, FlexProps } from '@chakra-ui/react'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useAccessToken } from '../../hooks/useAccessToken'
 import { IPage, ITemplate } from '../../interfaces'
 import { Emoji } from '../emojis/Emoji'
@@ -10,19 +10,18 @@ import { usePage } from '../../hooks/usePage'
 import { motion } from 'framer-motion'
 import { PagesDropdown } from './PagesDropdown'
 import { DownArrowIcon } from '../icons/DownArrowIcon'
-import { useClient, useQuery } from 'urql'
-import { GET_PAGES_BY_TEMPLATEID, GET_TEMPLATES } from '../../queries'
+import { useClient, useMutation, useQuery } from 'urql'
+import { CREATE_TEMPLATE, GET_PAGES_BY_TEMPLATEID, GET_TEMPLATES } from '../../queries'
 import { useLazyQuery } from '../../hooks/useLazyQuery'
-
+import { isEqual } from 'lodash'
 export const Templates = () => {
   const MotionFlex = motion<FlexProps>(Flex)
   const accessToken = useAccessToken()
-  const client = useClient()
   const { setPageId } = usePage()
-  const [templateId, setTemplateId] = useState<string | null>(null)
+  const templateId = useRef<string | null>(null)
   const [templates, setTemplates] = useState<ExtendedITemplate[]>([])
   const [templatePages, setTemplatePages] = useState<IPage[]>()
-  const [{ data: templateData }] = useQuery<Record<'getTemplates', ITemplate[]>>({
+  const [{ data: templateData }, refetchTemplates] = useQuery<Record<'getTemplates', ITemplate[]>>({
     query: GET_TEMPLATES,
     context: useMemo(
       () => ({
@@ -37,35 +36,9 @@ export const Templates = () => {
       []
     ),
   })
-  const [foo, getPages] = useLazyQuery({
+  const [data, getPages] = useLazyQuery({
     query: GET_PAGES_BY_TEMPLATEID,
-    variables: {
-      templateId: templateId,
-    },
   })
-
-  console.log('FOO', foo)
-
-  const [{ data }] = useQuery<IPage[]>({
-    pause: !!templateId,
-    query: GET_PAGES_BY_TEMPLATEID,
-    context: useMemo(
-      () => ({
-        fetchOptions: () => {
-          return {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        },
-      }),
-      []
-    ),
-    variables: {
-      templateId: templateId,
-    },
-  })
-
   useEffect(() => {
     if (templateData) {
       setTemplates(
@@ -77,17 +50,27 @@ export const Templates = () => {
     }
   }, [templateData])
   useMemo(() => {
-    if (data) {
+    if (data && data.data) {
       setTemplatePages(
         produce((draft) => {
-          if (!draft) return data
-          if (draft.find((item) => item.templateId === templateId)) return draft
-          return [...draft, ...data]
+          if (!draft) {
+            console.log('WHEN NOTHING IS PRESENT INSIDE THE TEMPLATE PAGES STATE')
+            return data.data.getPagesByTemplateId as IPage[]
+          }
+          const filteredPrevValues = draft.filter((item) => item.templateId === templateId.current)
+          const filteredFetchedValues = data.data.getPagesByTemplateId.filter(
+            (item: any) => item.templateId === templateId.current
+          )
+          if (isEqual(filteredPrevValues, filteredFetchedValues)) {
+            return draft
+          }
+          return [...draft, ...data.data.getPagesByTemplateId]
         })
       )
     }
-  }, [data, templateId])
+  }, [data])
 
+  const [createTemplateResult, createTemplate] = useMutation(CREATE_TEMPLATE)
   // const templateMutation: UseMutationResult = useMutation(
   //   (newTemplate) =>
   //     axios.post('/user/template/create', newTemplate, {
@@ -130,9 +113,22 @@ export const Templates = () => {
         <Modal
           heading="Template"
           onSumbit={({ name }) => {
-            // templateMutation.mutate({
-            //   templateName: name,
-            // })
+            console.log(name)
+            createTemplate(
+              {
+                templateName: name,
+              },
+              {
+                fetchOptions: () => {
+                  return {
+                    headers: {
+                      Authorization: `Bearer ${accessToken}`,
+                    },
+                  }
+                },
+              }
+            )
+            // refetchTemplates({ requestPolicy: 'network-only' })
           }}
         />
       </Flex>
@@ -154,8 +150,11 @@ export const Templates = () => {
                         template.isActive = !template.isActive
                       })
                     )
-                    setTemplateId(el.id)
-                    getPages()
+                    console.log(el.id)
+                    templateId.current = el.id
+                    getPages({
+                      templateId: templateId.current,
+                    })
                   }}
                 />
                 <Emoji shortName="closed_book" />
@@ -170,6 +169,7 @@ export const Templates = () => {
                   }}
                 />
               </Flex>
+
               <PagesDropdown el={el} templatePages={templatePages} />
             </React.Fragment>
           )

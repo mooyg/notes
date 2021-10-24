@@ -30,6 +30,7 @@ let PagesService = class PagesService {
                 templateId,
             },
         });
+        console.log(pages);
         return pages;
     }
     async getPage(pageId) {

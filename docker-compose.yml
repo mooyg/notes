@@ -1,27 +1,13 @@
 version: '3.7'
-
 services:
-  desktop:
-    image: node:alpine
-    command: 'npm install && npm start'
+  database:
+    image: 'postgres'
     ports:
-      - '3000:3000'
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD:
     volumes:
-      - ./packages/desktop:/root/notes/desktop
-    working_dir: /root/notes/desktop
+      - db-data:/var/lib/postgresql/data/
 
-  api:
-    image: node:alpine
-    command: 'npm install && npm start'
-    ports:
-      - '8080:8080'
-    env_file:
-      - ./packages/api/.env
-    environments:
-      - DATABASE_URL=${DATABASE_URL}
-      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
-      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
-      - JWT_SECRET=${JWT_SECRET}
-    volumes:
-      - ./packages/api:/root/notes/api
-    working_dir: /root/notes/api
+volumes:
+  db-data:

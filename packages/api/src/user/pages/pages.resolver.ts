@@ -21,11 +21,12 @@ export class PagesResolver {
   @Query(() => [Pages])
   @UseGuards(GqlAuthGuard)
   async getPagesByTemplateId(@Args('templateId') templateId: string): Promise<Pages[]> {
+    console.log(templateId)
     return this.pageService.getPagesByTemplateId({ templateId })
   }
   @Query(() => Pages)
   @UseGuards(GqlAuthGuard)
   async getPage(@Args('pageId') pageId: string): Promise<Pages> {
-    return this.pageService.getPage(pageId)
+    return await this.pageService.getPage(pageId)
   }
 }
