@@ -38,7 +38,7 @@ export const Templates = () => {
     ),
   })
 
-  const [data, getPages] = useLazyQuery({
+  const [data, getPages] = useLazyQuery<Record<'getPagesByTemplateId', IPage[]>>({
     query: GET_PAGES_BY_TEMPLATEID,
   })
 
@@ -52,17 +52,16 @@ export const Templates = () => {
       )
     }
   }, [templateData])
-
   useMemo(() => {
     if (data && data.data) {
       setTemplatePages(
         produce((draft) => {
           if (!draft) {
-            return data.data.getPagesByTemplateId as IPage[]
+            return data.data.getPagesByTemplateId
           }
           const filteredPrevValues = draft.filter((item) => item.templateId === templateId.current)
           const filteredFetchedValues = data.data.getPagesByTemplateId.filter(
-            (item: any) => item.templateId === templateId.current
+            (item) => item.templateId === templateId.current
           )
           if (isEqual(filteredPrevValues, filteredFetchedValues)) {
             return draft
@@ -76,23 +75,10 @@ export const Templates = () => {
       )
     }
   }, [data])
-  console.log(templatePages)
 
   const [, createTemplate] = useMutation(CREATE_TEMPLATE)
   const [, createPage] = useMutation(CREATE_PAGE)
-  // const pagesMutation: UseMutationResult = useMutation((payload) =>
-  //   axios.post(
-  //     `/user/pages/create/${(payload as IPayload).templateId}`,
-  //     {
-  //       pageName: (payload as IPayload).pageName,
-  //     },
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     }
-  //   )
-  // )
+
   return (
     <Flex p="16px" flexDir="column">
       <Flex minW="full" justifyContent="space-between" alignItems="center">
@@ -162,11 +148,6 @@ export const Templates = () => {
                         },
                       }
                     )
-
-                    // pagesMutation.mutate({
-                    //   pageName: name,
-                    //   templateId: el.id,
-                    // })
                   }}
                 />
               </Flex>

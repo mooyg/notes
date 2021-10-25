@@ -1,20 +1,25 @@
 import { result } from 'lodash'
 import { useMemo, useState } from 'react'
-import { OperationResult, useClient, TypedDocumentNode } from 'urql'
+import { CombinedError, useClient, TypedDocumentNode } from 'urql'
 import { useAccessToken } from './useAccessToken'
 
 interface UseLazyQueryArgs {
   query: TypedDocumentNode<any, object>
 }
+type UseLazyQueryState<T> = {
+  data: T
+  error?: CombinedError
+  extensions?: Record<string, any>
+}
 
-type UseLazyQueryResponse = [OperationResult<any, object> | undefined, (variables?: object) => void]
-export const useLazyQuery = ({ query }: UseLazyQueryArgs): UseLazyQueryResponse => {
+type UseLazyQueryResponse<T> = [UseLazyQueryState<T>, (variables?: object) => void]
+export const useLazyQuery = <T>({ query }: UseLazyQueryArgs): UseLazyQueryResponse<T> => {
   const client = useClient()
   const accessToken = useAccessToken()
-  const [data, setData] = useState<OperationResult<any, object>>()
-
+  const [data, setData] = useState<UseLazyQueryState<T>>()
+  console.log('DATA IN USELAZYQUERY', data)
   return [
-    data,
+    data!,
     (variables?: object) => {
       if (variables) {
         client
@@ -27,7 +32,7 @@ export const useLazyQuery = ({ query }: UseLazyQueryArgs): UseLazyQueryResponse 
             },
           })
           .toPromise()
-          .then((result) => setData(result))
+          .then((result) => setData(result as UseLazyQueryState<T>))
       }
     },
   ]
