@@ -17,7 +17,6 @@ export const useLazyQuery = <T>({ query }: UseLazyQueryArgs): UseLazyQueryRespon
   const client = useClient()
   const accessToken = useAccessToken()
   const [data, setData] = useState<UseLazyQueryState<T>>()
-  console.log('DATA IN USELAZYQUERY', data)
   return [
     data!,
     (variables?: object) => {
