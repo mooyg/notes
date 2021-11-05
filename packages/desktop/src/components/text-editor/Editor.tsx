@@ -23,8 +23,9 @@ import { useSelected } from 'slate-react'
 export const ContentEditor = () => {
   const setShowEmojiPicker = useStore((state) => state.setShowEmojiPicker)
   const setNavigationKeyPressed = useStore((state) => state.setNavigationKeyPressed)
+  const activePage = useStore((state) => state.activePage)
   const value = useStoreEditorValue()
-  console.log(value)
+
   const createOnKeyDownPlugin = (): PlatePlugin => {
     return {
       onKeyDown: (_editor) => (event) => {
@@ -51,6 +52,7 @@ export const ContentEditor = () => {
       <Plate
         components={components}
         options={options}
+        initialValue={activePage?.content}
         editableProps={{
           placeholder: 'Type... ',
           style: {

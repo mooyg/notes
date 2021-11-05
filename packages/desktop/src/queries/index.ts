@@ -39,7 +39,17 @@ export const GET_PAGE = gql`
     getPage(pageId: $pageId) {
       name
       id
-      content
+      content {
+        children {
+          shortName
+          text
+          children {
+            text
+          }
+          type
+          src
+        }
+      }
     }
   }
 `

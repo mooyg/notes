@@ -1,3 +1,5 @@
+import { Content } from 'api'
+
 export interface IUser {
   id: string
   userProfilePicture: string
@@ -11,7 +13,7 @@ export interface ITemplate {
 
 export interface IPage {
   badge?: string
-  content?: string
+  content?: Content
   id: string
   name: string
   templateId: string

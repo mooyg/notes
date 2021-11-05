@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/button'
-import { Flex, FlexProps, Text } from '@chakra-ui/layout'
+import { Flex, FlexProps, Text } from '@chakra-ui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
 import { useLazyQuery } from '../../hooks/useLazyQuery'
@@ -40,6 +40,7 @@ export const PagesDropdown = React.memo(({ dropdowns, clickedTemplate }: IPagesD
                     getPage({
                       pageId: item.id,
                     })?.then((result) => {
+                      console.log(result)
                       setActivePage(result.data.getPage)
                     })
                   }
