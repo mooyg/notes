@@ -2,9 +2,11 @@ import { Button } from '@chakra-ui/button'
 import { Flex, FlexProps, Text } from '@chakra-ui/layout'
 import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
-import { usePage } from '../../hooks/usePage'
-import { IPage } from '../../interfaces'
-import { ExtendedITemplate, IDropdowns } from './Templates'
+import { useLazyQuery } from '../../hooks/useLazyQuery'
+
+import { GET_PAGE } from '../../queries'
+import { useStore } from '../../store/store'
+import { IDropdowns } from './Templates'
 
 interface IPagesDropdown {
   dropdowns: IDropdowns
@@ -13,7 +15,10 @@ interface IPagesDropdown {
 
 export const PagesDropdown = React.memo(({ dropdowns, clickedTemplate }: IPagesDropdown) => {
   const MotionFlex = motion<FlexProps>(Flex)
-  const { setPageId } = usePage()
+  const setActivePage = useStore((state) => state.setActivePage)
+  const [, getPage] = useLazyQuery({
+    query: GET_PAGE,
+  })
   return (
     <AnimatePresence>
       {dropdowns.activeDropdownId === clickedTemplate &&
@@ -28,7 +33,17 @@ export const PagesDropdown = React.memo(({ dropdowns, clickedTemplate }: IPagesD
                 dir="column"
                 key={item.id}
               >
-                <Button variant="ghost" mb="2" onClick={() => setPageId(item.id)}>
+                <Button
+                  variant="ghost"
+                  mb="2"
+                  onClick={() =>
+                    getPage({
+                      pageId: item.id,
+                    })?.then((result) => {
+                      setActivePage(result.data.getPage)
+                    })
+                  }
+                >
                   <Text fontSize="xs">{item.name}</Text>
                 </Button>
               </MotionFlex>

@@ -34,3 +34,12 @@ export const CREATE_PAGE = gql`
     }
   }
 `
+export const GET_PAGE = gql`
+  query GetPage($pageId: String!) {
+    getPage(pageId: $pageId) {
+      name
+      id
+      content
+    }
+  }
+`

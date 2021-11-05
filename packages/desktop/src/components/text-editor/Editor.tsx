@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Plate,
   createPlateComponents,
@@ -9,6 +10,7 @@ import {
   getSelectionText,
   useEventEditorId,
   useStoreEditorRef,
+  useStoreEditorValue,
 } from '@udecode/plate'
 import { useEffect, useMemo } from 'react'
 import { useStore } from '../../store/store'
@@ -21,6 +23,8 @@ import { useSelected } from 'slate-react'
 export const ContentEditor = () => {
   const setShowEmojiPicker = useStore((state) => state.setShowEmojiPicker)
   const setNavigationKeyPressed = useStore((state) => state.setNavigationKeyPressed)
+  const value = useStoreEditorValue()
+  console.log(value)
   const createOnKeyDownPlugin = (): PlatePlugin => {
     return {
       onKeyDown: (_editor) => (event) => {

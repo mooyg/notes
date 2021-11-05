@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql'
+import { Content } from './content.model'
 
 @ObjectType()
 export class Pages {
@@ -11,8 +12,8 @@ export class Pages {
   @Field(() => String, { nullable: true })
   badge?: string
 
-  @Field(() => String, { nullable: true })
-  content?: string
+  @Field(() => [Content], { nullable: true })
+  content?: Content
 
   @Field(() => String)
   templateId: string

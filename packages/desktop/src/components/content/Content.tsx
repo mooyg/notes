@@ -9,6 +9,7 @@ interface IContent {
   content: IPage
 }
 export const Content = ({ content }: IContent) => {
+  console.log(content)
   return (
     <Flex p="2" flex="1" flexDir="column" experimental_spaceY="7">
       <Header page={content} />

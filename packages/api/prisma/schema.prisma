@@ -30,7 +30,7 @@ model Pages{
   id String @default(uuid()) @id
   name String
   badge String?
-  content String?
+  content Json? 
   templates Templates @relation(fields: [templateId], references:[id])
   templateId String
 }

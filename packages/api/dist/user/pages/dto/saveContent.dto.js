@@ -9,33 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Pages = void 0;
+exports.SaveContentDto = void 0;
 const graphql_1 = require("@nestjs/graphql");
-const content_model_1 = require("./content.model");
-let Pages = class Pages {
+const content_model_1 = require("../models/content.model");
+let SaveContentDto = class SaveContentDto {
 };
 __decorate([
-    (0, graphql_1.Field)(() => String),
-    __metadata("design:type", String)
-], Pages.prototype, "name", void 0);
-__decorate([
-    (0, graphql_1.Field)(() => String),
-    __metadata("design:type", String)
-], Pages.prototype, "id", void 0);
-__decorate([
-    (0, graphql_1.Field)(() => String, { nullable: true }),
-    __metadata("design:type", String)
-], Pages.prototype, "badge", void 0);
-__decorate([
-    (0, graphql_1.Field)(() => [content_model_1.Content], { nullable: true }),
+    (0, graphql_1.Field)(() => [content_model_1.Content]),
     __metadata("design:type", content_model_1.Content)
-], Pages.prototype, "content", void 0);
+], SaveContentDto.prototype, "content", void 0);
 __decorate([
     (0, graphql_1.Field)(() => String),
     __metadata("design:type", String)
-], Pages.prototype, "templateId", void 0);
-Pages = __decorate([
-    (0, graphql_1.ObjectType)()
-], Pages);
-exports.Pages = Pages;
-//# sourceMappingURL=pages.model.js.map
+], SaveContentDto.prototype, "pageId", void 0);
+SaveContentDto = __decorate([
+    (0, graphql_1.ArgsType)()
+], SaveContentDto);
+exports.SaveContentDto = SaveContentDto;
+//# sourceMappingURL=saveContent.dto.js.map

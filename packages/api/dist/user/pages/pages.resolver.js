@@ -21,6 +21,7 @@ const pages_service_1 = require("./pages.service");
 const models_1 = require("./models");
 const user_decorator_1 = require("../../decorators/user.decorator");
 const gql_auth_guard_1 = require("../../guards/gql-auth-guard");
+const saveContent_dto_1 = require("./dto/saveContent.dto");
 let PagesResolver = class PagesResolver {
     constructor(pageService) {
         this.pageService = pageService;
@@ -32,11 +33,14 @@ let PagesResolver = class PagesResolver {
         });
     }
     async getPagesByTemplateId(templateId) {
-        console.log(templateId);
         return this.pageService.getPagesByTemplateId({ templateId });
     }
     async getPage(pageId) {
         return await this.pageService.getPage(pageId);
+    }
+    async saveContent({ pageId, content }) {
+        console.log(content.children);
+        return await this.pageService.saveContent(pageId, content);
     }
 };
 __decorate([
@@ -63,6 +67,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PagesResolver.prototype, "getPage", null);
+__decorate([
+    (0, graphql_1.Mutation)(() => models_1.Pages),
+    (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
+    __param(0, (0, graphql_1.Args)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [saveContent_dto_1.SaveContentDto]),
+    __metadata("design:returntype", Promise)
+], PagesResolver.prototype, "saveContent", null);
 PagesResolver = __decorate([
     (0, graphql_1.Resolver)(() => models_1.Pages),
     __metadata("design:paramtypes", [pages_service_1.PagesService])

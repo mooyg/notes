@@ -7,7 +7,6 @@ import theme from './theme'
 import { UserProvider } from './components/providers/User.provider'
 import { createClient, Provider, defaultExchanges } from 'urql'
 import { devtoolsExchange } from '@urql/devtools'
-import { PageProvider } from './components/providers/Page.provider'
 
 const client = createClient({
   url: 'http://localhost:8080/graphql',
@@ -16,13 +15,11 @@ const client = createClient({
 
 ReactDOM.render(
   <UserProvider>
-    <PageProvider>
-      <ChakraProvider theme={theme}>
-        <Provider value={client}>
-          <App />
-        </Provider>
-      </ChakraProvider>
-    </PageProvider>
+    <ChakraProvider theme={theme}>
+      <Provider value={client}>
+        <App />
+      </Provider>
+    </ChakraProvider>
   </UserProvider>,
   document.getElementById('root')
 )
