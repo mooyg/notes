@@ -19,12 +19,15 @@ import { DefaultElement } from './DefaultElement'
 import { pluginsBasic } from './lib'
 import { BallonToolbarMarks } from './Options'
 import { useSelected } from 'slate-react'
+import { debounce } from 'lodash'
+import { useMutation } from 'urql'
 
 export const ContentEditor = () => {
   const setShowEmojiPicker = useStore((state) => state.setShowEmojiPicker)
   const setNavigationKeyPressed = useStore((state) => state.setNavigationKeyPressed)
+  const navigationKeyPressed = useStore((state) => state.navigationKeyPressed)
   const activePage = useStore((state) => state.activePage)
-  const value = useStoreEditorValue()
+  // const [] = useMutation()
 
   const createOnKeyDownPlugin = (): PlatePlugin => {
     return {
@@ -32,7 +35,7 @@ export const ContentEditor = () => {
         if (event.ctrlKey && event.code === 'Space') {
           setShowEmojiPicker(true)
         }
-        // TODO: Not use state here and use some other logic
+        if (event.key === navigationKeyPressed) return
         if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
           setNavigationKeyPressed(event.key)
         }
@@ -46,6 +49,8 @@ export const ContentEditor = () => {
   })
 
   const options = createPlateOptions()
+
+  const saveToDatabase = debounce(() => {}, 250)
   return (
     <>
       <BallonToolbarMarks />

@@ -1,5 +1,4 @@
 import { gql } from 'urql'
-
 export const GET_TEMPLATES = gql`
   query GetTemplates {
     getTemplates {
@@ -48,6 +47,22 @@ export const GET_PAGE = gql`
           }
           type
           src
+        }
+      }
+    }
+  }
+`
+export const SAVE_CONTENT = gql`
+  mutation SaveContent($pageId: String!, $content: ) {
+    saveContent(
+      pageId: $pageId
+      content: $content
+    ) {
+      name
+      content {
+        children {
+          text
+          type
         }
       }
     }

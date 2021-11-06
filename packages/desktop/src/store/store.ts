@@ -4,19 +4,20 @@ import { IPage } from '../interfaces'
 interface StoreState {
   showEmojiPicker: boolean
   setShowEmojiPicker: (val: boolean) => void
-  navigationKeyPressed: NavigationKey
-  setNavigationKeyPressed: (val: NavigationKey) => void
+  navigationKeyPressed: NavigationKey | null
+  setNavigationKeyPressed: (val: NavigationKey | null) => void
   setActivePage: (val: IPage) => void
   activePage: IPage | null
 }
 type NavigationKey = 'ArrowRight' | 'ArrowLeft'
+
 export const createEmojiPickerSlice = (set: SetState<StoreState>, get: GetState<StoreState>) => ({
   showEmojiPicker: false,
   setShowEmojiPicker: (val: boolean) => set((prev) => ({ ...prev, showEmojiPicker: val })),
 })
 export const isNavigatingSlice = (set: SetState<StoreState>, get: GetState<StoreState>) => ({
   navigationKeyPressed: '' as NavigationKey,
-  setNavigationKeyPressed: (val: NavigationKey) =>
+  setNavigationKeyPressed: (val: NavigationKey | null) =>
     set((prev) => ({ ...prev, navigationKeyPressed: val })),
 })
 

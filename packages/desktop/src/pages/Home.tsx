@@ -27,7 +27,6 @@ export const Home = () => {
 
   useInitialAuth(accessToken!)
 
-  console.log(store)
   return (
     <>
       <Flex alignItems="flex-start">
