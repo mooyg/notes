@@ -31,7 +31,7 @@ export class PagesService {
     })
     return page
   }
-  async saveContent(pageId: string, content: Content) {
+  async saveContent(pageId: string, content: object[]) {
     return await this.prisma.pages.update({
       where: {
         id: pageId,

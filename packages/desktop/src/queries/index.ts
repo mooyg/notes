@@ -53,11 +53,8 @@ export const GET_PAGE = gql`
   }
 `
 export const SAVE_CONTENT = gql`
-  mutation SaveContent($pageId: String!, $content: ) {
-    saveContent(
-      pageId: $pageId
-      content: $content
-    ) {
+  mutation SaveContent($pageId: String!, $content: Content) {
+    saveContent(pageId: $pageId, content: $content) {
       name
       content {
         children {

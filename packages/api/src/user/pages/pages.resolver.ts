@@ -29,11 +29,4 @@ export class PagesResolver {
   async getPage(@Args('pageId') pageId: string) {
     return await this.pageService.getPage(pageId)
   }
-
-  @Mutation(() => Pages)
-  @UseGuards(GqlAuthGuard)
-  async saveContent(@Args() { pageId, content }: SaveContentDto) {
-    console.log(content.children)
-    return await this.pageService.saveContent(pageId, content)
-  }
 }

@@ -57,6 +57,5 @@ type Query {
 
 type Mutation {
   createPage(templateId: String!, pageName: String!): Pages!
-  saveContent(content: [ContentInput!]!, pageId: String!): Pages!
   createTemplate(templateName: String!): Templates!
 }

@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PagesModule = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma.service");
+const pages_controller_1 = require("./pages.controller");
 const pages_resolver_1 = require("./pages.resolver");
 const pages_service_1 = require("./pages.service");
 let PagesModule = class PagesModule {
@@ -16,6 +17,7 @@ let PagesModule = class PagesModule {
 PagesModule = __decorate([
     (0, common_1.Module)({
         providers: [prisma_service_1.PrismaService, pages_service_1.PagesService, pages_resolver_1.PagesResolver],
+        controllers: [pages_controller_1.PagesController],
     })
 ], PagesModule);
 exports.PagesModule = PagesModule;

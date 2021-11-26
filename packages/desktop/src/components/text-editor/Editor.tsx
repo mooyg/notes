@@ -21,13 +21,26 @@ import { BallonToolbarMarks } from './Options'
 import { useSelected } from 'slate-react'
 import { debounce } from 'lodash'
 import { useMutation } from 'urql'
+import axios from '../../axios/axios'
 
 export const ContentEditor = () => {
+  const value = useStoreEditorValue()
   const setShowEmojiPicker = useStore((state) => state.setShowEmojiPicker)
   const setNavigationKeyPressed = useStore((state) => state.setNavigationKeyPressed)
   const navigationKeyPressed = useStore((state) => state.navigationKeyPressed)
   const activePage = useStore((state) => state.activePage)
-  // const [] = useMutation()
+  console.log(value)
+
+  useEffect(() => {
+    if (!value) return
+    axios({
+      method: 'POST',
+      url: `pages/save/${activePage?.id}`,
+      data: {
+        content: value,
+      },
+    })
+  }, [value])
 
   const createOnKeyDownPlugin = (): PlatePlugin => {
     return {
