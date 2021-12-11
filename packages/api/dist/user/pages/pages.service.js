@@ -40,6 +40,16 @@ let PagesService = class PagesService {
         });
         return page;
     }
+    async saveContent(pageId, content) {
+        return await this.prisma.pages.update({
+            where: {
+                id: pageId,
+            },
+            data: {
+                content: content,
+            },
+        });
+    }
 };
 PagesService = __decorate([
     (0, common_1.Injectable)(),

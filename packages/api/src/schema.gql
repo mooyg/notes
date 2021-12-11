@@ -2,11 +2,27 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Children {
+  text: String
+  type: String
+  src: String
+  children: ChildChild
+  shortName: String
+}
+
+type ChildChild {
+  text: String
+}
+
+type Content {
+  children: [Children!]!
+}
+
 type Pages {
   name: String!
   id: String!
   badge: String
-  content: String
+  content: [Content!]
   templateId: String!
 }
 
@@ -15,6 +31,22 @@ type Templates {
   name: String!
   userId: String!
   badge: String!
+}
+
+input ChildrenInput {
+  text: String
+  type: String
+  src: String
+  children: ChildChildInput
+  shortName: String
+}
+
+input ChildChildInput {
+  text: String
+}
+
+input ContentInput {
+  children: [ChildrenInput!]!
 }
 
 type Query {

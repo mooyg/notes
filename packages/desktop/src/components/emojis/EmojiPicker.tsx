@@ -56,8 +56,8 @@ export const EmojiPicker = () => {
         </Flex>
         <Flex flexWrap="wrap">
           {Object.keys(groupedEmojiData).map((category, index) => (
-            <Box p="2">
-              <Button key={index} onClick={() => setCurrentCategory(category)} size="xs">
+            <Box p="2" key={index}>
+              <Button onClick={() => setCurrentCategory(category)} size="xs">
                 {category}
               </Button>
             </Box>

@@ -7,3 +7,12 @@ export interface IGithubUser {
 export interface Email {
   value: string
 }
+export interface Content {
+  children: {
+    text?: string
+    type?: string
+    src?: string
+    children?: { text: string }[]
+    shortName?: string
+  }[]
+}
