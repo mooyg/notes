@@ -16,7 +16,6 @@ export const Home = () => {
   const history = useHistory()
   const accessToken = useAccessToken()
   const { showEmojiPicker, activePage } = useStore()
-  const store = useStore()
   // const { data: pageContent } = useQuery<IPage>([`/user/page/${pageId}`, accessToken], {
   //   enabled: !!pageId,
   // })
@@ -31,7 +30,7 @@ export const Home = () => {
     <>
       <Flex alignItems="flex-start">
         <Sidebar />
-        {activePage && <Content content={activePage} />}
+        {activePage && <Content />}
       </Flex>
       {showEmojiPicker && <EmojiPicker />}
     </>

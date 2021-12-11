@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import {
   Plate,
   createPlateComponents,
@@ -29,18 +29,18 @@ export const ContentEditor = () => {
   const setNavigationKeyPressed = useStore((state) => state.setNavigationKeyPressed)
   const navigationKeyPressed = useStore((state) => state.navigationKeyPressed)
   const activePage = useStore((state) => state.activePage)
-  console.log(value)
+  console.log('Active Page inside editor', activePage)
 
-  useEffect(() => {
-    if (!value) return
-    axios({
+  const saveToDatabase = debounce(async () => {
+    console.log('DEBOUNCED FUNCTION')
+    await axios({
       method: 'POST',
       url: `pages/save/${activePage?.id}`,
       data: {
         content: value,
       },
     })
-  }, [value])
+  }, 500)
 
   const createOnKeyDownPlugin = (): PlatePlugin => {
     return {
@@ -63,20 +63,20 @@ export const ContentEditor = () => {
 
   const options = createPlateOptions()
 
-  const saveToDatabase = debounce(() => {}, 250)
   return (
     <>
       <BallonToolbarMarks />
       <Plate
         components={components}
         options={options}
-        initialValue={activePage?.content}
+        value={activePage?.content}
         editableProps={{
           placeholder: 'Type... ',
           style: {
             fontSize: '15px',
           },
         }}
+        onChange={() => saveToDatabase()}
         plugins={[...pluginsBasic, createOnKeyDownPlugin()]}
       />
     </>
