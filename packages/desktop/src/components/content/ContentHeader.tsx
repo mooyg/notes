@@ -1,5 +1,4 @@
-import { Image } from '@chakra-ui/image'
-import { Flex } from '@chakra-ui/layout'
+import { Image, Flex } from '@chakra-ui/react'
 import React from 'react'
 
 export const ContentHeader = () => {

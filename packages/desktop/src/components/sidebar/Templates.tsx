@@ -1,5 +1,4 @@
-import { IconButton } from '@chakra-ui/button'
-import { Flex, Text } from '@chakra-ui/layout'
+import { IconButton, Flex, Text } from '@chakra-ui/react'
 import { templateDir } from '@tauri-apps/api/path'
 import produce from 'immer'
 import React, { useEffect, useMemo, useState } from 'react'

@@ -1,15 +1,13 @@
-import { Box, Flex } from '@chakra-ui/layout'
+import { Box, Flex, Button, IconButton, Input } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { Emoji } from './Emoji'
 import { groupedEmojiData } from './lib'
-import { Button, IconButton } from '@chakra-ui/button'
 import Draggable from 'react-draggable'
 import { CloseIcon } from '../icons/CloseIcon'
 import { useStore } from '../../store/store'
-import { useEventEditorId, useStoreEditorRef } from '@udecode/plate-core'
+import { useEventEditorId, useStoreEditorRef } from '@udecode/plate'
 import { insertImage } from '../text-editor/lib'
 import { Editor } from 'slate'
-import { Input } from '@chakra-ui/react'
 
 export const EmojiPicker = () => {
   const [currentCategory, setCurrentCategory] = useState('Smileys & Emotion')

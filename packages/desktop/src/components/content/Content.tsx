@@ -1,4 +1,4 @@
-import { Container, Flex, VStack } from '@chakra-ui/layout'
+import { Container, Flex, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { IPage } from '../../interfaces'
 import { useStore } from '../../store/store'

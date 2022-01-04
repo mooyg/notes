@@ -15,11 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PagesResolver = void 0;
 const common_1 = require("@nestjs/common");
 const graphql_1 = require("@nestjs/graphql");
-const jwt_guard_1 = require("../../auth/guards/jwt-guard");
 const create_page_dto_1 = require("./dto/create-page.dto");
 const pages_service_1 = require("./pages.service");
 const models_1 = require("./models");
-const user_decorator_1 = require("../../decorators/user.decorator");
 const gql_auth_guard_1 = require("../../guards/gql-auth-guard");
 let PagesResolver = class PagesResolver {
     constructor(pageService) {

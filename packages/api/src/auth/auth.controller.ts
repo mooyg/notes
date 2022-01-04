@@ -16,7 +16,7 @@ import { IGithubUser } from 'src/types'
 import { JwtService } from '@nestjs/jwt'
 import { JwtGuard } from './guards/jwt-guard'
 import { User } from 'src/decorators/user.decorator'
-import { User as IUser } from '.prisma/client'
+import { User as IUser } from '@prisma/client'
 @Controller('api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService, private readonly jwtService: JwtService) {}

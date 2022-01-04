@@ -11,11 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TemplatesResolver = void 0;
+const client_1 = require("@prisma/client");
 const common_1 = require("@nestjs/common");
 const graphql_1 = require("@nestjs/graphql");
-const jwt_guard_1 = require("../../auth/guards/jwt-guard");
 const user_decorator_1 = require("../../decorators/user.decorator");
 const gql_auth_guard_1 = require("../../guards/gql-auth-guard");
 const create_template_dto_1 = require("./dto/create-template.dto");
@@ -38,7 +39,7 @@ __decorate([
     __param(0, (0, graphql_1.Args)()),
     __param(1, (0, user_decorator_1.GQLUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_template_dto_1.CreateTemplateDto, Object]),
+    __metadata("design:paramtypes", [create_template_dto_1.CreateTemplateDto, typeof (_a = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _a : Object]),
     __metadata("design:returntype", Promise)
 ], TemplatesResolver.prototype, "createTemplate", null);
 __decorate([
@@ -46,7 +47,7 @@ __decorate([
     (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
     __param(0, (0, user_decorator_1.GQLUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [typeof (_b = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _b : Object]),
     __metadata("design:returntype", Promise)
 ], TemplatesResolver.prototype, "getTemplates", null);
 TemplatesResolver = __decorate([

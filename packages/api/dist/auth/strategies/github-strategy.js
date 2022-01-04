@@ -14,7 +14,6 @@ const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_github2_1 = require("passport-github2");
 require("dotenv/config");
-const types_1 = require("../../types");
 let GithubStrategy = class GithubStrategy extends (0, passport_1.PassportStrategy)(passport_github2_1.Strategy, 'github') {
     constructor() {
         super({

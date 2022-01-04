@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Response } from 'express'
 import { PrismaService } from 'src/prisma.service'
 import { IGithubUser } from 'src/types'
-import { User } from '.prisma/client'
+import { User } from '@prisma/client'
 import { JwtService } from '@nestjs/jwt'
 @Injectable()
 export class AuthService {

@@ -1,4 +1,4 @@
-import { Templates, User } from '.prisma/client';
+import { Templates, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 export declare class TemplatesService {
     private readonly prisma;

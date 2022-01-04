@@ -1,4 +1,4 @@
-import { User as IUser } from '.prisma/client'
+import { User as IUser } from '@prisma/client'
 import { UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { JwtGuard } from 'src/auth/guards/jwt-guard'

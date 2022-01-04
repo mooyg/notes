@@ -88,3 +88,7 @@ typings/
 # Electron-Forge
 out/
 __pycache__/
+
+packages/api/dist/
+
+database.env

@@ -1,5 +1,5 @@
 import { PrismaService } from 'src/prisma.service';
-import { User } from '.prisma/client';
+import { User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 export declare class AuthService {
     private readonly prismaService;

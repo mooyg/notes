@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useLocation } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import useLocalStorage from './useLocalStorage'
 export const useAccessToken = (): string | null => {
   const [accessToken, setAccessToken] = useLocalStorage('accessToken', '')

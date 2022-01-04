@@ -1,4 +1,3 @@
-import { Button, IconButton } from '@chakra-ui/button'
 import {
   useDisclosure,
   Modal as ChakraModal,
@@ -13,6 +12,8 @@ import {
   ModalFooter as ChakraModalFooter,
   VStack,
   useToast,
+  Button,
+  IconButton,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
 

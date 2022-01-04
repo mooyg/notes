@@ -1,5 +1,5 @@
 import React from 'react'
-import Icon from '@chakra-ui/icon'
+import { Icon } from '@chakra-ui/react'
 
 export const GithubIcon = () => {
   return (

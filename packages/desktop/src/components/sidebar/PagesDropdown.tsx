@@ -1,5 +1,4 @@
-import { Button } from '@chakra-ui/button'
-import { Flex, FlexProps, Text } from '@chakra-ui/react'
+import { Flex, FlexProps, Text, Button } from '@chakra-ui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
 import { useLazyQuery } from '../../hooks/useLazyQuery'
