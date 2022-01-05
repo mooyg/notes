@@ -25,6 +25,9 @@ let PagesController = class PagesController {
         console.log('content', saveContentDto.content);
         this._pageService.saveContent(pageId, saveContentDto.content);
     }
+    async getPage(pageId) {
+        return await this._pageService.getPage(pageId);
+    }
 };
 __decorate([
     (0, common_1.Post)('/save/:pageId'),
@@ -34,6 +37,13 @@ __decorate([
     __metadata("design:paramtypes", [String, saveContent_dto_1.SaveContentDto]),
     __metadata("design:returntype", Promise)
 ], PagesController.prototype, "saveContent", null);
+__decorate([
+    (0, common_1.Get)('/:pageId'),
+    __param(0, (0, common_1.Query)('pageId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PagesController.prototype, "getPage", null);
 PagesController = __decorate([
     (0, common_1.Controller)('/pages'),
     __metadata("design:paramtypes", [pages_service_1.PagesService])

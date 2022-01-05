@@ -1,6 +1,7 @@
 import { Flex, FlexProps, Text, Button } from '@chakra-ui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
+import axios from '../../axios/axios'
 import { useLazyQuery } from '../../hooks/useLazyQuery'
 
 import { GET_PAGE } from '../../queries'
@@ -11,9 +12,9 @@ interface IPagesDropdown {
   dropdowns: IDropdowns
   clickedTemplate: string
 }
+const MotionFlex = motion<FlexProps>(Flex)
 
 export const PagesDropdown = React.memo(({ dropdowns, clickedTemplate }: IPagesDropdown) => {
-  const MotionFlex = motion<FlexProps>(Flex)
   const setActivePage = useStore((state) => state.setActivePage)
   const [, getPage] = useLazyQuery({
     query: GET_PAGE,
@@ -36,11 +37,9 @@ export const PagesDropdown = React.memo(({ dropdowns, clickedTemplate }: IPagesD
                   variant="ghost"
                   mb="2"
                   onClick={() =>
-                    getPage({
-                      pageId: item.id,
-                    })?.then((result) => {
+                    axios.get(`/pages/${item.id}`).then((result) => {
                       console.log(result)
-                      setActivePage(result.data.getPage)
+                      setActivePage(result.data)
                     })
                   }
                 >

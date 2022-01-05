@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import {
   Plate,
   createPlateComponents,
@@ -6,41 +6,40 @@ import {
   PlatePlugin,
   ELEMENT_IMAGE,
   ELEMENT_DEFAULT,
-  isSelectionExpanded,
-  getSelectionText,
-  useEventEditorId,
-  useStoreEditorRef,
   useStoreEditorValue,
 } from '@udecode/plate'
-import { useEffect, useMemo } from 'react'
 import { useStore } from '../../store/store'
 import { Emoticon } from '../emojis/Emoticon'
 import { DefaultElement } from './DefaultElement'
 import { pluginsBasic } from './lib'
 import { BallonToolbarMarks } from './Options'
-import { useSelected } from 'slate-react'
 import { debounce } from 'lodash'
-import { useMutation } from 'urql'
 import axios from '../../axios/axios'
 
 export const ContentEditor = () => {
-  const value = useStoreEditorValue()
   const setShowEmojiPicker = useStore((state) => state.setShowEmojiPicker)
   const setNavigationKeyPressed = useStore((state) => state.setNavigationKeyPressed)
   const navigationKeyPressed = useStore((state) => state.navigationKeyPressed)
   const activePage = useStore((state) => state.activePage)
-  console.log('Active Page inside editor', activePage)
+  const value = useStoreEditorValue(activePage?.id)
+  const editorValue = useRef<any[] | undefined | null>(null)
 
-  const saveToDatabase = debounce(async () => {
-    console.log('DEBOUNCED FUNCTION')
-    await axios({
-      method: 'POST',
-      url: `pages/save/${activePage?.id}`,
-      data: {
-        content: value,
-      },
-    })
-  }, 500)
+  useEffect(() => {
+    editorValue.current = value
+  }, [value])
+
+  const saveToDatabase = useCallback(
+    debounce(async () => {
+      await axios({
+        method: 'POST',
+        url: `pages/save/${activePage?.id}`,
+        data: {
+          content: editorValue.current,
+        },
+      })
+    }, 500),
+    []
+  )
 
   const createOnKeyDownPlugin = (): PlatePlugin => {
     return {
@@ -67,16 +66,19 @@ export const ContentEditor = () => {
     <>
       <BallonToolbarMarks />
       <Plate
+        id={activePage?.id}
         components={components}
         options={options}
-        value={activePage?.content}
+        initialValue={activePage?.content}
         editableProps={{
           placeholder: 'Type... ',
           style: {
             fontSize: '15px',
           },
         }}
-        onChange={() => saveToDatabase()}
+        onChange={() => {
+          saveToDatabase()
+        }}
         plugins={[...pluginsBasic, createOnKeyDownPlugin()]}
       />
     </>

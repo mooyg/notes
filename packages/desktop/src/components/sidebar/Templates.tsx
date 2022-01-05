@@ -1,6 +1,6 @@
 import { IconButton, Flex, Text } from '@chakra-ui/react'
 import { templateDir } from '@tauri-apps/api/path'
-import produce from 'immer'
+import { useImmer } from 'use-immer'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useMutation, useQuery } from 'urql'
 import { useAccessToken } from '../../hooks/useAccessToken'
@@ -15,7 +15,7 @@ import { PagesDropdown } from './PagesDropdown'
 export const Templates = () => {
   const accessToken = useAccessToken()
 
-  const [dropdowns, setDropdowns] = useState<IDropdowns>({
+  const [dropdowns, setDropdowns] = useImmer<IDropdowns>({
     activeDropdownId: null,
     dropdowns: [],
   })
@@ -58,24 +58,21 @@ export const Templates = () => {
   }, [templateData])
 
   useEffect(() => {
-    console.log(templatePages)
     if (templatePages) {
-      setDropdowns(
-        produce((draft) => {
-          return {
-            ...draft,
-            dropdowns: draft.dropdowns.map((item) => {
-              if (item.templateId === draft.activeDropdownId) {
-                return {
-                  ...item,
-                  templatePages: templatePages.data.getPagesByTemplateId,
-                }
+      setDropdowns((draft) => {
+        return {
+          ...draft,
+          dropdowns: draft.dropdowns.map((item) => {
+            if (item.templateId === draft.activeDropdownId) {
+              return {
+                ...item,
+                templatePages: templatePages.data.getPagesByTemplateId,
               }
-              return item
-            }),
-          }
-        })
-      )
+            }
+            return item
+          }),
+        }
+      })
     }
   }, [templatePages])
   console.log(dropdowns)
@@ -118,11 +115,13 @@ export const Templates = () => {
                   )
                 }
                 onClick={() => {
-                  setDropdowns(
-                    produce((draft) => {
+                  setDropdowns((draft) => {
+                    if (draft.activeDropdownId === template.templateId) {
+                      draft.activeDropdownId = null
+                    } else {
                       draft.activeDropdownId = template.templateId
-                    })
-                  )
+                    }
+                  })
                   getPages({
                     templateId: template.templateId,
                   })
