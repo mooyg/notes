@@ -1,4 +1,4 @@
-import { IconButton, Flex, Text, useAccordionItemState, Button } from '@chakra-ui/react'
+import { IconButton, Flex, Text, useAccordionItemState, Button, Box } from '@chakra-ui/react'
 import { IPage } from '../../../interfaces'
 import { CreateTemplate } from './CreateTemplate'
 import { useLazyQuery, useQuery } from '@apollo/client'
@@ -7,14 +7,20 @@ import { ITemplate } from '../../../interfaces/index'
 import { useEffect, useState } from 'react'
 import { useImmer } from 'use-immer'
 import { Pages } from '../pages/Pages'
+import { Emoji } from '../../emojis/Emoji'
+import { ArrowIcon } from '../../icons/ArrowIcon'
+import { DownArrowIcon } from '../../icons/DownArrowIcon'
 
 export const Templates = () => {
   const { data: templates } = useQuery<Record<'getTemplates', ITemplate[]>>(GET_TEMPLATES)
   const [getPages, { data: pages }] =
     useLazyQuery<Record<'getPagesByTemplateId', IPage[]>>(GET_PAGES_BY_TEMPLATEID)
-  const [activeTemplateId, setActiveTemplateId] = useState('')
+  const [activeTemplateId, setActiveTemplateId] = useState<string | null>('')
   const handleDropdown = (template: ITemplate) => {
-    setActiveTemplateId(template.id)
+    setActiveTemplateId((prev) => {
+      if (prev === template.id) return null
+      return template.id
+    })
     getPages({
       variables: {
         templateId: template.id,
@@ -27,9 +33,15 @@ export const Templates = () => {
       {templates?.getTemplates?.map((template) => {
         return (
           <>
-            <Button my="1" onClick={() => handleDropdown(template)}>
-              {template.name}
-            </Button>
+            <Flex alignItems={'center'}>
+              <Button my="1" variant={'ghost'} onClick={() => handleDropdown(template)}>
+                {activeTemplateId === template.id ? <DownArrowIcon /> : <ArrowIcon />}
+              </Button>
+              <Flex>
+                <Emoji shortName="closed_book" />
+                {template.name}
+              </Flex>
+            </Flex>
             {activeTemplateId === template.id && (
               <Pages activeTemplateId={activeTemplateId} pages={pages?.getPagesByTemplateId} />
             )}

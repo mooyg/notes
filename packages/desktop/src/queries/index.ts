@@ -1,4 +1,5 @@
-import { gql } from 'urql'
+import { gql } from '@apollo/client'
+
 export const GET_TEMPLATES = gql`
   query GetTemplates {
     getTemplates {
