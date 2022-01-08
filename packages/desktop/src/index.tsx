@@ -5,20 +5,24 @@ import './styles/global.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from './theme'
 import { UserProvider } from './components/providers/User.provider'
-import { createClient, Provider, defaultExchanges } from 'urql'
-import { devtoolsExchange } from '@urql/devtools'
+import { InMemoryCache, ApolloClient, ApolloProvider } from '@apollo/client'
+import { ENDPOINT } from './constants'
 
-const client = createClient({
-  url: 'http://localhost:8080/graphql',
-  exchanges: [devtoolsExchange, ...defaultExchanges],
+const client = new ApolloClient({
+  uri: `${ENDPOINT}/graphql`,
+  cache: new InMemoryCache(),
+  headers: {
+    Authorization: `Bearer ${JSON.parse(window.localStorage.getItem('accessToken') as string)}`,
+  },
+  connectToDevTools: true,
 })
 
 ReactDOM.render(
   <UserProvider>
     <ChakraProvider theme={theme}>
-      <Provider value={client}>
+      <ApolloProvider client={client}>
         <App />
-      </Provider>
+      </ApolloProvider>
     </ChakraProvider>
   </UserProvider>,
   document.getElementById('root')

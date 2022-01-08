@@ -15,25 +15,26 @@ import {
   Button,
   IconButton,
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 
 import { AddIcon } from '../icons'
 interface IModal {
   heading: string
   body?: string[]
   onSumbit: (args: SumbitInterface) => void
+  children: ReactNode
 }
 interface SumbitInterface {
   name: string
 }
-export const Modal = ({ heading, body, onSumbit }: IModal) => {
+export const Modal = ({ heading, children, onSumbit }: IModal) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [name, setName] = useState('')
   const toast = useToast()
 
   return (
     <>
-      <IconButton onClick={onOpen} variant="ghost" aria-label="add-icon" icon={<AddIcon />} />
+      {children}
       <ChakraModal isOpen={isOpen} onClose={onClose}>
         <ChakraModalOverlay />
         <ChakraModalContent>
