@@ -23,18 +23,22 @@ export const ContentEditor = () => {
   const activePage = useStore((state) => state.activePage)
   const value = useStoreEditorValue(activePage?.id)
   const editorValue = useRef<any[] | undefined | null>(null)
-
-  console.log(activePage)
+  const activePageId = useRef<string | undefined | null>(null)
 
   useEffect(() => {
     editorValue.current = value
   }, [value])
 
+  useEffect(() => {
+    activePageId.current = activePage?.id
+  }, [activePage])
+
   const saveToDatabase = useCallback(
     debounce(async () => {
+      console.log(activePage?.id)
       await axios({
         method: 'POST',
-        url: `pages/save/${activePage?.id}`,
+        url: `pages/save/${activePageId.current}`,
         data: {
           content: editorValue.current,
         },
