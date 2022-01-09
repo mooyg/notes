@@ -24,6 +24,8 @@ export const ContentEditor = () => {
   const value = useStoreEditorValue(activePage?.id)
   const editorValue = useRef<any[] | undefined | null>(null)
 
+  console.log(activePage)
+
   useEffect(() => {
     editorValue.current = value
   }, [value])

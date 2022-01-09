@@ -14,7 +14,7 @@ export class PagesController {
   }
 
   @Get('/:pageId')
-  async getPage(@Query('pageId') pageId: string) {
+  async getPage(@Param('pageId') pageId: string) {
     return await this._pageService.getPage(pageId)
   }
 }

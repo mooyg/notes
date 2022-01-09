@@ -39,7 +39,7 @@ __decorate([
 ], PagesController.prototype, "saveContent", null);
 __decorate([
     (0, common_1.Get)('/:pageId'),
-    __param(0, (0, common_1.Query)('pageId')),
+    __param(0, (0, common_1.Param)('pageId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

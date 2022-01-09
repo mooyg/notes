@@ -4,7 +4,7 @@ import { CreateTemplate } from './CreateTemplate'
 import { useLazyQuery, useQuery } from '@apollo/client'
 import { GET_PAGES_BY_TEMPLATEID, GET_TEMPLATES } from '../../../queries'
 import { ITemplate } from '../../../interfaces/index'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useImmer } from 'use-immer'
 import { Pages } from '../pages/Pages'
 import { Emoji } from '../../emojis/Emoji'
@@ -32,7 +32,7 @@ export const Templates = () => {
       <CreateTemplate />
       {templates?.getTemplates?.map((template) => {
         return (
-          <>
+          <React.Fragment key={template.id}>
             <Flex alignItems={'center'}>
               <Button my="1" variant={'ghost'} onClick={() => handleDropdown(template)}>
                 {activeTemplateId === template.id ? <DownArrowIcon /> : <ArrowIcon />}
@@ -45,7 +45,7 @@ export const Templates = () => {
             {activeTemplateId === template.id && (
               <Pages activeTemplateId={activeTemplateId} pages={pages?.getPagesByTemplateId} />
             )}
-          </>
+          </React.Fragment>
         )
       })}
     </Flex>

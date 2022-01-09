@@ -33,11 +33,13 @@ let PagesService = class PagesService {
         return pages;
     }
     async getPage(pageId) {
+        console.log(pageId);
         const page = await this.prisma.pages.findFirst({
             where: {
                 id: pageId,
             },
         });
+        console.log(page);
         return page;
     }
     async saveContent(pageId, content) {
