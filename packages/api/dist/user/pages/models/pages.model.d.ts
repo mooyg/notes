@@ -5,4 +5,5 @@ export declare class Pages {
     badge?: string;
     content?: Content;
     templateId: string;
+    locked: boolean;
 }

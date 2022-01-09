@@ -24,6 +24,7 @@ type Pages {
   badge: String
   content: [Content!]
   templateId: String!
+  locked: Boolean!
 }
 
 type Templates {

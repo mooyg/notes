@@ -34,25 +34,7 @@ export const CREATE_PAGE = gql`
     }
   }
 `
-export const GET_PAGE = gql`
-  query GetPage($pageId: String!) {
-    getPage(pageId: $pageId) {
-      name
-      id
-      content {
-        children {
-          shortName
-          text
-          children {
-            text
-          }
-          type
-          src
-        }
-      }
-    }
-  }
-`
+
 export const SAVE_CONTENT = gql`
   mutation SaveContent($pageId: String!, $content: Content) {
     saveContent(pageId: $pageId, content: $content) {

@@ -17,4 +17,5 @@ export interface IPage {
   id: string
   name: string
   templateId: string
+  locked: boolean
 }

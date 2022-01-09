@@ -33,4 +33,6 @@ model Pages{
   content Json? 
   templates Templates @relation(fields: [templateId], references:[id])
   templateId String
+  locked Boolean @default(false)
+  password String?
 }

@@ -29,4 +29,8 @@ export class PagesResolver {
   async getPage(@Args('pageId') pageId: string) {
     return await this.pageService.getPage(pageId)
   }
+
+  @Query(() => Pages)
+  @UseGuards(GqlAuthGuard)
+  async lockPage(@Args(""))
 }

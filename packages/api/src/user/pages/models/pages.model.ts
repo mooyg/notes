@@ -17,4 +17,7 @@ export class Pages {
 
   @Field(() => String)
   templateId: string
+
+  @Field(() => Boolean)
+  locked: boolean
 }

@@ -8,6 +8,8 @@ interface StoreState {
   setNavigationKeyPressed: (val: NavigationKey | null) => void
   setActivePage: (val: IPage) => void
   activePage: IPage | null
+  canViewPage: string | null
+  setCanViewPage: (val: string) => void
 }
 type NavigationKey = 'ArrowRight' | 'ArrowLeft'
 
@@ -29,8 +31,19 @@ export const activePageSlice = (set: SetState<StoreState>, get: GetState<StoreSt
       activePage: val,
     })),
 })
+
+export const canViewPageSlice = (set: SetState<StoreState>, get: GetState<StoreState>) => ({
+  canViewPage: null,
+  setCanViewPage: (val: string) => {
+    set((prev) => ({
+      ...prev,
+      canViewPage: val,
+    }))
+  },
+})
 export const useStore = create<StoreState>((set, get) => ({
   ...createEmojiPickerSlice(set, get),
   ...isNavigatingSlice(set, get),
   ...activePageSlice(set, get),
+  ...canViewPageSlice(set, get),
 }))

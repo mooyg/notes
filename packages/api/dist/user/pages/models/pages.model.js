@@ -34,6 +34,10 @@ __decorate([
     (0, graphql_1.Field)(() => String),
     __metadata("design:type", String)
 ], Pages.prototype, "templateId", void 0);
+__decorate([
+    (0, graphql_1.Field)(() => Boolean),
+    __metadata("design:type", Boolean)
+], Pages.prototype, "locked", void 0);
 Pages = __decorate([
     (0, graphql_1.ObjectType)()
 ], Pages);

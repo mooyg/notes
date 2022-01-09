@@ -9,13 +9,11 @@ import { IPage, ITemplate } from '../interfaces'
 import { Content } from '../components/content/Content'
 import { EmojiPicker } from '../components/emojis/EmojiPicker'
 import { useStore } from '../store/store'
-import { useQuery } from 'urql'
-import { GET_PAGE, GET_TEMPLATES } from '../queries'
-import { useLazyQuery } from '../hooks/useLazyQuery'
+import { LockedContent } from '../components/LockedContent'
 export const Home = () => {
   const history = useHistory()
   const accessToken = useAccessToken()
-  const { showEmojiPicker, activePage } = useStore()
+  const { showEmojiPicker, activePage, canViewPage, setCanViewPage } = useStore()
   // const { data: pageContent } = useQuery<IPage>([`/user/page/${pageId}`, accessToken], {
   //   enabled: !!pageId,
   // })
@@ -26,11 +24,19 @@ export const Home = () => {
 
   useInitialAuth(accessToken!)
 
+  useEffect(() => {
+    if (activePage) {
+      if (!activePage.locked) {
+        setCanViewPage(activePage.id)
+      }
+    }
+  }, [activePage])
+  console.log('ID OF CAN VIEW PAGE', canViewPage)
   return (
     <>
       <Flex alignItems="flex-start">
         <Sidebar />
-        {activePage && <Content />}
+        {activePage?.locked ? <LockedContent /> : activePage?.id === canViewPage && <Content />}
       </Flex>
       {showEmojiPicker && <EmojiPicker />}
     </>

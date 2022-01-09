@@ -24,13 +24,12 @@ export class PagesService {
     return pages
   }
   async getPage(pageId: string) {
-    console.log(pageId)
     const page = await this.prisma.pages.findFirst({
       where: {
         id: pageId,
       },
     })
-    console.log(page)
+    delete page.password
     return page
   }
   async saveContent(pageId: string, content: object[]) {
