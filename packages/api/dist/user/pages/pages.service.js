@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PagesService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma.service");
+const bcrypt_1 = require("bcrypt");
 let PagesService = class PagesService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -50,6 +51,29 @@ let PagesService = class PagesService {
                 content: content,
             },
         });
+    }
+    async lockPage({ pageId, password }) {
+        const hasedPassword = await (0, bcrypt_1.hash)(password, 8);
+        return await this.prisma.pages.update({
+            where: {
+                id: pageId,
+            },
+            data: {
+                locked: true,
+                password: hasedPassword,
+            },
+        });
+    }
+    async verifyPagePassword({ pageId, password }) {
+        const page = await this.prisma.pages.findFirst({
+            where: {
+                id: pageId,
+            },
+        });
+        const validate = await (0, bcrypt_1.compare)(password, page.password);
+        if (!validate)
+            throw new common_1.UnauthorizedException();
+        return true;
     }
 };
 PagesService = __decorate([

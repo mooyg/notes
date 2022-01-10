@@ -48,3 +48,8 @@ export const SAVE_CONTENT = gql`
     }
   }
 `
+export const VERIFY_PAGE_PASSWORD = gql`
+  query verifyPagePassword($pageId: String!, $password: String!) {
+    verifyPagePassword(pageId: $pageId, password: $password)
+  }
+`

@@ -3,7 +3,6 @@ import { Button, Flex, Text } from '@chakra-ui/react'
 import { useCallback, useEffect } from 'react'
 import axios from '../../../axios/axios'
 import { IPage } from '../../../interfaces'
-import { GET_PAGE } from '../../../queries'
 import { useStore } from '../../../store/store'
 
 type Page = {
@@ -21,10 +20,10 @@ export const Pages = ({ activeTemplateId, pages }: Page) => {
   }, [])
 
   return (
-    <Flex>
+    <Flex flexDirection="column">
       {pages?.map((page) => {
         return (
-          <Button key={page.id} onClick={() => getPage(page)} size={'sm'}>
+          <Button my="1" key={page.id} onClick={() => getPage(page)} size={'sm'}>
             {page.name}
           </Button>
         )

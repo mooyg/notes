@@ -8,6 +8,7 @@ import { Pages } from './models'
 import { User } from 'src/decorators/user.decorator'
 import { GqlAuthGuard } from 'src/guards/gql-auth-guard'
 import { SaveContentDto } from './dto/saveContent.dto'
+import { LockPageDto } from './dto/lock-page.dto'
 @Resolver(() => Pages)
 export class PagesResolver {
   constructor(private readonly pageService: PagesService) {}
@@ -30,7 +31,18 @@ export class PagesResolver {
     return await this.pageService.getPage(pageId)
   }
 
-  @Query(() => Pages)
+  @Mutation(() => Pages)
   @UseGuards(GqlAuthGuard)
-  async lockPage(@Args(""))
+  async lockPage(@Args() { password, pageId }: LockPageDto) {
+    return await this.pageService.lockPage({
+      pageId,
+      password,
+    })
+  }
+
+  @Query(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async verifyPagePassword(@Args() { password, pageId }: LockPageDto) {
+    return await this.pageService.verifyPagePassword({ password, pageId })
+  }
 }

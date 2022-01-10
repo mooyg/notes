@@ -34,9 +34,9 @@ export const Home = () => {
   console.log('ID OF CAN VIEW PAGE', canViewPage)
   return (
     <>
-      <Flex alignItems="flex-start">
+      <Flex>
         <Sidebar />
-        {activePage?.locked ? <LockedContent /> : activePage?.id === canViewPage && <Content />}
+        {activePage?.locked ? <LockedContent /> : <Content />}
       </Flex>
       {showEmojiPicker && <EmojiPicker />}
     </>

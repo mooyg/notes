@@ -10,6 +10,7 @@ interface StoreState {
   activePage: IPage | null
   canViewPage: string | null
   setCanViewPage: (val: string) => void
+  updateLockedState: (val: boolean) => void
 }
 type NavigationKey = 'ArrowRight' | 'ArrowLeft'
 
@@ -30,6 +31,17 @@ export const activePageSlice = (set: SetState<StoreState>, get: GetState<StoreSt
       ...prev,
       activePage: val,
     })),
+  updateLockedState: (val: boolean) =>
+    set((prev) => {
+      if (!prev.activePage) return { ...prev }
+      return {
+        ...prev,
+        activePage: {
+          ...prev.activePage,
+          locked: false,
+        },
+      }
+    }),
 })
 
 export const canViewPageSlice = (set: SetState<StoreState>, get: GetState<StoreState>) => ({

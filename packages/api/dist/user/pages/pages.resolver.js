@@ -19,6 +19,7 @@ const create_page_dto_1 = require("./dto/create-page.dto");
 const pages_service_1 = require("./pages.service");
 const models_1 = require("./models");
 const gql_auth_guard_1 = require("../../guards/gql-auth-guard");
+const lock_page_dto_1 = require("./dto/lock-page.dto");
 let PagesResolver = class PagesResolver {
     constructor(pageService) {
         this.pageService = pageService;
@@ -34,6 +35,15 @@ let PagesResolver = class PagesResolver {
     }
     async getPage(pageId) {
         return await this.pageService.getPage(pageId);
+    }
+    async lockPage({ password, pageId }) {
+        return await this.pageService.lockPage({
+            pageId,
+            password,
+        });
+    }
+    async verifyPagePassword({ password, pageId }) {
+        return await this.pageService.verifyPagePassword({ password, pageId });
     }
 };
 __decorate([
@@ -60,6 +70,22 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PagesResolver.prototype, "getPage", null);
+__decorate([
+    (0, graphql_1.Mutation)(() => models_1.Pages),
+    (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
+    __param(0, (0, graphql_1.Args)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [lock_page_dto_1.LockPageDto]),
+    __metadata("design:returntype", Promise)
+], PagesResolver.prototype, "lockPage", null);
+__decorate([
+    (0, graphql_1.Query)(() => Boolean),
+    (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
+    __param(0, (0, graphql_1.Args)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [lock_page_dto_1.LockPageDto]),
+    __metadata("design:returntype", Promise)
+], PagesResolver.prototype, "verifyPagePassword", null);
 PagesResolver = __decorate([
     (0, graphql_1.Resolver)(() => models_1.Pages),
     __metadata("design:paramtypes", [pages_service_1.PagesService])

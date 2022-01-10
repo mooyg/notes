@@ -1,8 +1,10 @@
 import React from 'react'
-import { Flex, Text, Tag } from '@chakra-ui/react'
+import { Flex, Text, Tag, HStack, IconButton } from '@chakra-ui/react'
 import { IPage } from '../../interfaces'
 import { UnFavoriteIcon } from '../icons/UnFavoriteIcon'
 import { useStore } from '../../store/store'
+import { LockOpenIcon } from '../icons/LockOpenIcon'
+import { LockClosedIcon } from '../icons/LockClosedIcon'
 interface IHeader {
   page: IPage
 }
@@ -13,7 +15,18 @@ export const Header = () => {
       <Tag fontWeight="medium" fontSize="sm">
         {page?.name}
       </Tag>
-      {page && <UnFavoriteIcon />}
+      <HStack>
+        {!page?.locked ? (
+          <IconButton aria-label="open-lock-icon">
+            <LockOpenIcon />
+          </IconButton>
+        ) : (
+          <IconButton aria-label="closed-lock-icon">
+            <LockClosedIcon />
+          </IconButton>
+        )}
+        <UnFavoriteIcon />
+      </HStack>
     </Flex>
   )
 }

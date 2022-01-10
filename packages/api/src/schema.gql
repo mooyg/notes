@@ -53,10 +53,12 @@ input ContentInput {
 type Query {
   getPagesByTemplateId(templateId: String!): [Pages!]!
   getPage(pageId: String!): Pages!
+  verifyPagePassword(pageId: String!, password: String!): Boolean!
   getTemplates: [Templates!]!
 }
 
 type Mutation {
   createPage(templateId: String!, pageName: String!): Pages!
+  lockPage(pageId: String!, password: String!): Pages!
   createTemplate(templateName: String!): Templates!
 }
