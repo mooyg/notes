@@ -4,6 +4,9 @@ import './styles/global.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { GithubIcon } from './components/icons/GithubIcon'
 import { Home } from './pages/Home'
+import { Page } from './pages/Page'
+import { useAccessToken } from './hooks/useAccessToken'
+import { useInitialAuth } from './hooks/useInitialAuth'
 export const App = (): JSX.Element => {
   return (
     <Router>
@@ -15,10 +18,13 @@ export const App = (): JSX.Element => {
             </ChakraLink>
           </Center>
         </Route>
+        <Route path="/pages/:pageId">
+          <Page />
+        </Route>
+
         <Route path="/">
           <Home />
         </Route>
-        <Route path="/pages/:pageId"></Route>
       </Switch>
     </Router>
   )

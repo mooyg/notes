@@ -32,7 +32,6 @@ export const Home = () => {
       }
     }
   }, [activePage])
-  console.log('ID OF CAN VIEW PAGE', canViewPage)
   return (
     <>
       <Layout />

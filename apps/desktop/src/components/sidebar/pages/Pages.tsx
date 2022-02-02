@@ -14,19 +14,17 @@ type Page = {
 export const Pages = ({ activeTemplateId, pages }: Page) => {
   const setActivePage = useStore((state) => state.setActivePage)
   const history = useHistory()
-  const getPage = useCallback(async (page: IPage) => {
-    console.log(page.id)
-    await axios.get<IPage>(`/pages/${page.id}`).then((result) => {
-      setActivePage(result.data)
-      history.push(result.data.id)
-    })
-  }, [])
 
   return (
     <Flex flexDirection="column">
       {pages?.map((page) => {
         return (
-          <Button my="1" key={page.id} onClick={() => getPage(page)} size={'sm'}>
+          <Button
+            my="1"
+            key={page.id}
+            onClick={() => history.push(`/pages/${page.id}`)}
+            size={'sm'}
+          >
             {page.name}
           </Button>
         )
