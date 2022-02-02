@@ -1,0 +1,6 @@
+{
+  "baseBranch": "origin/master",
+  "pipeline": {
+    "start:dev": {}
+  }
+}
