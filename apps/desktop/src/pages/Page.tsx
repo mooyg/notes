@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import axios from '../axios/axios'
 import { Content } from '../components/content/Content'
 import { EmojiPicker } from '../components/emojis/EmojiPicker'
@@ -12,6 +12,7 @@ import { useStore } from '../store/store'
 
 export const Page = () => {
   const { activePage, showEmojiPicker, setActivePage } = useStore()
+  const history = useHistory()
   const { pageId } = useParams<{
     pageId: string
   }>()
@@ -19,7 +20,9 @@ export const Page = () => {
   const accessToken = useAccessToken()
 
   useInitialAuth(accessToken!)
-
+  useEffect(() => {
+    !accessToken && history.push('/login')
+  }, [accessToken])
   useEffect(() => {
     console.log('RUNNING THHIS USEEFFECT')
     ;(async () => {
