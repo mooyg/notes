@@ -10,6 +10,8 @@ interface IHeader {
 }
 export const Header = () => {
   const page = useStore((state) => state.activePage)
+
+  const lockPage = () => {}
   return (
     <Flex p="2" justify="space-between">
       <Tag fontWeight="medium" fontSize="sm">
@@ -17,7 +19,7 @@ export const Header = () => {
       </Tag>
       <HStack>
         {!page?.locked ? (
-          <IconButton aria-label="open-lock-icon">
+          <IconButton aria-label="open-lock-icon" onClick={lockPage}>
             <LockOpenIcon />
           </IconButton>
         ) : (

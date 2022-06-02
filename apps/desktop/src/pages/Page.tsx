@@ -23,14 +23,15 @@ export const Page = () => {
   useEffect(() => {
     !accessToken && history.push('/login')
   }, [accessToken])
+
   useEffect(() => {
-    console.log('RUNNING THHIS USEEFFECT')
     ;(async () => {
       await axios.get<IPage>(`/pages/${pageId}`).then((result) => {
         setActivePage(result.data)
       })
     })()
   }, [pageId])
+
   return (
     <>
       <Layout>{activePage?.locked ? <LockedContent /> : <Content />}</Layout>
