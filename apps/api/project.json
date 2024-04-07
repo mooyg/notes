@@ -1,0 +1,17 @@
+{
+	"$schema": "https://raw.githubusercontent.com/nrwl/nx/master/packages/nx/schemas/project-schema.json",
+	"name": "api",
+	"projectType": "application",
+	"sourceRoot": "./apps/api",
+	"targets": {
+		"dev": {
+			"executor": "@monodon/rust:run",
+			"outputs": [
+				"{options.target-dir}"
+			],
+			"options": {
+				"target-dir": "./apps/api/dist/target/api"
+			}
+		}
+	}
+}
