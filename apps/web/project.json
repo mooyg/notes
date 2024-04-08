@@ -4,6 +4,9 @@
 	"sourceRoot": "apps/web/src",
 	"projectType": "application",
 	"tags": [],
+	"implicitDependencies": [
+		"ui"
+	],
 	"targets": {
 		"lint": {
 			"executor": "@nx/eslint:lint",

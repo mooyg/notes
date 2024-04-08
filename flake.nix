@@ -7,7 +7,6 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
     rust-overlay,
     ...
@@ -26,7 +25,7 @@
             pkg-config
             rust-bin.beta.latest.default
             openssl
-            atlas
+            darwin.apple_sdk.frameworks.SystemConfiguration
           ];
         };
     };

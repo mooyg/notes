@@ -1,10 +1,9 @@
-use rspc::{Config, Router};
 use std::{path::PathBuf, sync::Arc};
 
+use rspc::{Config, Router};
 pub mod users;
-
 pub fn init_router() -> Arc<Router> {
-    let router = rspc::Router::<()>::new()
+    let router = Router::<()>::new()
         .config(
             Config::new()
                 .set_ts_bindings_header("/* eslint-disable */")
@@ -13,8 +12,7 @@ pub fn init_router() -> Arc<Router> {
                         .join("../../libs/@rspc-client/src/bindings.ts"),
                 ),
         )
-        .query("version", |t| t(|_ctx, _input: ()| "1.0.0"))
-        .merge("users.", users::users::mount())
+        .query("version", |t| t(|_ctx, _input: ()| "1.0.0 "))
         .build()
         .arced();
     router

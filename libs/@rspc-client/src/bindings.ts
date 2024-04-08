@@ -3,7 +3,6 @@
 
 export type Procedures = {
     queries: 
-        { key: "users.list", input: never, result: null[] } | 
         { key: "version", input: never, result: string },
     mutations: never,
     subscriptions: never

@@ -1,22 +1,44 @@
 {
 	"compilerOptions": {
-		"allowJs": false,
-		"esModuleInterop": false,
 		"allowSyntheticDefaultImports": true,
 		"types": [
 			"vite/client",
-			"vitest"
-		]
+			"vitest/globals",
+			"vitest/importMeta",
+			"vite/client",
+			"node",
+			"vitest",
+			"svelte",
+			"node",
+			"vite/client"
+		],
+		"outDir": "../../dist/out-tsc",
+		"moduleResolution": "node",
+		"target": "es2017",
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+		"sourceMap": true,
+		"strict": false,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"checkJs": true,
+		"allowJs": true
 	},
 	"files": [],
-	"include": [],
-	"references": [
-		{
-			"path": "./tsconfig.app.json"
-		},
-		{
-			"path": "./tsconfig.spec.json"
-		}
+	"include": [
+		"vite.config.ts",
+		"vitest.config.ts",
+		"src/**/*.test.ts",
+		"src/**/*.spec.ts",
+		"src/**/*.test.tsx",
+		"src/**/*.spec.tsx",
+		"src/**/*.test.js",
+		"src/**/*.spec.js",
+		"src/**/*.test.jsx",
+		"src/**/*.spec.jsx",
+		"src/**/*.d.ts",
+		"src/**/*.ts"
 	],
 	"extends": "../../tsconfig.base.json"
 }
