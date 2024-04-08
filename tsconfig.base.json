@@ -20,6 +20,9 @@
 		"paths": {
 			"@notes/ui": [
 				"libs/ui/src/index.ts"
+			],
+			"@rspc-client": [
+				"libs/@rspc-client/src/index.ts"
 			]
 		}
 	},

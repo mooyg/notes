@@ -1,12 +1,17 @@
-#[macro_use]
-extern crate rocket;
+use axum::{http::HeaderValue, routing::get};
 
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
-}
+use tower_http::cors::CorsLayer;
+pub mod routes;
 
-#[launch]
-fn rocket() -> _ {
-    rocket::build().mount("/", routes![index])
+#[tokio::main]
+async fn main() {
+    let app = axum::Router::new()
+        .route("/", get(|| async { "Hello 'rspc'!" }))
+        .nest("/rspc", rspc_axum::endpoint(routes::init_router(), || ()))
+        .layer(
+            CorsLayer::new().allow_origin("http://localhost:5173".parse::<HeaderValue>().unwrap()),
+        );
+
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    axum::serve(listener, app).await.unwrap();
 }

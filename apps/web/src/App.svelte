@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Counter } from '@notes/ui';
+  import { client } from '@rspc-client';
 </script>
 
 <main>

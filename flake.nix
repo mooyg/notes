@@ -26,6 +26,7 @@
             pkg-config
             rust-bin.beta.latest.default
             openssl
+            atlas
           ];
         };
     };

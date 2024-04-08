@@ -1,0 +1,6 @@
+{
+	"name": "@rspc/client",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/@rspc-client/src",
+	"projectType": "library"
+}
