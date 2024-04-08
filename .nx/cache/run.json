@@ -1,0 +1,21 @@
+{
+  "run": {
+    "command": "nxw run api:prisma generate",
+    "startTime": "2024-04-08T16:25:59.957Z",
+    "endTime": "2024-04-08T16:26:02.951Z",
+    "inner": false
+  },
+  "tasks": [
+    {
+      "taskId": "api:prisma",
+      "target": "prisma",
+      "projectName": "api",
+      "hash": "4657011887509337998",
+      "startTime": "2024-04-08T16:25:59.963Z",
+      "endTime": "2024-04-08T16:26:02.951Z",
+      "params": "",
+      "cacheStatus": "cache-miss",
+      "status": 0
+    }
+  ]
+}

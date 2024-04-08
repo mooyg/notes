@@ -1,0 +1,8 @@
+[2m> [22mcargo prisma generate --schema=./apps/api/prisma/schema.prisma generate
+
+[1m[32m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.23s
+[1m[32m     Running[0m `dist/target/debug/prisma-cli generate --schema=./apps/api/prisma/schema.prisma generate`
+[2mPrisma schema loaded from apps/api/prisma/schema.prisma[22m
+
+✔ Generated [1mPrisma Client Rust[22m[2m to ./apps/api/src/prisma.rs[22m in 180ms
+

@@ -1,0 +1,5 @@
+[2m> [22mcargo prisma generate --schema=./prisma/schema.prisma
+
+[1m[32m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.39s
+[1m[32m     Running[0m `dist/target/debug/prisma-cli generate --schema=./prisma/schema.prisma`
+[91m[1mError: [22m[39mProvided --schema at ./prisma/schema.prisma doesn't exist.

@@ -1,0 +1,9 @@
+[2m> [22mcargo prisma generate
+
+[1m[32m    Finished[0m `dev` profile [unoptimized + debuginfo] target(s) in 0.40s
+[1m[32m     Running[0m `dist/target/debug/prisma-cli generate`
+[33mprisma:warn[39m The postinstall script automatically ran `prisma generate` and did not find your `prisma/schema.prisma`.
+If you have a Prisma schema file in a custom path, you will need to run
+`prisma generate --schema=./path/to/your/schema.prisma` to generate Prisma Client.
+If you do not have a Prisma schema file yet, you can ignore this message.
+
