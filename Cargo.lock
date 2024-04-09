@@ -101,6 +101,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "api-users"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "prisma-client-rust",
+ "rspc",
+ "rspc-axum",
+ "serde",
+ "specta",
+ "tokio",
+ "tower-http",
+]
+
+[[package]]
 name = "arrayvec"
 version = "0.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"

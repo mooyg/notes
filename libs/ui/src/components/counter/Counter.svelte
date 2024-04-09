@@ -1,5 +1,10 @@
 <script lang="ts">
   import { spring } from 'svelte/motion';
+  import { client } from '@rspc-client';
+
+  client.query(['users.get']).then((data) => {
+    console.log(data);
+  });
 
   let count = 0;
 

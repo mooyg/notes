@@ -1,3 +1,7 @@
+use crate::Ctx;
+use rspc::{Router, RouterBuilder};
 pub mod get;
 
-fn mount() {}
+pub fn mount() -> RouterBuilder<Ctx> {
+    Router::<Ctx>::new().query("get", |t| t(get::get))
+}

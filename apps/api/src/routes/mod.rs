@@ -1,9 +1,12 @@
 use std::{path::PathBuf, sync::Arc};
 
 use rspc::{Config, Router};
+
+use crate::Ctx;
 pub mod users;
-pub fn init_router() -> Arc<Router> {
-    let router = Router::<()>::new()
+
+pub fn init_router() -> Arc<Router<Ctx>> {
+    let router = Router::<Ctx>::new()
         .config(
             Config::new()
                 .set_ts_bindings_header("/* eslint-disable */")
@@ -13,6 +16,7 @@ pub fn init_router() -> Arc<Router> {
                 ),
         )
         .query("version", |t| t(|_ctx, _input: ()| "1.0.0 "))
+        .merge("users.", users::mount())
         .build()
         .arced();
     router

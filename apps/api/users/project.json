@@ -1,8 +1,8 @@
 {
-	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"name": "api",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"name": "@api/users",
 	"projectType": "application",
-	"sourceRoot": "./apps/api/src",
+	"sourceRoot": "./apps/api/users/src/",
 	"targets": {
 		"dev": {
 			"executor": "@monodon/rust:run",
@@ -16,7 +16,7 @@
 		"prisma": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "cargo prisma generate --schema=./apps/api/prisma/schema.prisma"
+				"command": "cargo prisma generate --schema=./apps/api/users/prisma/schema.prisma"
 			}
 		},
 		"migrate": {
