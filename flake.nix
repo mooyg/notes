@@ -22,10 +22,7 @@
             nodejs
             nodePackages.pnpm
             nodePackages.typescript
-            pkg-config
-            rust-bin.beta.latest.default
-            openssl
-            darwin.apple_sdk.frameworks.SystemConfiguration
+            watchexec
           ];
         };
     };

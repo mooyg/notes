@@ -1,6 +1,11 @@
 [workspace]
 resolver = "2"
-members = ['./apps/api/', './libs/prisma-cli', './apps/api/users/']
+members = [
+	'./apps/api/',
+	'./libs/prisma-cli',
+	'./apps/api/users/',
+	'./apps/api/pages/',
+]
 
 [profile.release]
 lto = true

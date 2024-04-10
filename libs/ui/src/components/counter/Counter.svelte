@@ -1,8 +1,13 @@
 <script lang="ts">
   import { spring } from 'svelte/motion';
-  import { client } from '@rspc-client';
+  import { userClient, pagesClient } from '@rspc-client';
+  import { onMount } from 'svelte';
 
-  client.query(['users.get']).then((data) => {
+  userClient.query(['get']).then((data) => {
+    console.log(data);
+  });
+
+  pagesClient.query(['version']).then((data) => {
     console.log(data);
   });
 

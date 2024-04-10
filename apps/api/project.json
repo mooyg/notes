@@ -1,28 +1,23 @@
 {
-	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"name": "api",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/api/src",
 	"projectType": "application",
-	"sourceRoot": "./apps/api/src",
+	"tags": [],
 	"targets": {
 		"dev": {
-			"executor": "@monodon/rust:run",
-			"outputs": [
-				"{options.target-dir}"
-			],
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
 			"options": {
-				"target-dir": "dist/target/api"
-			}
-		},
-		"prisma": {
-			"executor": "nx:run-commands",
-			"options": {
-				"command": "cargo prisma generate --schema=./apps/api/prisma/schema.prisma"
-			}
-		},
-		"migrate": {
-			"executor": "nx:run-commands",
-			"options": {
-				"command": "cargo prisma migrate dev --schema=./apps/api/prisma/schema.prisma"
+				"buildTarget": "api:build"
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "api:build:development"
+				},
+				"production": {
+					"buildTarget": "api:build:production"
+				}
 			}
 		}
 	}
